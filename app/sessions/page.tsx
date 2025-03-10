@@ -220,7 +220,7 @@ const Sessions = () => {
       </div>
       
       <main className="flex-1 container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
-        <Link to="/" className="flex items-center text-sm text-gray-600 hover:text-event-standard mb-4 transition-colors">
+        <Link href="/" className="flex items-center text-sm text-gray-600 hover:text-event-standard mb-4 transition-colors">
           <ArrowLeft size={16} className="mr-1" />
           Back to Home
         </Link>
