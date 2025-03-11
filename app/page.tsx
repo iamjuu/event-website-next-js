@@ -16,50 +16,23 @@ import { SponsorsSection } from "./components/event/SponsorsSection";
 import { Button } from "./components/ui/button";
 import { StickyFooter } from "./components/event/StickyFooter";
 import { BlackImage } from "@/public";
+
 const Index = () => {
   const ticketSectionRef = useRef<HTMLDivElement>(null);
   const registerCardRef = useRef<HTMLDivElement>(null);
   const contentSectionRef = useRef<HTMLDivElement>(null);
   const ticketHeadingRef = useRef<HTMLDivElement>(null);
-  const [isSticky, setIsSticky] = useState(true);
-  
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!ticketHeadingRef.current || !registerCardRef.current) return;
-      
-      const headerHeight = 80; // Height of the header
-      const ticketHeadingRect = ticketHeadingRef.current.getBoundingClientRect();
-      const registerCard = registerCardRef.current;
-      
-      // Calculate the point where the card should stop
-      const stopPoint = ticketHeadingRect.top + window.scrollY - headerHeight;
-      
-      if (window.scrollY >= stopPoint) {
-        setIsSticky(false);
-        registerCard.style.position = 'absolute';
-        registerCard.style.top = `${stopPoint}px`;
-      } else {
-        setIsSticky(true);
-        registerCard.style.position = 'sticky';
-        registerCard.style.top = '10px'; // Offset from top of viewport
-      }
-    };
-    
-    window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Initial position
-    
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
   
   return (
-    <div className="bg-white flex flex-col overflow-hidden items-stretch pt-4 md:pt-[26px] pb-28 md:pb-32">
+    <div className="bg-white flex flex-col items-stretch pt-4 md:pt-[26px] pb-28 md:pb-32">
+      {/* Removed overflow-hidden from this container */}
       <main className="self-center flex w-full max-w-[1208px] flex-col items-stretch px-4 md:px-6">
         <Header />
         <Hero />
         <div className="mt-6 md:mt-[25px] max-md:max-w-full">
+          {/* This wrapping div is important for proper sticky context */}
           <div className="gap-5 flex max-md:flex-col max-md:items-stretch">
+            {/* Content column */}
             <div className="w-full lg:w-[64%] max-md:w-full max-md:ml-0">
               <div ref={contentSectionRef} className="flex grow flex-col items-stretch max-md:max-w-full max-md:mt-6">
                 <EventDetails />
@@ -67,15 +40,21 @@ const Index = () => {
                 <KeyFeatures />
               </div>
             </div>
-            <div className="w-full  bg-red-400 lg:w-[36%] lg:ml-5 max-md:w-full max-md:ml-0">
+            
+            {/* Register card column */}
+            <div className="w-full lg:w-[36%] lg:ml-5 max-md:w-full max-md:ml-0">
+              {/* This is the sticky container - Fixed with proper top value */}
               <div 
-                ref={registerCardRef} 
-                className={`transition-all duration-300 ease-in-out ${isSticky ? 'translate-y-0' : ''}`}
-                style={{ 
-                  position: 'sticky',
-                  top: '100px',
-                  height: 'fit-content',
-                  zIndex: 10
+                ref={registerCardRef}
+                className="sticky-container"
+                style={{
+                  position: "sticky",
+                  top: "20px", /* Changed from 500px to 20px */
+                  display: "block",
+                  height: "max-content",
+                  maxHeight: "calc(100vh - 40px)",
+                  overflowY: "auto",
+                  zIndex: 40
                 }}
               >
                 <RegisterCard />
@@ -85,10 +64,10 @@ const Index = () => {
         </div>
         
         {/* Ticket Section - Full Width */}
-        <div ref={ticketHeadingRef} className="relative">
-        <h2 className="text-black text-xl md:text-2xl font-semibold relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-1 after:w-16 after:rounded-full after:bg-[#4F46E5]">
-        Tickets
-      </h2>
+        <div className="relative">
+          <h2 className="text-black text-xl md:text-2xl font-semibold relative pb-2 after:absolute after:bottom-0 after:left-0 after:h-1 after:w-16 after:rounded-full after:bg-[#4F46E5]">
+            Tickets
+          </h2>
         </div>
         <div ref={ticketSectionRef}>
           <TicketSection />
@@ -131,7 +110,6 @@ const Index = () => {
         
         <div className="mt-8 text-center">
           <Button 
-            // variant="event-standard"
             className="rounded-lg hover:bg-event-standard/90 transition-colors"
             asChild
           >
