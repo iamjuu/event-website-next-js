@@ -69,7 +69,7 @@ export const SponsorsSection = () => {
     <section className="w-full mt-12 md:mt-16">
       <div className="mb-5">
         <h2 className="text-xl md:text-2xl font-medium">Our Sponsors</h2>
-        <p className="text-sm text-gray-600 mt-1">Leading brands supporting dental excellence</p>
+        <p className="text-sm  text-gray-600 mt-1">Leading brands supporting dental excellence</p>
       </div>
       
       <Carousel

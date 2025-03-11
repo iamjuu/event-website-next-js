@@ -31,7 +31,7 @@ const buttonVariants: Record<TicketType, string> = {
 
 const TicketCard: React.FC<TicketProps> = ({ id, type, title, price, date, location, thumbnail, description }) => {
   return (
-    <div className={`${colorVariants[type].bg} rounded-2xl overflow-hidden shadow-sm border border-neutral-100`}>
+    <div className={`${colorVariants[type].bg} rounded-2xl  overflow-hidden shadow-sm border border-neutral-100`}>
       <div className="relative h-48 w-full">
         <Image
           src={BlackImage}
@@ -41,7 +41,7 @@ const TicketCard: React.FC<TicketProps> = ({ id, type, title, price, date, locat
         />
       </div>
       
-      <div className="p-6">
+      <div className="p-6 ">
         <div className="flex flex-col gap-4">
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-3">
@@ -128,6 +128,9 @@ export const TicketSection = () => {
   return (
     <section className="py-12 md:py-16">
       <div className="max-w-[1208px] mx-auto px-4 md:px-6">
+        <h2 className="mb-[24px] text-black text-xl md:text-2xl font-semibold relative pb-2 after:absolute after:bottom-0 after:left-0 after:h-1 after:w-16 after:rounded-full after:bg-[#4F46E5]">
+            Tickets
+          </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {tickets.map((ticket, index) => (
             <TicketCard key={index} {...ticket} />

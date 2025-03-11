@@ -1,10 +1,12 @@
 import React from "react";
 import { Calendar, MapPin, ExternalLink } from "lucide-react";
 import { Button } from "../ui/button";
+import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
+import { cn } from "../../lib/utils";
 
 export const RegisterCard = () => {
   return (
-    <aside className="bg-white rounded-2xl shadow-sm border border-gray-100 flex flex-col items-stretch text-black w-full px-6 py-8">
+    <aside className="bg-white rounded-2xl shadow-sm border border-gray-100 flex flex-col   items-stretch text-black w-full px-6 py-8">
       <div className="flex justify-center mb-6">
         <div className="relative w-[180px] h-[180px]">
           <div className="absolute inset-0 bg-[#f8f5ff] rounded-full"></div>
@@ -56,6 +58,21 @@ export const RegisterCard = () => {
       <div className="mt-4 text-center">
         <span className="text-sm text-[#666]">Limited seats available. Register early!</span>
       </div>
+      <div className="flex  mt-3 items-center justify-center gap-4 md:gap-6 px-[10px] ">
+          <SocialIcon icon={<Facebook size={16} className="md:text-lg" />} />
+          <SocialIcon icon={<Instagram size={16} className="md:text-lg" />} />
+          <SocialIcon icon={<Twitter size={16} className="md:text-lg" />} />
+          <SocialIcon icon={<Linkedin size={16} className="md:text-lg" />} />
+        </div>
     </aside>
   );
 };
+const SocialIcon = ({ icon }: { icon: React.ReactNode }) => (
+  <div className={cn(
+    "w-8 h-8 md:w-9 md:h-9 flex items-center justify-center rounded-full",
+    "text-gray-400 hover:text-[#009AC2] transition-colors duration-200",
+    "border border-gray-700 hover:border-[#009AC2] bg-gray-800 hover:bg-gray-700 cursor-pointer"
+  )}>
+    {icon}
+  </div>
+);

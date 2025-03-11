@@ -35,7 +35,7 @@ export const StickyFooter = () => {
               <Share2 size={20} className="hidden sm:block" />
             </Button>
             <Button
-              className="px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 bg-[#00ba9d] hover:bg-[#00a589] text-white rounded-lg font-medium text-xs sm:text-sm md:text-base whitespace-nowrap"
+              className="px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 bg-[#6563ff] hover:bg-[#6563fd] text-white rounded-lg font-medium text-xs sm:text-sm md:text-base whitespace-nowrap"
             >
               Register Now
             </Button>

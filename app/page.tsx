@@ -26,7 +26,7 @@ const Index = () => {
   return (
     <div className="bg-white flex flex-col items-stretch pt-4 md:pt-[26px] pb-28 md:pb-[70px]">
       {/* Removed overflow-hidden from this container */}
-      <main className="self-center flex w-full max-w-[1208px] flex-col items-stretch px-4 md:px-6">
+      <main className="self-center flex w-full max-w-[1208px] flex-col  items-stretch px-4">
         <Header />
         <Hero />
         <div className="mt-6 md:mt-[25px] max-md:max-w-full">
@@ -65,9 +65,9 @@ const Index = () => {
         
         {/* Ticket Section - Full Width */}
         <div className="relative">
-          <h2 className="text-black text-xl md:text-2xl font-semibold relative pb-2 after:absolute after:bottom-0 after:left-0 after:h-1 after:w-16 after:rounded-full after:bg-[#4F46E5]">
+          {/* <h2 className="text-black text-xl md:text-2xl font-semibold relative pb-2 after:absolute after:bottom-0 after:left-0 after:h-1 after:w-16 after:rounded-full after:bg-[#4F46E5]">
             Tickets
-          </h2>
+          </h2> */}
         </div>
         <div ref={ticketSectionRef}>
           <TicketSection />
@@ -85,39 +85,8 @@ const Index = () => {
         {/* Full width location map */}
         <LocationMap />
         
-        <section className="text-black mt-8 md:mt-11 max-md:ml-0">
-          <h2 className="text-xl md:text-2xl font-medium mb-3 md:mb-4 relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-12 after:rounded-full">
-            About Organizer
-          </h2>
-          <p className="text-[rgba(14,14,14,1)] text-base md:text-lg font-light leading-6 md:leading-7 max-md:max-w-full">
-            Kerala's biggest and most awaited dentistry expo is back in full
-            force. KEDDA Dental Expo 2023 organized by Kerala Dental Dealers
-            Association will be held on the 12th and 13th of August at CIAL
-            Convention Center in Nedumbassery, Coachin. Don't miss out the
-            Kerala's Biggest Dental Trade Fair. Schedule your visit to the CIAL
-            Convention Center on the 12th and 13th of August 2023 for Kerala's
-            Grand Dental Event, the KEDDA Dental Expo 2023.
-            <br />
-            <br />
-            This expo will feature 100+ National and international exhibitors
-            from the reputable dental industry displaying a comprehensive range
-            of innovative dental equipments, consumables, and accessories. All
-            dentists and dental professionals are invited to attend the expo,
-            which is hosted by the Kerala Dental Dealers Association and take
-            advantage of the exclusive expo discounts offered by the exhibitors.
-          </p>
-        </section>
         
-        <div className="mt-8 text-center">
-          <Button 
-            className="rounded-lg hover:bg-event-standard/90 transition-colors"
-            asChild
-          >
-            <Link href="/singleshowcase">
-              View Single Item Showcase
-            </Link>
-          </Button>
-        </div>
+  
       </main>
       <Footer />
       <StickyFooter />

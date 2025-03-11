@@ -242,8 +242,8 @@ export const SessionsSection = () => {
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <CarouselPrevious className="absolute -left-12 top-1/2 transform -translate-y-1/2" />
-            <CarouselNext className="absolute -right-12 top-1/2 transform -translate-y-1/2" />
+            {/* <CarouselPrevious className="absolute -left-12 top-1/2 transform -translate-y-1/2" />
+            <CarouselNext className="absolute -right-12 top-1/2 transform -translate-y-1/2" /> */}
             <CarouselDots className="mt-4" />
           </Carousel>
         </div>
