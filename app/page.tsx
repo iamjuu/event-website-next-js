@@ -113,7 +113,7 @@ const Index = () => {
             className="rounded-lg hover:bg-event-standard/90 transition-colors"
             asChild
           >
-            <Link href="/single-showcase">
+            <Link href="/singleshowcase">
               View Single Item Showcase
             </Link>
           </Button>

@@ -1,7 +1,7 @@
 import React from "react";
 import { Mail, Globe, Calendar, Clock, Award, Bookmark, Share2, Mic, MapPin, Users, Star, Link2 } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import { cn } from "../../lib/utils";
+import { Button } from "../../components/ui/button";
 type SpeakerProps = {
   id: string;
   name: string;

@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Clock, Users, CalendarDays, MapPin } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn } from "../../lib/utils";
 
 type SessionProps = {
   id: string;

@@ -15,7 +15,7 @@ import { SingleSpeakerSection } from "../components/event/SingleSpeakerSection";
 
 const SingleItemShowcase = () => {
   return (
-    <div className="bg-white flex flex-col overflow-hidden items-stretch pt-4 md:pt-[26px] pb-28 md:pb-32">
+    <div className="bg-white flex flex-col overflow-hidden items-stretch pt-4 md:pt-[26px]">
       <main className="self-center flex w-full max-w-[1208px] flex-col items-stretch px-4 md:px-6">
         <Header />
         <Hero />
