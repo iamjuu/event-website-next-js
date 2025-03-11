@@ -8,6 +8,7 @@ import Link from "next/link";
 import { cn } from "../lib/utils";
 import { Button } from "../components/ui/button";
 import Image from "next/image";
+import { BlackImage } from "@/public";
 
 type SpeakerType = "standard" | "premium" | "vip";
 
@@ -114,7 +115,7 @@ const Speakers = () => {
       location: "Mumbai, India",
       specialization: "General Dentistry",
       description: "Leading expert in modern dental practices with over 15 years of experience in cosmetic dentistry and dental surgery.",
-      image: "/images/speakers/priya-sharma.jpg",
+      image: BlackImage,
       type: "standard"
     },
     {
@@ -125,7 +126,7 @@ const Speakers = () => {
       location: "Mumbai, India",
       specialization: "Implantology",
       description: "Renowned implantologist specializing in complex cases and digital planning with international certification.",
-      image: "/images/speakers/rajiv-mehta.jpg",
+      image: BlackImage,
       type: "premium"
     },
     {
@@ -136,7 +137,7 @@ const Speakers = () => {
       location: "Bangalore, India",
       specialization: "Cosmetic Dentistry",
       description: "Pioneer in digital smile design and aesthetic dentistry with expertise in veneers and full mouth rehabilitation.",
-      image: "/images/speakers/ananya-desai.jpg",
+      image: BlackImage,
       type: "vip"
     },
     {
@@ -147,7 +148,7 @@ const Speakers = () => {
       location: "Delhi, India",
       specialization: "Orthodontics",
       description: "Expert in modern orthodontic techniques including invisible aligners and lingual braces.",
-      image: "/images/speakers/sunil-kumar.jpg",
+      image: BlackImage,
       type: "standard"
     },
     {
@@ -158,7 +159,7 @@ const Speakers = () => {
       location: "Chennai, India",
       specialization: "Pediatric Dentistry",
       description: "Specialized in child psychology and pediatric dental procedures with a focus on preventive care.",
-      image: "/images/speakers/maya-reddy.jpg",
+      image: BlackImage,
       type: "premium"
     },
     {
@@ -169,7 +170,7 @@ const Speakers = () => {
       location: "Hyderabad, India",
       specialization: "Endodontics",
       description: "Expert in microsurgical endodontics and complex root canal treatments using advanced technology.",
-      image: "/images/speakers/vikram-singh.jpg",
+      image: BlackImage,
       type: "vip"
     }
   ];
@@ -193,7 +194,7 @@ const Speakers = () => {
   };
 
   return (
-    <div className="bg-gray-50 flex flex-col min-h-screen">
+    <div className="bg-white flex flex-col min-h-screen">
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Header />
       </div>
@@ -236,7 +237,7 @@ const Speakers = () => {
         )}
         
         <div className="mb-6">
-          <div className="bg-white p-3 rounded-lg shadow-sm overflow-x-auto scrollbar-hide">
+          <div className="bg-gray-50 p-3 rounded-lg shadow-sm overflow-x-auto scrollbar-hide">
             <div className="flex items-center gap-2">
               <FilterButton 
                 active={activeType === 'all'} 

@@ -1,11 +1,13 @@
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Button } from "../ui/button";
 import { CalendarIcon, ExternalLinkIcon, TicketIcon } from "lucide-react";
-import Thumbnail from "../../../public/images/image.png";
+import { BlackImage } from "@/public";
 type TicketType = "standard" | "premium" | "vip";
 
 interface TicketProps {
+  id: string;
   type: TicketType;
   title: string;
   price: string;
@@ -27,12 +29,12 @@ const buttonVariants: Record<TicketType, string> = {
   vip: "bg-[#ff9933] hover:bg-[#ee8822]",
 };
 
-const TicketCard: React.FC<TicketProps> = ({ type, title, price, date, location, thumbnail, description }) => {
+const TicketCard: React.FC<TicketProps> = ({ id, type, title, price, date, location, thumbnail, description }) => {
   return (
     <div className={`${colorVariants[type].bg} rounded-2xl overflow-hidden shadow-sm border border-neutral-100`}>
       <div className="relative h-48 w-full">
         <Image
-          src={Thumbnail}
+          src={BlackImage}
           alt={`${title} ticket`}
           fill
           className="object-cover"
@@ -68,19 +70,19 @@ const TicketCard: React.FC<TicketProps> = ({ type, title, price, date, location,
           </div>
 
           <div className="flex gap-3 mt-2">
-            <Button 
-              variant="outline"
-              className="flex-1 border-neutral-200 hover:bg-neutral-50"
-            >
-              Details
-              {/* <ExternalLinkIcon className="w-4 h-4 ml-2" /> */}
-            </Button>
+            <Link href={`/tickets/${id}`} className="flex-1">
+              <Button 
+                variant="outline"
+                className="w-full border-neutral-200 hover:bg-neutral-50"
+              >
+                Details
+              </Button>
+            </Link>
             <Button 
               className={`flex-1 text-white ${buttonVariants[type]}`}
             >
-                            <ExternalLinkIcon className="w-4 h-4 ml-2" />
               Register
-
+              <ExternalLinkIcon className="w-4 h-4 ml-2" />
             </Button>
           </div>
         </div>
@@ -92,6 +94,7 @@ const TicketCard: React.FC<TicketProps> = ({ type, title, price, date, location,
 export const TicketSection = () => {
   const tickets: TicketProps[] = [
     {
+      id: "standard",
       type: "standard",
       title: "Standard",
       price: "5,000",
@@ -101,6 +104,7 @@ export const TicketSection = () => {
       description: "Access to all exhibit areas and general sessions. Perfect for first-time attendees.",
     },
     {
+      id: "premium",
       type: "premium",
       title: "Premium",
       price: "7,500",
@@ -110,6 +114,7 @@ export const TicketSection = () => {
       description: "Enhanced access including premium sessions and networking opportunities.",
     },
     {
+      id: "vip",
       type: "vip",
       title: "VIP",
       price: "10,000",
@@ -124,8 +129,8 @@ export const TicketSection = () => {
     <section className="py-12 md:py-16">
       <div className="max-w-[1208px] mx-auto px-4 md:px-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {tickets.map((ticket) => (
-            <TicketCard key={ticket.type} {...ticket} />
+          {tickets.map((ticket, index) => (
+            <TicketCard key={index} {...ticket} />
           ))}
         </div>
       </div>
