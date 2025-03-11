@@ -151,7 +151,7 @@ export default function TicketDetail() {
   }
 
   return (
-    <div className="bg-gray-50 flex flex-col overflow-hidden items-stretch min-h-screen pt-4 md:pt-[26px] pb-20 md:pb-24">
+    <div className="bg-gray-50 flex flex-col overflow-hidden items-stretch min-h-screen pt-4 md:pt-[26px] ">
       <main className="self-center flex w-full max-w-[1208px] flex-col items-stretch px-4 md:px-6">
         <Header />
         

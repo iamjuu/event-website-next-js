@@ -24,7 +24,7 @@ const Index = () => {
   const ticketHeadingRef = useRef<HTMLDivElement>(null);
   
   return (
-    <div className="bg-white flex flex-col items-stretch pt-4 md:pt-[26px] pb-28 md:pb-32">
+    <div className="bg-white flex flex-col items-stretch pt-4 md:pt-[26px] pb-28 md:pb-[70px]">
       {/* Removed overflow-hidden from this container */}
       <main className="self-center flex w-full max-w-[1208px] flex-col items-stretch px-4 md:px-6">
         <Header />
@@ -46,7 +46,7 @@ const Index = () => {
               {/* This is the sticky container - Fixed with proper top value */}
               <div 
                 ref={registerCardRef}
-                className="sticky-container"
+                className=" sticky-container"
                 style={{
                   position: "sticky",
                   top: "20px", /* Changed from 500px to 20px */
@@ -86,7 +86,7 @@ const Index = () => {
         <LocationMap />
         
         <section className="text-black mt-8 md:mt-11 max-md:ml-0">
-          <h2 className="text-xl md:text-2xl font-medium mb-3 md:mb-4 relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-12 after:rounded-full after:bg-event-standard">
+          <h2 className="text-xl md:text-2xl font-medium mb-3 md:mb-4 relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-12 after:rounded-full">
             About Organizer
           </h2>
           <p className="text-[rgba(14,14,14,1)] text-base md:text-lg font-light leading-6 md:leading-7 max-md:max-w-full">
