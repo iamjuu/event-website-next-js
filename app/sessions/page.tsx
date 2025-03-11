@@ -8,7 +8,7 @@ import Link from "next/link";
 import { cn } from "../lib/utils";
 import { Button } from "../components/ui/button";
 import Image from "next/image";
-
+import { BlackImage } from "@/public";
 type SessionType = "standard" | "premium" | "vip";
 type SessionDay = "day1" | "day2";
 
@@ -64,13 +64,14 @@ const SessionCard = ({ session }: { session: SessionProps }) => {
       
       <div className="mb-6">
         <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-          <Image
-            src={`/images/speakers/${session.speaker.toLowerCase().replace(/\s+/g, '-')}.jpg`}
+          {/* <Image
+          src={BlackImage}
+            // src={`${BlackImage} ${session.speaker.toLowerCase().replace(/\s+/g, '-')}.jpg`}
             alt={session.speaker}
             width={48}
             height={48}
             className="rounded-full border-2 border-white shadow-sm"
-          />
+          /> */}
           <div>
             <div className="font-medium text-base text-gray-900">{session.speaker}</div>
             <div className="text-sm text-gray-600">{session.speakerTitle}</div>
@@ -239,7 +240,7 @@ const Sessions = () => {
   };
 
   return (
-    <div className="bg-gray-50 flex flex-col min-h-screen">
+    <div className="bg-white flex flex-col min-h-screen">
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Header />
       </div>
@@ -281,9 +282,9 @@ const Sessions = () => {
           </div>
         )}
         
-        <div className="mb-8 space-y-4">
+        <div className="mb-8 bg-gray-50  rounded-xl  space-y-4">
           <div className="flex flex-col sm:flex-row gap-4">
-            <div className="bg-white p-3 rounded-xl shadow-sm overflow-x-auto scrollbar-hide flex-shrink-0">
+            <div className=" p-3 shadow-sm overflow-x-auto scrollbar-hide flex-shrink-0">
               <div className="flex items-center gap-2">
                 <FilterButton 
                   active={activeDay === 'all'} 
@@ -306,7 +307,7 @@ const Sessions = () => {
               </div>
             </div>
 
-            <div className="bg-white p-3 rounded-xl shadow-sm overflow-x-auto scrollbar-hide flex-shrink-0">
+            <div className=" p-3 rounded-xl shadow-sm overflow-x-auto scrollbar-hide flex-shrink-0">
               <div className="flex items-center gap-2">
                 <FilterButton 
                   active={activeStage === 'all'} 

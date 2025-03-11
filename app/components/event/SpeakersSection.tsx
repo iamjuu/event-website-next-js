@@ -10,7 +10,7 @@ import {
   CarouselPrevious,
   CarouselDots
 } from "../ui/carousel";
-
+import { BlackImage } from "@/public";
 interface SpeakerProps {
   name: string;
   title: string;
@@ -30,8 +30,8 @@ const SpeakerCard: React.FC<SpeakerProps> = ({ name, title, image, type }) => {
       <Image
         src={image}
         alt={name}
-        width={96}
-        height={96}
+        width={92}
+        height={92}
         className="rounded-full mb-3 border-2 border-white shadow-sm"
       />
       <h3 className="text-lg font-medium text-neutral-900 mb-1">{name}</h3>
@@ -45,37 +45,37 @@ export const SpeakersSection = () => {
     {
       name: "Dr. Priya Sharma",
       title: "Dental Surgeon",
-      image: "/images/speakers/priya-sharma.jpg",
+      image: BlackImage,
       type: "standard"
     },
     {
       name: "Dr. Rajiv Mehta",
       title: "Senior Implantologist",
-      image: "/images/speakers/rajiv-mehta.jpg",
+      image: BlackImage,
       type: "premium"
     },
     {
       name: "Dr. Ananya Desai",
       title: "Cosmetic Dentistry Expert",
-      image: "/images/speakers/ananya-desai.jpg",
+      image: BlackImage,
       type: "vip"
     },
     {
       name: "Dr. Sunil Kumar",
       title: "Orthodontics Specialist",
-      image: "/images/speakers/sunil-kumar.jpg",
+      image: BlackImage,
       type: "standard"
     },
     {
       name: "Dr. Maya Reddy",
       title: "Pediatric Dentist",
-      image: "/images/speakers/maya-reddy.jpg",
+      image:BlackImage,
       type: "premium"
     },
     {
       name: "Dr. Vikram Singh",
       title: "Endodontic Specialist",
-      image: "/images/speakers/vikram-singh.jpg",
+      image: BlackImage,
       type: "vip"
     }
   ];
@@ -84,8 +84,9 @@ export const SpeakersSection = () => {
     <section className="py-12 md:py-16">
       <div className="max-w-[1208px] mx-auto px-4 md:px-6">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-medium text-neutral-900">Speakers</h2>
-          <Link 
+        <h2 className="text-black text-xl md:text-2xl font-semibold relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-1 after:w-16 after:rounded-full after:bg-[#4F46E5]">
+        Speakers
+      </h2>          <Link 
             href="/speakers" 
             className="text-[#6563ff] hover:text-[#5452ee] text-sm font-medium flex items-center gap-1"
           >

@@ -1,15 +1,15 @@
 import React from "react";
 import Image from "next/image";
 import { Button } from "../ui/button";
-
+import { BlackImage } from "@/public";
 export const Header = () => {
   return (
     <header className="sticky top-0 bg-white/80 backdrop-blur-sm border-b border-neutral-200 z-50">
-      <div className="max-w-[1208px] mx-auto px-4 md:px-6">
+      <div className="max-w-[1208px] mx-auto ">
         <div className="flex items-center justify-between h-16 md:h-20">
-          <div className="flex items-center">
+          <div className="flex  items-center">
             <Image
-              src="/images/kedda-logo.png"
+              src={BlackImage}
               alt="Kerala Dental Dealers Association"
               width={160}
               height={40}

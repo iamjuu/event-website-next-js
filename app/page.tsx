@@ -15,7 +15,7 @@ import { SpeakersSection } from "./components/event/SpeakersSection";
 import { SponsorsSection } from "./components/event/SponsorsSection";
 import { Button } from "./components/ui/button";
 import { StickyFooter } from "./components/event/StickyFooter";
-
+import { BlackImage } from "@/public";
 const Index = () => {
   const ticketSectionRef = useRef<HTMLDivElement>(null);
   const registerCardRef = useRef<HTMLDivElement>(null);
@@ -41,7 +41,7 @@ const Index = () => {
       } else {
         setIsSticky(true);
         registerCard.style.position = 'sticky';
-        registerCard.style.top = '100px'; // Offset from top of viewport
+        registerCard.style.top = '10px'; // Offset from top of viewport
       }
     };
     
@@ -67,7 +67,7 @@ const Index = () => {
                 <KeyFeatures />
               </div>
             </div>
-            <div className="w-full lg:w-[36%] lg:ml-5 max-md:w-full max-md:ml-0">
+            <div className="w-full  bg-red-400 lg:w-[36%] lg:ml-5 max-md:w-full max-md:ml-0">
               <div 
                 ref={registerCardRef} 
                 className={`transition-all duration-300 ease-in-out ${isSticky ? 'translate-y-0' : ''}`}
@@ -86,9 +86,9 @@ const Index = () => {
         
         {/* Ticket Section - Full Width */}
         <div ref={ticketHeadingRef} className="relative">
-          <h2 className="text-2xl md:text-3xl font-bold text-neutral-900 mb-8 pt-12 md:pt-16">
-            Tickets
-          </h2>
+        <h2 className="text-black text-xl md:text-2xl font-semibold relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-1 after:w-16 after:rounded-full after:bg-[#4F46E5]">
+        Tickets
+      </h2>
         </div>
         <div ref={ticketSectionRef}>
           <TicketSection />
