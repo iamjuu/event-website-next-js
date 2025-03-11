@@ -1,44 +1,41 @@
 import React from "react";
+import Image from "next/image";
 import Link from "next/link";
-import { cn } from "../../lib/utils";
-import { 
-  Carousel, 
-  CarouselContent, 
-  CarouselItem
+import { ArrowRight } from "lucide-react";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+  CarouselDots
 } from "../ui/carousel";
 
-type SpeakerProps = {
-  id: string;
+interface SpeakerProps {
   name: string;
   title: string;
-  imageUrl: string;
+  image: string;
   type: "standard" | "premium" | "vip";
+}
+
+const colorVariants = {
+  standard: "border-t-[#6563ff]",
+  premium: "border-t-[#9181ff]",
+  vip: "border-t-[#ff9933]",
 };
 
-const SpeakerCard = ({ speaker }: { speaker: SpeakerProps }) => {
-  const colorVariants = {
-    standard: "border-event-standard/70 bg-event-standard-light/30",
-    premium: "border-event-premium/70 bg-event-premium-light/30",
-    vip: "border-event-vip/70 bg-event-vip-light/30"
-  };
-
+const SpeakerCard: React.FC<SpeakerProps> = ({ name, title, image, type }) => {
   return (
-    <div className={cn(
-      "flex flex-col items-center bg-white rounded-xl overflow-hidden shadow-sm transition-all duration-300 hover:shadow-md border-t-4 p-4 h-full",
-      colorVariants[speaker.type]
-    )}>
-      <div className="mb-3">
-        <img 
-          src={speaker.imageUrl} 
-          alt={speaker.name}
-          className="w-20 h-20 md:w-24 md:h-24 rounded-full object-cover border-2 border-white shadow-sm"
-        />
-      </div>
-      
-      <div className="text-center">
-        <h3 className="font-medium text-base md:text-lg text-gray-800 mb-1">{speaker.name}</h3>
-        <p className="text-sm text-gray-600">{speaker.title}</p>
-      </div>
+    <div className={`bg-white rounded-lg shadow-sm border-t-4 ${colorVariants[type]} p-4 flex flex-col items-center h-full`}>
+      <Image
+        src={image}
+        alt={name}
+        width={96}
+        height={96}
+        className="rounded-full mb-3 border-2 border-white shadow-sm"
+      />
+      <h3 className="text-lg font-medium text-neutral-900 mb-1">{name}</h3>
+      <p className="text-sm text-neutral-600">{title}</p>
     </div>
   );
 };
@@ -46,71 +43,77 @@ const SpeakerCard = ({ speaker }: { speaker: SpeakerProps }) => {
 export const SpeakersSection = () => {
   const speakers: SpeakerProps[] = [
     {
-      id: "speaker1",
       name: "Dr. Priya Sharma",
       title: "Dental Surgeon",
-      imageUrl: "https://images.unsplash.com/photo-1594824476967-48c8b964273f?ixlib=rb-4.0.3&auto=format&fit=crop&w=256&q=80",
+      image: "/images/speakers/priya-sharma.jpg",
       type: "standard"
     },
     {
-      id: "speaker2",
       name: "Dr. Rajiv Mehta",
       title: "Senior Implantologist",
-      imageUrl: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?ixlib=rb-4.0.3&auto=format&fit=crop&w=256&q=80",
+      image: "/images/speakers/rajiv-mehta.jpg",
       type: "premium"
     },
     {
-      id: "speaker3",
       name: "Dr. Ananya Desai",
       title: "Cosmetic Dentistry Expert",
-      imageUrl: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&auto=format&fit=crop&w=256&q=80",
+      image: "/images/speakers/ananya-desai.jpg",
       type: "vip"
     },
     {
-      id: "speaker4",
       name: "Dr. Sunil Kumar",
       title: "Orthodontics Specialist",
-      imageUrl: "https://images.unsplash.com/photo-1537368910025-700350fe46c7?ixlib=rb-4.0.3&auto=format&fit=crop&w=256&q=80",
+      image: "/images/speakers/sunil-kumar.jpg",
       type: "standard"
+    },
+    {
+      name: "Dr. Maya Reddy",
+      title: "Pediatric Dentist",
+      image: "/images/speakers/maya-reddy.jpg",
+      type: "premium"
+    },
+    {
+      name: "Dr. Vikram Singh",
+      title: "Endodontic Specialist",
+      image: "/images/speakers/vikram-singh.jpg",
+      type: "vip"
     }
   ];
 
   return (
-    <section className="w-full mt-12 md:mt-16">
-      <div className="flex justify-between items-center mb-5">
-        <h2 className="text-xl md:text-2xl font-medium">Speakers</h2>
-        <Link href="/speakers" className="text-sm text-event-standard hover:text-event-standard/80 transition-colors font-medium">
-          View All
-        </Link>
-      </div>
-      
-      <Carousel
-        opts={{
-          align: "start",
-          loop: true,
-        }}
-        className="w-full"
-      >
-        <CarouselContent className="-ml-2 md:-ml-4">
-          {speakers.map((speaker) => (
-            <CarouselItem key={speaker.id} className="pl-2 md:pl-4 sm:basis-1/2 md:basis-1/3 lg:basis-1/4">
-              <SpeakerCard speaker={speaker} />
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-        <div className="flex justify-center gap-1 mt-4">
-          {speakers.map((_, index) => (
-            <div 
-              key={index} 
-              className={`h-2 w-2 rounded-full bg-gray-300 hover:bg-event-standard cursor-pointer transition-colors`}
-              onClick={() => {
-                // Dots for visual reference - actual implementation would need 
-                // integration with the carousel state
-              }}
-            />
-          ))}
+    <section className="py-12 md:py-16">
+      <div className="max-w-[1208px] mx-auto px-4 md:px-6">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-medium text-neutral-900">Speakers</h2>
+          <Link 
+            href="/speakers" 
+            className="text-[#6563ff] hover:text-[#5452ee] text-sm font-medium flex items-center gap-1"
+          >
+            View All
+            <ArrowRight className="w-4 h-4" />
+          </Link>
         </div>
-      </Carousel>
+        <div className="relative">
+          <Carousel
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+            className="w-full"
+          >
+            <CarouselContent className="-ml-4">
+              {speakers.slice(0, 4).map((speaker, index) => (
+                <CarouselItem key={index} className="pl-4 basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4">
+                  <SpeakerCard {...speaker} />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="absolute -left-12 top-1/2 transform -translate-y-1/2" />
+            <CarouselNext className="absolute -right-12 top-1/2 transform -translate-y-1/2" />
+            <CarouselDots className="mt-4" />
+          </Carousel>
+        </div>
+      </div>
     </section>
   );
 };

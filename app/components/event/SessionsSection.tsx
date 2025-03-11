@@ -1,73 +1,71 @@
-
 import React from "react";
-import { Clock, Users, CalendarDays } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
-import { cn } from "../../lib/utils";
-import { 
-  Carousel, 
-  CarouselContent, 
+import { Calendar, Clock, Users, ArrowRight } from "lucide-react";
+import {
+  Carousel,
+  CarouselContent,
   CarouselItem,
+  CarouselNext,
   CarouselPrevious,
-  CarouselNext
+  CarouselDots
 } from "../ui/carousel";
 
-type SessionProps = {
-  id: string;
+interface SpeakerInfo {
+  name: string;
+  image: string;
+}
+
+interface SessionProps {
   title: string;
-  speakers: Array<{
-    name: string;
-    imageUrl: string;
-  }>;
-  time: string;
+  speakers: SpeakerInfo[];
   date: string;
+  time: string;
   stage: string;
   type: "standard" | "premium" | "vip";
+}
+
+const colorVariants = {
+  standard: "border-l-[#6563ff]",
+  premium: "border-l-[#9181ff]",
+  vip: "border-l-[#ff9933]",
 };
 
-const SessionCard = ({ session }: { session: SessionProps }) => {
-  const colorVariants = {
-    standard: "border-event-standard/70 bg-event-standard-light/50",
-    premium: "border-event-premium/70 bg-event-premium-light/50",
-    vip: "border-event-vip/70 bg-event-vip-light/50"
-  };
-
+const SessionCard: React.FC<SessionProps> = ({ title, speakers, date, time, stage, type }) => {
   return (
-    <div className={cn(
-      "flex flex-col bg-white rounded-xl overflow-hidden shadow-sm transition-all duration-300 hover:shadow-md border-l-4 p-4 h-full",
-      colorVariants[session.type]
-    )}>
-      <div className="flex justify-between items-start mb-3">
-        <h3 className="font-medium text-base md:text-lg text-gray-800">{session.title}</h3>
-      </div>
+    <div className={`bg-white rounded-lg shadow-sm border-l-4 ${colorVariants[type]} p-4 h-full`}>
+      <h3 className="text-lg font-medium text-neutral-900 mb-3">{title}</h3>
       
-      <div className="flex gap-2 flex-wrap mb-3">
-        {session.speakers.map((speaker, index) => (
+      <div className="flex flex-wrap gap-2 mb-4">
+        {speakers.map((speaker, index) => (
           <div key={index} className="flex items-center">
-            <img 
-              src={speaker.imageUrl} 
-              alt={speaker.name} 
-              className="w-6 h-6 rounded-full object-cover mr-2"
+            <Image
+              src={speaker.image}
+              alt={speaker.name}
+              width={24}
+              height={24}
+              className="rounded-full mr-2"
             />
-            <span className="text-sm text-gray-600">{speaker.name}</span>
-            {index < session.speakers.length - 1 && <span className="mx-1">•</span>}
+            <span className="text-sm text-neutral-600">{speaker.name}</span>
+            {index < speakers.length - 1 && (
+              <span className="mx-2 text-neutral-400">•</span>
+            )}
           </div>
         ))}
       </div>
-      
-      <div className="mt-auto flex flex-col gap-1.5">
-        <div className="flex items-center text-xs text-gray-500">
-          <CalendarDays size={14} className="mr-1.5" />
-          <span>{session.date}</span>
+
+      <div className="space-y-2">
+        <div className="flex items-center text-sm text-neutral-500">
+          <Calendar className="w-4 h-4 mr-2" />
+          <span>{date}</span>
         </div>
-        
-        <div className="flex items-center text-xs text-gray-500">
-          <Clock size={14} className="mr-1.5" />
-          <span>{session.time}</span>
+        <div className="flex items-center text-sm text-neutral-500">
+          <Clock className="w-4 h-4 mr-2" />
+          <span>{time}</span>
         </div>
-        
-        <div className="flex items-center text-xs text-gray-500">
-          <Users size={14} className="mr-1.5" />
-          <span>{session.stage}</span>
+        <div className="flex items-center text-sm text-neutral-500">
+          <Users className="w-4 h-4 mr-2" />
+          <span>{stage}</span>
         </div>
       </div>
     </div>
@@ -77,111 +75,123 @@ const SessionCard = ({ session }: { session: SessionProps }) => {
 export const SessionsSection = () => {
   const sessions: SessionProps[] = [
     {
-      id: "session1",
       title: "Future of Dental Technology",
       speakers: [
-        { 
-          name: "Dr. Priya Sharma", 
-          imageUrl: "https://images.unsplash.com/photo-1594824476967-48c8b964273f?ixlib=rb-4.0.3&auto=format&fit=crop&w=256&q=80" 
+        {
+          name: "Dr. Priya Sharma",
+          image: "/images/speakers/priya-sharma.jpg"
         },
-        { 
-          name: "Dr. Amit Patel", 
-          imageUrl: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?ixlib=rb-4.0.3&auto=format&fit=crop&w=256&q=80" 
+        {
+          name: "Dr. Amit Patel",
+          image: "/images/speakers/amit-patel.jpg"
         }
       ],
-      time: "10:00 AM - 11:30 AM",
       date: "August 24, 2024",
+      time: "10:00 AM - 11:30 AM",
       stage: "Main Stage",
       type: "standard"
     },
     {
-      id: "session2",
       title: "Advanced Implantology Workshop",
       speakers: [
-        { 
-          name: "Dr. Rajiv Mehta", 
-          imageUrl: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?ixlib=rb-4.0.3&auto=format&fit=crop&w=256&q=80" 
+        {
+          name: "Dr. Rajiv Mehta",
+          image: "/images/speakers/rajiv-mehta.jpg"
         }
       ],
-      time: "1:00 PM - 3:30 PM",
       date: "August 24, 2024",
-      stage: "Workshop Room",
+      time: "1:00 PM - 3:30 PM",
+      stage: "Workshop Room B",
       type: "premium"
     },
     {
-      id: "session3",
       title: "Digital Smile Design Masterclass",
       speakers: [
-        { 
-          name: "Dr. Ananya Desai", 
-          imageUrl: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&auto=format&fit=crop&w=256&q=80" 
+        {
+          name: "Dr. Ananya Desai",
+          image: "/images/speakers/ananya-desai.jpg"
         }
       ],
-      time: "11:00 AM - 1:00 PM",
       date: "August 25, 2024",
-      stage: "Workshop Room",
+      time: "11:00 AM - 1:00 PM",
+      stage: "Workshop Room A",
       type: "vip"
     },
     {
-      id: "session4",
-      title: "Panel: Future of Dental Education",
+      title: "Pediatric Dentistry Update",
       speakers: [
-        { 
-          name: "Dr. Priya Sharma", 
-          imageUrl: "https://images.unsplash.com/photo-1594824476967-48c8b964273f?ixlib=rb-4.0.3&auto=format&fit=crop&w=256&q=80" 
-        },
-        { 
-          name: "Dr. Rajiv Mehta", 
-          imageUrl: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?ixlib=rb-4.0.3&auto=format&fit=crop&w=256&q=80" 
-        },
-        { 
-          name: "Dr. Ananya Desai", 
-          imageUrl: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&auto=format&fit=crop&w=256&q=80" 
+        {
+          name: "Dr. Sunil Kumar",
+          image: "/images/speakers/sunil-kumar.jpg"
         }
       ],
-      time: "2:00 PM - 3:30 PM",
-      date: "August 25, 2024",
+      date: "August 24, 2024",
+      time: "3:00 PM - 4:30 PM",
       stage: "Panel Room",
       type: "standard"
+    },
+    {
+      title: "Business of Dentistry",
+      speakers: [
+        {
+          name: "Dr. Ritu Verma",
+          image: "/images/speakers/ritu-verma.jpg"
+        }
+      ],
+      date: "August 25, 2024",
+      time: "9:30 AM - 11:00 AM",
+      stage: "Main Stage",
+      type: "premium"
+    },
+    {
+      title: "Endodontic Microsurgery",
+      speakers: [
+        {
+          name: "Dr. Vikram Singh",
+          image: "/images/speakers/vikram-singh.jpg"
+        }
+      ],
+      date: "August 25, 2024",
+      time: "2:00 PM - 4:00 PM",
+      stage: "Workshop Room B",
+      type: "vip"
     }
   ];
 
   return (
-    <section className="w-full mt-12 md:mt-16">
-      <div className="flex justify-between items-center mb-5">
-        <h2 className="text-xl md:text-2xl font-medium">Sessions</h2>
-        <Link href="/sessions" className="text-sm text-event-standard hover:text-event-standard/80 transition-colors font-medium">
-          View All
-        </Link>
-      </div>
-      
-      <Carousel
-        opts={{
-          align: "start",
-          loop: true,
-        }}
-        className="w-full"
-      >
-        <CarouselContent className="-ml-2 md:-ml-4">
-          {sessions.map((session) => (
-            <CarouselItem key={session.id} className="pl-2 md:pl-4 sm:basis-1/2 lg:basis-1/3">
-              <SessionCard session={session} />
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-        <div className="flex justify-center gap-1 mt-4">
-          {sessions.map((_, index) => (
-            <div 
-              key={index} 
-              className={`h-2 w-2 rounded-full bg-gray-300 hover:bg-event-standard cursor-pointer transition-colors`}
-              onClick={() => {
-                // Dots for visual reference - actual implementation would need 
-                // integration with the carousel state
-              }}
-            />
-          ))}
+    <section className="py-12 md:py-16">
+      <div className="max-w-[1208px] mx-auto px-4 md:px-6">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-medium text-neutral-900">Sessions</h2>
+          <Link 
+            href="/sessions" 
+            className="text-[#6563ff] hover:text-[#5452ee] text-sm font-medium flex items-center gap-1"
+          >
+            View All
+            <ArrowRight className="w-4 h-4" />
+          </Link>
         </div>
-      </Carousel>
+        <div className="relative">
+          <Carousel
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+            className="w-full"
+          >
+            <CarouselContent className="-ml-4">
+              {sessions.slice(0, 4).map((session, index) => (
+                <CarouselItem key={index} className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3">
+                  <SessionCard {...session} />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="absolute -left-12 top-1/2 transform -translate-y-1/2" />
+            <CarouselNext className="absolute -right-12 top-1/2 transform -translate-y-1/2" />
+            <CarouselDots className="mt-4" />
+          </Carousel>
+        </div>
+      </div>
     </section>
   );
 };

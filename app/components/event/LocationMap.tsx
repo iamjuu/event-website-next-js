@@ -1,32 +1,22 @@
-
 import React from "react";
-import { MapPin } from "lucide-react";
 
 export const LocationMap = () => {
   return (
-    <section className="flex flex-col w-full text-black mt-8 md:mt-16">
-      <h2 className="text-xl md:text-2xl font-medium mb-3 md:mb-4">Location</h2>
-      <div className="bg-white shadow-md hover:shadow-lg transition-shadow duration-300 w-full flex flex-col items-stretch rounded-xl overflow-hidden">
-        <div className="flex items-center gap-3 md:gap-4 p-4 md:p-6 border-b border-gray-100">
-          <div className="bg-[#009AC2]/10 p-2 md:p-2.5 rounded-full">
-            <MapPin size={18} className="md:w-6 md:h-6 text-[#009AC2]" />
-          </div>
-          <div>
-            <h3 className="text-base md:text-lg font-medium">Cial Convention Center</h3>
-            <p className="text-gray-500 text-xs md:text-sm">Athani, Nedumbassheri, Cochin</p>
-          </div>
-        </div>
-        <div className="w-full aspect-[16/9] relative">
-          <img
-            src="https://cdn.builder.io/api/v1/image/assets/TEMP/76b878506dc57613a650fd3f4b2c6dd3ade78660997efae41bc3e37b8bad73b3?placeholderIfAbsent=true"
-            alt="Location Map"
-            className="w-full h-full object-cover"
+    <section className="py-12 md:py-16">
+      <div className="max-w-[1208px] mx-auto px-4 md:px-6">
+        <h2 className="text-2xl font-medium text-neutral-900 mb-6">
+          Location
+        </h2>
+        <div className="w-full h-[300px] md:h-[400px] rounded-lg overflow-hidden">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3926.0039041892604!2d76.32362827496555!3d10.25633208987386!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b080b82ed0f3b27%3A0x2f27f9a6c4fd8064!2sLe%20Meridien%20Kochi!5e0!3m2!1sen!2sin!4v1709720244432!5m2!1sen!2sin"
+            width="100%"
+            height="100%"
+            style={{ border: 0 }}
+            allowFullScreen
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
           />
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="h-6 w-6 md:h-8 md:w-8 bg-[#009AC2] rounded-full flex items-center justify-center animate-pulse border-4 border-white">
-              <div className="h-1.5 w-1.5 md:h-2 md:w-2 bg-white rounded-full"></div>
-            </div>
-          </div>
         </div>
       </div>
     </section>

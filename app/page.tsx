@@ -14,56 +14,41 @@ import { SessionsSection } from "./components/event/SessionsSection";
 import { SpeakersSection } from "./components/event/SpeakersSection";
 import { SponsorsSection } from "./components/event/SponsorsSection";
 import { Button } from "./components/ui/button";
+import { StickyFooter } from "./components/event/StickyFooter";
 
 const Index = () => {
   const ticketSectionRef = useRef<HTMLDivElement>(null);
   const registerCardRef = useRef<HTMLDivElement>(null);
   const contentSectionRef = useRef<HTMLDivElement>(null);
-  const [contentHeight, setContentHeight] = useState(0);
+  const ticketHeadingRef = useRef<HTMLDivElement>(null);
+  const [isSticky, setIsSticky] = useState(true);
   
   useEffect(() => {
-    // Calculate content section height for proper sticky behavior
-    const calculateHeights = () => {
-      if (contentSectionRef.current) {
-        setContentHeight(contentSectionRef.current.offsetHeight);
-      }
-    };
-    
-    // Initial calculation
-    calculateHeights();
-    
-    // Recalculate on window resize
-    window.addEventListener('resize', calculateHeights);
-    
-    // Handle scroll event to make the register card stop at ticket section
     const handleScroll = () => {
-      if (!ticketSectionRef.current || !registerCardRef.current) return;
+      if (!ticketHeadingRef.current || !registerCardRef.current) return;
       
-      const ticketRect = ticketSectionRef.current.getBoundingClientRect();
+      const headerHeight = 80; // Height of the header
+      const ticketHeadingRect = ticketHeadingRef.current.getBoundingClientRect();
       const registerCard = registerCardRef.current;
       
-      // Get distance from top of viewport to top of ticket section
-      const ticketTop = ticketRect.top;
+      // Calculate the point where the card should stop
+      const stopPoint = ticketHeadingRect.top + window.scrollY - headerHeight;
       
-      // If ticket section is coming into view (with a small buffer)
-      if (ticketTop < window.innerHeight) {
-        // Calculate how far the ticket section is from entering the viewport
-        // and move the register card up accordingly
-        const offset = ticketTop - window.innerHeight;
-        registerCard.style.transform = `translateY(${offset}px)`;
+      if (window.scrollY >= stopPoint) {
+        setIsSticky(false);
+        registerCard.style.position = 'absolute';
+        registerCard.style.top = `${stopPoint}px`;
       } else {
-        // Reset transform when ticket section is far below viewport
-        registerCard.style.transform = 'translateY(0)';
+        setIsSticky(true);
+        registerCard.style.position = 'sticky';
+        registerCard.style.top = '100px'; // Offset from top of viewport
       }
     };
     
     window.addEventListener('scroll', handleScroll);
-    
-    // Call once to set initial position
-    handleScroll();
+    handleScroll(); // Initial position
     
     return () => {
-      window.removeEventListener('resize', calculateHeights);
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
@@ -85,12 +70,12 @@ const Index = () => {
             <div className="w-full lg:w-[36%] lg:ml-5 max-md:w-full max-md:ml-0">
               <div 
                 ref={registerCardRef} 
+                className={`transition-all duration-300 ease-in-out ${isSticky ? 'translate-y-0' : ''}`}
                 style={{ 
-                  position: 'sticky', 
-                  top: '24px', 
+                  position: 'sticky',
+                  top: '100px',
                   height: 'fit-content',
-                  transition: 'transform 0.3s ease-out',
-                  zIndex: 10 
+                  zIndex: 10
                 }}
               >
                 <RegisterCard />
@@ -100,6 +85,11 @@ const Index = () => {
         </div>
         
         {/* Ticket Section - Full Width */}
+        <div ref={ticketHeadingRef} className="relative">
+          <h2 className="text-2xl md:text-3xl font-bold text-neutral-900 mb-8 pt-12 md:pt-16">
+            Tickets
+          </h2>
+        </div>
         <div ref={ticketSectionRef}>
           <TicketSection />
         </div>
@@ -152,6 +142,7 @@ const Index = () => {
         </div>
       </main>
       <Footer />
+      <StickyFooter />
     </div>
   );
 };

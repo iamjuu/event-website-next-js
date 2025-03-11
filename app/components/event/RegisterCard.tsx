@@ -1,58 +1,60 @@
-
 import React from "react";
 import { Calendar, MapPin, ExternalLink } from "lucide-react";
 import { Button } from "../ui/button";
 
 export const RegisterCard = () => {
   return (
-    <aside className="bg-white shadow-lg border border-gray-100 flex flex-col items-stretch text-black w-full px-5 md:px-8 py-8 md:py-10 rounded-2xl transition-all hover:shadow-xl">
-      <div className="flex justify-center">
-        <div className="bg-event-premium-light p-4 rounded-full mb-4">
-          <img
-            src="https://cdn.builder.io/api/v1/image/assets/TEMP/7173469a3912214a00fc1d6cac6d6ce8c90a9d557a5d69b20d7473dff6551242?placeholderIfAbsent=true"
-            alt="Event Logo"
-            className="aspect-[1] object-contain w-[120px] md:w-[150px]"
-          />
+    <aside className="bg-white rounded-2xl shadow-sm border border-gray-100 flex flex-col items-stretch text-black w-full px-6 py-8">
+      <div className="flex justify-center mb-6">
+        <div className="relative w-[180px] h-[180px]">
+          <div className="absolute inset-0 bg-[#f8f5ff] rounded-full"></div>
+          <svg className="relative z-10 w-full h-full p-8" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M25 30H75C77.7614 30 80 32.2386 80 35V45C77.2386 45 75 47.2386 75 50C75 52.7614 77.2386 55 80 55V65C80 67.7614 77.7614 70 75 70H25C22.2386 70 20 67.7614 20 65V55C22.7614 55 25 52.7614 25 50C25 47.2386 22.7614 45 20 45V35C20 32.2386 22.2386 30 25 30Z" stroke="black" strokeWidth="1.5" fill="white"/>
+            <path d="M35 45H65" stroke="black" strokeWidth="1.5"/>
+            <path d="M35 55H65" stroke="black" strokeWidth="1.5"/>
+            <path d="M40 50H60" stroke="black" strokeWidth="1.5"/>
+            <circle cx="45" cy="40" r="2" fill="white" stroke="black"/>
+            <circle cx="55" cy="60" r="2" fill="white" stroke="black"/>
+          </svg>
         </div>
       </div>
 
-      <h2 className="text-xl md:text-2xl font-semibold text-center mt-2">
-        KEDDA Dental Expo 2023
+      <h2 className="text-2xl font-bold text-center mb-8">
+        KEDDA Dental Expo 2024
       </h2>
       
-      <div className="mt-6 space-y-4">
-        <div className="flex items-center gap-3 text-gray-700">
-          <div className="bg-event-standard-medium p-2 rounded-full">
-            <Calendar size={18} className="text-event-standard" />
+      <div className="space-y-4">
+        <div className="flex items-center gap-3">
+          <div className="bg-[#e8e7ff] p-2.5 rounded-full">
+            <Calendar size={20} className="text-[#6563ff]" />
           </div>
-          <div className="text-base">
-            <span className="font-medium">24-25 August 2024</span>
-          </div>
+          <span className="text-[15px] text-[#444] font-medium">
+            24-25 August 2024
+          </span>
         </div>
         
-        <div className="flex items-center gap-3 text-gray-700">
-          <div className="bg-event-vip-medium p-2 rounded-full">
-            <MapPin size={18} className="text-event-vip" />
+        <div className="flex items-center gap-3">
+          <div className="bg-[#fff5e9] p-2.5 rounded-full">
+            <MapPin size={20} className="text-[#ff9933]" />
           </div>
-          <div className="text-base">
-            <span className="font-medium">Trade Center, Calicut</span>
-          </div>
+          <span className="text-[15px] text-[#444] font-medium">
+            Trade Center, Calicut
+          </span>
         </div>
       </div>
       
       <div className="mt-8">
         <Button 
-          variant="event-gradient"
+          className="w-full rounded-full py-6 bg-gradient-to-r from-[#7b79ff] to-[#9181ff] text-white hover:from-[#6563ff] hover:to-[#7b6eff] flex items-center justify-center gap-2 shadow-sm"
           size="lg"
-          className="w-full rounded-xl py-6 group"
         >
-          <span>Register Now</span>
-          <ExternalLink size={16} className="group-hover:translate-x-1 transition-transform" />
+          <span className="font-medium">Register Now</span>
+          <ExternalLink size={16} />
         </Button>
       </div>
       
-      <div className="mt-6 text-center">
-        <span className="text-sm text-gray-500">Limited seats available. Register early!</span>
+      <div className="mt-4 text-center">
+        <span className="text-sm text-[#666]">Limited seats available. Register early!</span>
       </div>
     </aside>
   );

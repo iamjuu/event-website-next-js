@@ -1,11 +1,13 @@
+"use client"
 
 import React, { useState } from "react";
 import { Header } from "../components/event/Header";
 import { Footer } from "../components/event/Footer";
-import { CalendarDays, Clock, Users, Search, Theater, ArrowLeft, X } from "lucide-react";
+import { CalendarDays, Clock, Users, Search, Theater, ArrowLeft, X, Tag } from "lucide-react";
 import Link from "next/link";
 import { cn } from "../lib/utils";
 import { Button } from "../components/ui/button";
+import Image from "next/image";
 
 type SessionType = "standard" | "premium" | "vip";
 type SessionDay = "day1" | "day2";
@@ -26,58 +28,81 @@ type SessionProps = {
 
 const SessionCard = ({ session }: { session: SessionProps }) => {
   const colorVariants = {
-    standard: "border-event-standard/70 bg-event-standard-light/30",
-    premium: "border-event-premium/70 bg-event-premium-light/30",
-    vip: "border-event-vip/70 bg-event-vip-light/30"
+    standard: "border-l-[#6563ff] bg-[#f8f5ff]",
+    premium: "border-l-[#9181ff] bg-[#f8f5ff]",
+    vip: "border-l-[#ff9933] bg-[#fff5e9]"
   };
 
-  const iconColorVariants = {
-    standard: "text-event-standard bg-event-standard-light/80",
-    premium: "text-event-premium bg-event-premium-light/80",
-    vip: "text-event-vip bg-event-vip-light/80"
+  const tagColorVariants = {
+    standard: "bg-[#f8f5ff] text-[#6563ff]",
+    premium: "bg-[#f8f5ff] text-[#9181ff]",
+    vip: "bg-[#fff5e9] text-[#ff9933]"
   };
 
   return (
     <div className={cn(
-      "flex flex-col bg-white rounded-xl overflow-hidden shadow-md transition-all duration-300 hover:shadow-lg border-l-4 p-5 md:p-6 h-full",
+      "flex flex-col bg-white rounded-xl overflow-hidden shadow-sm transition-all duration-300 hover:shadow-lg border-l-4 p-5 md:p-6 h-full",
       colorVariants[session.type]
     )}>
-      <div className="flex justify-between items-start mb-4">
-        <h3 className="font-semibold text-lg md:text-xl text-gray-800">{session.title}</h3>
-        <div className={cn(
-          "text-xs font-medium px-2 py-1 rounded-full",
-          iconColorVariants[session.type]
-        )}>
-          {session.type}
+      <div className="flex justify-between items-start gap-4 mb-4">
+        <div>
+          <h3 className="font-semibold text-lg md:text-xl text-gray-800 mb-2">{session.title}</h3>
+          <div className="flex items-center gap-2 flex-wrap">
+            <div className={cn(
+              "text-xs font-medium px-2 py-1 rounded-full flex items-center gap-1",
+              tagColorVariants[session.type]
+            )}>
+              <Tag size={12} />
+              <span className="capitalize">{session.type}</span>
+            </div>
+            <div className="text-xs font-medium px-2 py-1 rounded-full bg-gray-100 text-gray-600">
+              {session.day === 'day1' ? 'Day 1' : 'Day 2'}
+            </div>
+          </div>
         </div>
       </div>
       
-      <div className="mb-4">
-        <div className="font-medium text-base">{session.speaker}</div>
-        <div className="text-sm text-gray-600">{session.speakerTitle}</div>
+      <div className="mb-6">
+        <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+          <Image
+            src={`/images/speakers/${session.speaker.toLowerCase().replace(/\s+/g, '-')}.jpg`}
+            alt={session.speaker}
+            width={48}
+            height={48}
+            className="rounded-full border-2 border-white shadow-sm"
+          />
+          <div>
+            <div className="font-medium text-base text-gray-900">{session.speaker}</div>
+            <div className="text-sm text-gray-600">{session.speakerTitle}</div>
+          </div>
+        </div>
       </div>
       
-      <p className="text-sm text-gray-600 mb-4 line-clamp-3">{session.description}</p>
+      <p className="text-sm text-gray-600 mb-6 line-clamp-3">{session.description}</p>
       
-      <div className="mt-auto flex flex-col gap-2">
-        <div className="flex items-center text-sm text-gray-500">
-          <CalendarDays size={16} className="mr-2 shrink-0" />
-          <span>{session.date}</span>
+      <div className="mt-auto grid grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <div className="flex items-center text-sm text-gray-500">
+            <CalendarDays size={16} className="mr-2 shrink-0" />
+            <span>{session.date}</span>
+          </div>
+          
+          <div className="flex items-center text-sm text-gray-500">
+            <Clock size={16} className="mr-2 shrink-0" />
+            <span>{session.time}</span>
+          </div>
         </div>
         
-        <div className="flex items-center text-sm text-gray-500">
-          <Clock size={16} className="mr-2 shrink-0" />
-          <span>{session.time}</span>
-        </div>
-        
-        <div className="flex items-center text-sm text-gray-500">
-          <Theater size={16} className="mr-2 shrink-0" />
-          <span className="truncate">{session.stage}</span>
-        </div>
-        
-        <div className="flex items-center text-sm text-gray-500">
-          <Users size={16} className="mr-2 shrink-0" />
-          <span>{session.audience}</span>
+        <div className="space-y-2">
+          <div className="flex items-center text-sm text-gray-500">
+            <Theater size={16} className="mr-2 shrink-0" />
+            <span className="truncate">{session.stage}</span>
+          </div>
+          
+          <div className="flex items-center text-sm text-gray-500">
+            <Users size={16} className="mr-2 shrink-0" />
+            <span className="truncate">{session.audience}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -98,8 +123,8 @@ const FilterButton = ({
     className={cn(
       "px-4 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap",
       active 
-        ? "bg-event-standard text-white" 
-        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+        ? "bg-[#6563ff] text-white shadow-sm" 
+        : "bg-white text-gray-700 hover:bg-gray-50 border border-gray-200"
     )}
   >
     {children}
@@ -220,19 +245,19 @@ const Sessions = () => {
       </div>
       
       <main className="flex-1 container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
-        <Link href="/" className="flex items-center text-sm text-gray-600 hover:text-event-standard mb-4 transition-colors">
+        <Link href="/" className="flex items-center text-sm text-gray-600 hover:text-[#6563ff] mb-6 transition-colors">
           <ArrowLeft size={16} className="mr-1" />
           Back to Home
         </Link>
         
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl md:text-3xl font-bold">Conference Sessions</h1>
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Conference Sessions</h1>
           
           <Button 
             variant="ghost" 
-            size="icon" 
+            size="icon"
             onClick={toggleSearch}
-            className="relative"
+            className="relative hover:bg-gray-100"
           >
             {searchOpen ? <X size={20} /> : <Search size={20} />}
           </Button>
@@ -246,7 +271,7 @@ const Sessions = () => {
               </div>
               <input
                 type="text"
-                className="block w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-event-standard focus:border-event-standard"
+                className="block w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg focus:ring-[#6563ff] focus:border-[#6563ff] transition-colors"
                 placeholder="Search sessions, speakers..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -256,9 +281,9 @@ const Sessions = () => {
           </div>
         )}
         
-        <div className="mb-6 space-y-4">
+        <div className="mb-8 space-y-4">
           <div className="flex flex-col sm:flex-row gap-4">
-            <div className="bg-white p-3 rounded-lg shadow-sm overflow-x-auto scrollbar-hide flex-shrink-0">
+            <div className="bg-white p-3 rounded-xl shadow-sm overflow-x-auto scrollbar-hide flex-shrink-0">
               <div className="flex items-center gap-2">
                 <FilterButton 
                   active={activeDay === 'all'} 
@@ -281,7 +306,7 @@ const Sessions = () => {
               </div>
             </div>
 
-            <div className="bg-white p-3 rounded-lg shadow-sm overflow-x-auto scrollbar-hide flex-shrink-0">
+            <div className="bg-white p-3 rounded-xl shadow-sm overflow-x-auto scrollbar-hide flex-shrink-0">
               <div className="flex items-center gap-2">
                 <FilterButton 
                   active={activeStage === 'all'} 
@@ -310,7 +335,7 @@ const Sessions = () => {
             ))}
           </div>
         ) : (
-          <div className="text-center py-12 bg-white rounded-xl shadow-sm">
+          <div className="text-center py-16 bg-white rounded-xl shadow-sm">
             <div className="text-gray-500 mb-4">No sessions match your filters</div>
             <Button 
               variant="outline" 
@@ -320,6 +345,7 @@ const Sessions = () => {
                 setSearchQuery('');
                 setSearchOpen(false);
               }}
+              className="hover:bg-gray-50"
             >
               Clear Filters
             </Button>

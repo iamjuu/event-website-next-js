@@ -1,9 +1,8 @@
-
 import React from "react";
 import { CalendarDays, Clock, MapPin } from "lucide-react";
 import { cn } from "../../lib/utils";
 import { Button } from "../../components/ui/button";
-
+import EventButton from '../ui/newButton'
 type DateCardProps = {
   month: string;
   day: string;
@@ -22,13 +21,13 @@ const DateCard = ({
   variant = "standard"
 }: DateCardProps) => {
   const colorVariants = {
-    standard: "bg-event-standard-light text-event-standard",
-    premium: "bg-event-premium-light text-event-premium"
+    standard: "bg-[#EEF2FF] text-[#4F46E5]",
+    premium: "bg-[#F5F3FF] text-[#7C3AED]"
   };
 
   const monthBgVariants = {
-    standard: "bg-event-standard text-white",
-    premium: "bg-event-premium text-white"
+    standard: "bg-[#4F46E5] text-white",
+    premium: "bg-[#7C3AED] text-white"
   };
 
   return (
@@ -65,7 +64,7 @@ const DateCard = ({
 export const EventDetails = () => {
   return (
     <div className="flex flex-col gap-4 md:gap-5">
-      <h2 className="text-black text-xl md:text-2xl font-semibold relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-1 after:w-16 after:rounded-full after:bg-event-standard">
+      <h2 className="text-black text-xl md:text-2xl font-semibold relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-1 after:w-16 after:rounded-full after:bg-[#4F46E5]">
         Event Schedule
       </h2>
       
@@ -73,25 +72,25 @@ export const EventDetails = () => {
         <DateCard
           month="AUG"
           day="24"
-          type="Start Day"
+          type="START DAY"
           date="Saturday 24 August 2024"
-          time="10:00 AM  - 14:00 PM, IST"
+          time="10:00 AM - 14:00 PM, IST"
           variant="standard"
         />
         <DateCard
           month="AUG"
           day="25"
-          type="End Day"
+          type="END DAY"
           date="Sunday 25 August 2024"
-          time="10:00 AM  - 14:00 PM, IST"
+          time="10:00 AM - 14:00 PM, IST"
           variant="premium"
         />
       </div>
 
-      <div className="bg-white shadow-md flex w-full max-w-full items-stretch gap-3 md:gap-5 flex-wrap justify-between mt-1 md:mt-2 p-5 md:p-6 rounded-xl border-l-4 border-event-standard hover:shadow-lg transition-all duration-300">
+      <div className="bg-white shadow-md flex w-full max-w-full items-stretch gap-3 md:gap-5 flex-wrap justify-between mt-1 md:mt-2 p-5 md:p-6 rounded-xl border-l-4 border-[#4F46E5] hover:shadow-lg transition-all duration-300">
         <div className="flex items-center gap-3 md:gap-4 text-black">
-          <div className="bg-event-standard-light p-2.5 md:p-3.5 rounded-full">
-            <MapPin size={18} className="md:w-5 md:h-5 text-event-standard" />
+          <div className="bg-[#EEF2FF] p-2.5 md:p-3.5 rounded-full">
+            <MapPin size={18} className="md:w-5 md:h-5 text-[#4F46E5]" />
           </div>
           <div>
             <div className="text-sm md:text-base font-medium">
@@ -103,9 +102,8 @@ export const EventDetails = () => {
           </div>
         </div>
         <Button 
-          variant="event-standard" 
+          className="bg-[#4F46E5] text-white hover:bg-[#4F46E5]/90 flex items-center gap-1 md:gap-2 rounded-lg mt-2 sm:mt-0"
           size="sm"
-          className="flex items-center gap-1 md:gap-2 rounded-lg mt-2 sm:mt-0"
         >
           <MapPin size={14} className="md:w-4 md:h-4" />
           View Location

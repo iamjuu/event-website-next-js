@@ -1,90 +1,88 @@
-
 import React from "react";
-import { Ticket, ExternalLink, Calendar } from "lucide-react";
-import { cn } from "../../lib/utils";
-import Link from "next/link";
+import Image from "next/image";
 import { Button } from "../ui/button";
+import { CalendarIcon, ExternalLinkIcon, TicketIcon } from "lucide-react";
+import Thumbnail from "../../../public/images/image.png";
+type TicketType = "standard" | "premium" | "vip";
 
-type TicketProps = {
-  id: string;
-  name: string;
-  thumbnail: string;
-  salesEnd: string;
-  description: string;
+interface TicketProps {
+  type: TicketType;
+  title: string;
   price: string;
-  type: "standard" | "premium" | "vip";
+  date: string;
+  location: string;
+  thumbnail: string;
+  description: string;
+}
+
+const colorVariants: Record<TicketType, { bg: string; accent: string }> = {
+  standard: { bg: "bg-[#f8f5ff]", accent: "text-[#6563ff]" },
+  premium: { bg: "bg-[#f8f5ff]", accent: "text-[#9181ff]" },
+  vip: { bg: "bg-[#fff5e9]", accent: "text-[#ff9933]" },
 };
 
-const TicketCard = ({ ticket }: { ticket: TicketProps }) => {
-  const colorVariants = {
-    standard: "border-event-standard/70 bg-event-standard-light",
-    premium: "border-event-premium/70 bg-event-premium-light",
-    vip: "border-event-vip/70 bg-event-vip-light"
-  };
+const buttonVariants: Record<TicketType, string> = {
+  standard: "bg-[#6563ff] hover:bg-[#5452ee]",
+  premium: "bg-[#9181ff] hover:bg-[#8070ee]",
+  vip: "bg-[#ff9933] hover:bg-[#ee8822]",
+};
 
-  const iconColorVariants = {
-    standard: "text-event-standard bg-event-standard-light/80",
-    premium: "text-event-premium bg-event-premium-light/80",
-    vip: "text-event-vip bg-event-vip-light/80"
-  };
-
-  const buttonVariants = {
-    standard: "event-standard",
-    premium: "event-premium",
-    vip: "event-vip"
-  };
-
+const TicketCard: React.FC<TicketProps> = ({ type, title, price, date, location, thumbnail, description }) => {
   return (
-    <div className={cn(
-      "flex flex-col bg-white rounded-xl overflow-hidden shadow-md transition-all duration-300 hover:shadow-lg border-t-4",
-      colorVariants[ticket.type]
-    )}>
-      <div className="relative">
-        <img 
-          src={ticket.thumbnail} 
-          alt={`${ticket.name} thumbnail`} 
-          className="w-full h-40 object-cover"
+    <div className={`${colorVariants[type].bg} rounded-2xl overflow-hidden shadow-sm border border-neutral-100`}>
+      <div className="relative h-48 w-full">
+        <Image
+          src={Thumbnail}
+          alt={`${title} ticket`}
+          fill
+          className="object-cover"
         />
-        <div className="absolute top-0 right-0 m-3 px-3 py-1 text-xs font-medium rounded-full bg-white text-gray-700 shadow-sm">
-          {ticket.price}
-        </div>
       </div>
       
-      <div className="p-4 md:p-5 flex-grow flex flex-col">
-        <div className="flex items-start justify-between mb-3">
-          <div className="flex items-center gap-2">
-            <div className={cn(
-              "p-2 rounded-full",
-              iconColorVariants[ticket.type]
-            )}>
-              <Ticket size={16} />
+      <div className="p-6">
+        <div className="flex flex-col gap-4">
+          <div className="flex items-start justify-between">
+            <div className="flex items-center gap-3">
+              <div className={`${colorVariants[type].accent} p-2 rounded-lg bg-white/80`}>
+                <TicketIcon className="w-5 h-5" />
+              </div>
+              <h3 className="text-lg font-semibold text-neutral-900">{title}</h3>
             </div>
-            <h3 className="font-medium text-lg">{ticket.name}</h3>
+            <div className="flex items-center gap-1">
+              <span className="text-sm font-medium text-neutral-500">₹</span>
+              <span className="text-xl font-bold text-neutral-900">{price}</span>
+            </div>
           </div>
-        </div>
-        
-        <div className="flex items-center text-xs text-gray-500 mb-3">
-          <Calendar size={14} className="mr-1" />
-          <span>Sales end: {ticket.salesEnd}</span>
-        </div>
-        
-        <p className="text-sm text-gray-600 mb-4 flex-grow">{ticket.description}</p>
-        
-        <div className="flex gap-2 mt-auto">
-          <Link 
-            href={`/ticket/${ticket.id}`} 
-            className="text-xs md:text-sm px-3 py-1.5 rounded-md border border-gray-300 hover:bg-gray-50 flex-1 transition-colors text-center"
-          >
-            Details
-          </Link>
-          <Button 
-            variant={buttonVariants[ticket.type] as any}
-            size="sm"
-            className="text-xs md:text-sm px-3 py-1.5 rounded-md flex-1 flex items-center justify-center gap-1"
-          >
-            <ExternalLink size={14} />
-            Register
-          </Button>
+
+          <p className="text-sm text-neutral-600">{description}</p>
+
+          <div className="space-y-2">
+            <div className="flex items-center gap-2 text-sm text-neutral-600">
+              <CalendarIcon className="w-4 h-4" />
+              <span>{date}</span>
+            </div>
+            <div className="flex items-center gap-2 text-sm text-neutral-600">
+              <CalendarIcon className="w-4 h-4" />
+              <span>{location}</span>
+            </div>
+          </div>
+
+          <div className="flex gap-3 mt-2">
+            <Button 
+              variant="outline"
+              className="flex-1 border-neutral-200 hover:bg-neutral-50"
+            >
+              Details
+              {/* <ExternalLinkIcon className="w-4 h-4 ml-2" /> */}
+            </Button>
+            <Button 
+              className={`flex-1 text-white ${buttonVariants[type]}`}
+            >
+                            <ExternalLinkIcon className="w-4 h-4 ml-2" />
+              Register
+
+            </Button>
+          </div>
         </div>
       </div>
     </div>
@@ -94,43 +92,42 @@ const TicketCard = ({ ticket }: { ticket: TicketProps }) => {
 export const TicketSection = () => {
   const tickets: TicketProps[] = [
     {
-      id: "standard",
-      name: "Standard Access",
-      thumbnail: "https://cdn.builder.io/api/v1/image/assets/TEMP/3ab5ccd61b17b7c6d55f4a46e6c9d45a91d8dac35242b87aed33f09c1a07a1ab?placeholderIfAbsent=true",
-      salesEnd: "Aug 20, 2024",
-      description: "Basic access to all exhibit areas and general sessions. Perfect for first-time attendees.",
-      price: "₹1,499",
-      type: "standard"
+      type: "standard",
+      title: "Standard",
+      price: "5,000",
+      date: "March 15-17, 2024",
+      location: "Le Meridien, Kochi",
+      thumbnail: "/images/tickets/standard.jpg",
+      description: "Access to all exhibit areas and general sessions. Perfect for first-time attendees.",
     },
     {
-      id: "premium",
-      name: "Premium Pass",
-      thumbnail: "https://cdn.builder.io/api/v1/image/assets/TEMP/8b43d09e3eca3d3bf64292012ab469a7492ab9f5a59394bc9c7a8e3a21f0b3f7?placeholderIfAbsent=true",
-      salesEnd: "Aug 15, 2024",
-      description: "Enhanced access including premium sessions, lunch, and networking opportunities.",
-      price: "₹2,999",
-      type: "premium"
+      type: "premium",
+      title: "Premium",
+      price: "7,500",
+      date: "March 15-17, 2024",
+      location: "Le Meridien, Kochi",
+      thumbnail: "/images/tickets/premium.jpg",
+      description: "Enhanced access including premium sessions and networking opportunities.",
     },
     {
-      id: "vip",
-      name: "VIP Experience",
-      thumbnail: "https://cdn.builder.io/api/v1/image/assets/TEMP/db06e3b6d1fd7fa32e05ce5fb1b362f48c9d6bdd3eae8d19e0a0cfd7ca41f80a?placeholderIfAbsent=true",
-      salesEnd: "Aug 10, 2024",
-      description: "Full access to all sessions, exclusive VIP lounge, dinner gala, and speaker meetups.",
-      price: "₹4,999",
-      type: "vip"
-    }
+      type: "vip",
+      title: "VIP",
+      price: "10,000",
+      date: "March 15-17, 2024",
+      location: "Le Meridien, Kochi",
+      thumbnail: "/images/tickets/vip.jpg",
+      description: "Full access to all sessions, exclusive VIP lounge, and speaker meetups.",
+    },
   ];
 
   return (
-    <section className="w-full mt-12 md:mt-20">
-      <h2 className="text-xl md:text-2xl font-medium mb-5 relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-12 after:rounded-full after:bg-event-standard">
-        Tickets
-      </h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-        {tickets.map((ticket, index) => (
-          <TicketCard key={index} ticket={ticket} />
-        ))}
+    <section className="py-12 md:py-16">
+      <div className="max-w-[1208px] mx-auto px-4 md:px-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {tickets.map((ticket) => (
+            <TicketCard key={ticket.type} {...ticket} />
+          ))}
+        </div>
       </div>
     </section>
   );
