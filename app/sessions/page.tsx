@@ -46,7 +46,7 @@ const SessionCard = ({ session }: { session: SessionProps }) => {
     )}>
       <div className="flex justify-between items-start gap-4 mb-4">
         <div>
-          <h3 className="font-semibold text-lg md:text-xl text-gray-800 mb-2">{session.title}</h3>
+          <h3 className="font-semibold text-lg md:text-xl text-neutral-800 mb-2">{session.title}</h3>
           <div className="flex items-center gap-2 flex-wrap">
             <div className={cn(
               "text-xs font-medium px-2 py-1 rounded-full flex items-center gap-1",
@@ -55,7 +55,7 @@ const SessionCard = ({ session }: { session: SessionProps }) => {
               <Tag size={12} />
               <span className="capitalize">{session.type}</span>
             </div>
-            <div className="text-xs font-medium px-2 py-1 rounded-full bg-gray-100 text-gray-600">
+            <div className="text-xs font-medium px-2 py-1 rounded-full bg-neutral-100 text-neutral-600">
               {session.day === 'day1' ? 'Day 1' : 'Day 2'}
             </div>
           </div>
@@ -63,7 +63,7 @@ const SessionCard = ({ session }: { session: SessionProps }) => {
       </div>
       
       <div className="mb-6">
-        <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+        <div className="flex items-center gap-3 p-3 bg-neutral-50 rounded-lg">
           {/* <Image
           src={BlackImage}
             // src={`${BlackImage} ${session.speaker.toLowerCase().replace(/\s+/g, '-')}.jpg`}
@@ -73,34 +73,34 @@ const SessionCard = ({ session }: { session: SessionProps }) => {
             className="rounded-full border-2 border-white shadow-sm"
           /> */}
           <div>
-            <div className="font-medium text-base text-gray-900">{session.speaker}</div>
-            <div className="text-sm text-gray-600">{session.speakerTitle}</div>
+            <div className="font-medium text-base text-neutral-900">{session.speaker}</div>
+            <div className="text-sm text-neutral-600">{session.speakerTitle}</div>
           </div>
         </div>
       </div>
       
-      <p className="text-sm text-gray-600 mb-6 line-clamp-3">{session.description}</p>
+      <p className="text-sm text-neutral-600 mb-6 line-clamp-3">{session.description}</p>
       
       <div className="mt-auto grid grid-cols-2 gap-4">
         <div className="space-y-2">
-          <div className="flex items-center text-sm text-gray-500">
+          <div className="flex items-center text-sm text-neutral-500">
             <CalendarDays size={16} className="mr-2 shrink-0" />
             <span>{session.date}</span>
           </div>
           
-          <div className="flex items-center text-sm text-gray-500">
+          <div className="flex items-center text-sm text-neutral-500">
             <Clock size={16} className="mr-2 shrink-0" />
             <span>{session.time}</span>
           </div>
         </div>
         
         <div className="space-y-2">
-          <div className="flex items-center text-sm text-gray-500">
+          <div className="flex items-center text-sm text-neutral-500">
             <Theater size={16} className="mr-2 shrink-0" />
             <span className="truncate">{session.stage}</span>
           </div>
           
-          <div className="flex items-center text-sm text-gray-500">
+          <div className="flex items-center text-sm text-neutral-500">
             <Users size={16} className="mr-2 shrink-0" />
             <span className="truncate">{session.audience}</span>
           </div>
@@ -125,7 +125,7 @@ const FilterButton = ({
       "px-4 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap",
       active 
         ? "bg-primary-base text-white shadow-sm" 
-        : "bg-white text-gray-700 hover:bg-gray-50 border border-gray-200"
+        : "bg-white text-neutral-700 hover:bg-neutral-50 border border-neutral-200"
     )}
   >
     {children}
@@ -246,19 +246,19 @@ const Sessions = () => {
       </div>
       
       <main className="flex-1 container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
-        <Link href="/" className="flex items-center text-sm text-gray-600 hover:text-primary-base mb-6 transition-colors">
+        <Link href="/" className="flex items-center text-sm text-neutral-600 hover:text-primary-base mb-6 transition-colors">
           <ArrowLeft size={16} className="mr-1" />
           Back to Home
         </Link>
         
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Conference Sessions</h1>
+          <h1 className="text-2xl md:text-3xl font-bold text-neutral-900">Conference Sessions</h1>
           
           <Button 
             variant="ghost" 
             size="icon"
             onClick={toggleSearch}
-            className="relative hover:bg-gray-100"
+            className="relative hover:bg-neutral-100"
           >
             {searchOpen ? <X size={20} /> : <Search size={20} />}
           </Button>
@@ -268,11 +268,11 @@ const Sessions = () => {
           <div className="bg-white p-4 rounded-xl shadow-sm mb-6 transition-all duration-300 ease-in-out">
             <div className="relative">
               <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                <Search size={18} className="text-gray-400" />
+                <Search size={18} className="text-neutral-400" />
               </div>
               <input
                 type="text"
-                className="block w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg focus:ring-primary-base focus:border-primary-base transition-colors"
+                className="block w-full pl-10 pr-4 py-2.5 border border-neutral-200 rounded-lg focus:ring-primary-base focus:border-primary-base transition-colors"
                 placeholder="Search sessions, speakers..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -282,9 +282,9 @@ const Sessions = () => {
           </div>
         )}
         
-        <div className="mb-8 bg-gray-50  rounded-xl  space-y-4">
+        <div className="mb-8 bg-neutral-50 rounded-xl space-y-4">
           <div className="flex flex-col sm:flex-row gap-4">
-            <div className=" p-3 shadow-sm overflow-x-auto scrollbar-hide flex-shrink-0">
+            <div className="p-3 shadow-sm overflow-x-auto scrollbar-hide flex-shrink-0">
               <div className="flex items-center gap-2">
                 <FilterButton 
                   active={activeDay === 'all'} 
@@ -307,7 +307,7 @@ const Sessions = () => {
               </div>
             </div>
 
-            <div className=" p-3 rounded-xl shadow-sm overflow-x-auto scrollbar-hide flex-shrink-0">
+            <div className="p-3 rounded-xl shadow-sm overflow-x-auto scrollbar-hide flex-shrink-0">
               <div className="flex items-center gap-2">
                 <FilterButton 
                   active={activeStage === 'all'} 
@@ -337,7 +337,7 @@ const Sessions = () => {
           </div>
         ) : (
           <div className="text-center py-16 bg-white rounded-xl shadow-sm">
-            <div className="text-gray-500 mb-4">No sessions match your filters</div>
+            <div className="text-neutral-500 mb-4">No sessions match your filters</div>
             <Button 
               variant="outline" 
               onClick={() => {
@@ -346,7 +346,7 @@ const Sessions = () => {
                 setSearchQuery('');
                 setSearchOpen(false);
               }}
-              className="hover:bg-gray-50"
+              className="hover:bg-neutral-50"
             >
               Clear Filters
             </Button>

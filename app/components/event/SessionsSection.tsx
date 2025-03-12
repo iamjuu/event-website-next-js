@@ -12,11 +12,13 @@ import {
   CarouselDots,
 } from "../ui/carousel";
 import { BlackImage } from "@/public";
+type SessionType = "standard" | "premium" | "vip";
 
 interface SpeakerInfo {
   name: string;
   image: string;
 }
+
 
 interface SessionProps {
   title: string;
@@ -28,9 +30,9 @@ interface SessionProps {
 }
 
 const colorVariants = {
-  standard: "border-l-[#6563ff]",
-  premium: "border-l-[#9181ff]",
-  vip: "border-l-[#ff9933]",
+  standard: "border-l-primary-base",
+  premium: "border-l-primary-base", 
+  vip:"border-l-primary-base"
 };
 
 const SessionCard: React.FC<SessionProps> = ({
@@ -203,9 +205,9 @@ export const SessionsSection = () => {
 
   return (
     <section className="py-12 md:py-16">
-      <div className="max-w-[1208px] mx-auto px-4 md:px-6">
+      <div className="max-w-[1208px] mx-auto">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-black text-xl md:text-2xl font-semibold relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-1 after:w-16 after:rounded-full after:bg-[#4F46E5]">
+          <h2 className="text-black text-xl md:text-2xl font-semibold relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-1 after:w-16 after:rounded-full after:bg-primary-base">
             Sessions
           </h2>{" "}
           <Link

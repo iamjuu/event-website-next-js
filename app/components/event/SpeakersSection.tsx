@@ -19,9 +19,9 @@ interface SpeakerProps {
 }
 
 const colorVariants = {
-  standard: "border-t-[#6563ff]",
-  premium: "border-t-[#9181ff]",
-  vip: "border-t-[#ff9933]",
+  standard: "border-t-primary-base",
+  premium: "border-t-primary-base",
+  vip: "border-t-primary-base",
 };
 
 const SpeakerCard: React.FC<SpeakerProps> = ({ name, title, image, type }) => {
@@ -82,13 +82,13 @@ export const SpeakersSection = () => {
 
   return (
     <section className="py-12 md:py-16">
-      <div className="max-w-[1208px] mx-auto px-4 md:px-6">
+      <div className="max-w-[1208px] mx-auto ">
         <div className="flex justify-between items-center mb-6">
-        <h2 className="text-black text-xl md:text-2xl font-semibold relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-1 after:w-16 after:rounded-full after:bg-[#4F46E5]">
+        <h2 className="text-black text-xl md:text-2xl font-semibold relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-1 after:w-16 after:rounded-full after:bg-primary-base">
         Speakers
       </h2>          <Link 
             href="/speakers" 
-            className="text-[#6563ff] hover:text-[#5452ee] text-sm font-medium flex items-center gap-1"
+            className="  text-[#6563ff] hover:text-[#5452ee] text-sm font-medium flex items-center gap-1"
           >
             View All
             <ArrowRight className="w-4 h-4" />

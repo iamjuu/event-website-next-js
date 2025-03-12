@@ -31,16 +31,10 @@ const speakerStyles = {
 };
 
 const SpeakerCard = ({ speaker }: { speaker: SpeakerProps }) => {
-  const colorVariants = {
-    standard: "border-t-[#6563ff] bg-[#f8f5ff]",
-    premium: "border-t-[#9181ff] bg-[#f8f5ff]",
-    vip: "border-t-[#ff9933] bg-[#fff5e9]"
-  };
-
   return (
     <div className={cn(
       "flex flex-col bg-white rounded-xl overflow-hidden shadow-sm transition-all duration-300 hover:shadow-lg border-t-4 p-5 md:p-6 h-full",
-      colorVariants[speaker.type]
+      speakerStyles[speaker.type]
     )}>
       <div className="flex flex-col items-center mb-4">
         <Image
@@ -99,7 +93,7 @@ const FilterButton = ({
     className={cn(
       "px-4 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap",
       active 
-        ? "bg-event-standard text-white" 
+        ? "bg-primary-base text-white" 
         : "bg-gray-100 text-gray-700 hover:bg-gray-200"
     )}
   >

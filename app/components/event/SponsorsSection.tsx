@@ -68,8 +68,8 @@ export const SponsorsSection = () => {
   return (
     <section className="w-full mt-12 md:mt-16">
       <div className="mb-5">
-        <h2 className="text-xl md:text-2xl font-medium">Our Sponsors</h2>
-        <p className="text-sm  text-gray-600 mt-1">Leading brands supporting dental excellence</p>
+      <h2 className=" mb-[24px] text-black text-xl md:text-2xl font-semibold relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-1 after:w-16 after:rounded-full after:bg-primary-base">
+          Our Sponsors</h2>
       </div>
       
       <Carousel

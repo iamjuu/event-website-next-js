@@ -22,7 +22,7 @@ const DateCard = ({
 }: DateCardProps) => {
   const colorVariants = {
     standard: "bg-[#EEF2FF] text-[#4F46E5]",
-    premium: "bg-[#F5F3FF] text-[#7C3AED]"
+    premium: "bg-[var(--primary-light)] text-[#7C3AED]"
   };
 
   const monthBgVariants = {
@@ -64,7 +64,7 @@ const DateCard = ({
 export const EventDetails = () => {
   return (
     <div className="flex flex-col gap-4 md:gap-5">
-      <h2 className="text-black text-xl md:text-2xl font-semibold relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-1 after:w-16 after:rounded-full after:bg-[#4F46E5]">
+      <h2 className="text-black text-xl md:text-2xl font-semibold relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-1 after:w-16 after:rounded-full after:bg-primary-base">
         Event Schedule
       </h2>
       
@@ -87,8 +87,8 @@ export const EventDetails = () => {
         />
       </div>
 
-      <div className="bg-white shadow-md flex w-full max-w-full items-stretch gap-3 md:gap-5 flex-wrap justify-between mt-1 md:mt-2 p-5 md:p-6 rounded-xl border-l-4 border-[#4F46E5] hover:shadow-lg transition-all duration-300">
-        <div className="flex items-center gap-3 md:gap-4 text-black">
+      <div className="bg-white shadow-md flex w-full max-w-full items-stretch gap-3 md:gap-5 flex-wrap justify-between mt-1 md:mt-2 p-5 md:p-6 rounded-xl hover:border-l-4 hover:border-[var(--primary-base)] hover:shadow-lg transition-all duration-200">
+      <div className="flex items-center gap-3 md:gap-4 text-black">
           <div className="bg-[#EEF2FF] p-2.5 md:p-3.5 rounded-full">
             <MapPin size={18} className="md:w-5 md:h-5 text-[#4F46E5]" />
           </div>

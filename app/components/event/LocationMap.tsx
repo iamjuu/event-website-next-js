@@ -3,8 +3,8 @@ import React from "react";
 export const LocationMap = () => {
   return (
     <section className="py-12 md:py-16">
-      <div className="max-w-[1208px] mx-auto px-4 md:px-6">
-      <h2 className=" mb-[24px] text-black text-xl md:text-2xl font-semibold relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-1 after:w-16 after:rounded-full after:bg-[#4F46E5]">
+      <div className="max-w-[1208px] mx-auto ">
+      <h2 className=" mb-[24px] text-black text-xl md:text-2xl font-semibold relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-1 after:w-16 after:rounded-full after:bg-primary-base">
         Location
       </h2>
         <div className="w-full h-[300px] md:h-[400px] rounded-lg overflow-hidden">

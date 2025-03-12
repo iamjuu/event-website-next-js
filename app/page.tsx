@@ -26,8 +26,8 @@ const Index = () => {
   return (
     <div className="bg-white flex flex-col items-stretch pt-4 md:pt-[26px] pb-28 md:pb-[70px]">
       {/* Removed overflow-hidden from this container */}
-      <main className="self-center flex w-full max-w-[1208px] flex-col  items-stretch px-4">
         <Header />
+      <main className="self-center flex w-full max-w-[1208px] flex-col  items-stretch px-4">
         <Hero />
         <div className="mt-6 md:mt-[25px] max-md:max-w-full">
           {/* This wrapping div is important for proper sticky context */}

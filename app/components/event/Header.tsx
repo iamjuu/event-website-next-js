@@ -4,16 +4,17 @@ import { Button } from "../ui/button";
 import { BlackImage } from "@/public";
 export const Header = () => {
   return (
-    <header className="sticky top-0 bg-white/80 backdrop-blur-sm border-b border-neutral-200 z-50">
-      <div className="max-w-[1208px] mx-auto ">
+    
+<header className="px-5 py-3 md:py-0 sm:px-5 bg-white/80 backdrop-blur-sm border border-t-0 border-neutral-200 shadow-sm">
+<div className="max-w-[1208px] mx-auto ">
         <div className="flex items-center justify-between h-16 md:h-20">
           <div className="flex  items-center">
             <Image
               src={BlackImage}
               alt="Kerala Dental Dealers Association"
-              width={160}
-              height={40}
-              className="h-[40px] w-auto object-contain"
+              
+              // height={260}
+              className="  w-[100px] object-contain"
               priority
             />
           </div>
@@ -28,5 +29,7 @@ export const Header = () => {
         </div>
       </div>
     </header>
+    
+
   );
 };

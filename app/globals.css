@@ -9,6 +9,7 @@
   --primary-base: #5452ee;
   --primary-lighter: #eee6ff;
   --primary-lightest: #d9ceff;
+  --primary-light:#F5F3FF;
   --primary-bg: var(--primary-lightest);
 
   /* Secondary Colors */

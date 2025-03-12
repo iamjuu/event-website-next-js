@@ -18,20 +18,33 @@ interface TicketProps {
 }
 
 const ticketStyles = {
-  standard: { border: "border-[#d9ceff]", accent: "text-primary-base", hover: 'hover:border-primary-base' },
-  premium: { border: "border-[#d9ceff]", accent: "text-primary-base", hover: 'hover:border-primary-base' },
-  vip: { border: "border-[#d9ceff]", accent: "text-primary-base", hover: 'hover:border-primary-base' },
+  standard: { 
+    border: "border-[var(--ticket-border)]", 
+    accent: "text-[var(--primary-base)]", 
+    hover: 'hover:border-[var(--primary-base)]' 
+  },
+  premium: { 
+    border: "border-[var(--ticket-border)]", 
+    accent: "text-[var(--primary-dark)]", 
+    hover: 'hover:border-[var(--primary-dark)]' 
+  },
+  vip: { 
+    border: "border-[var(--ticket-border)]", 
+    accent: "text-[var(--primary-darker)]", 
+    hover: 'hover:border-[var(--primary-darker)]' 
+  },
 };
+
 const buttonStyles = {
-  standard: "bg-primary-base hover:bg-primary-dark",
-  premium: "bg-primary-base hover:bg-primary-dark",
-  vip: "bg-primary-base hover:bg-primary-dark",
+  standard: "bg-gradient-to-r from-[var(--button-gradient-from)] to-[var(--button-gradient-to)] hover:from-[var(--button-hover-from)] hover:to-[var(--button-hover-to)]",
+  premium: "bg-gradient-to-r from-[var(--button-gradient-from)] to-[var(--button-gradient-to)] hover:from-[var(--button-hover-from)] hover:to-[var(--button-hover-to)]",
+  vip: "bg-gradient-to-r from-[var(--button-gradient-from)] to-[var(--button-gradient-to)] hover:from-[var(--button-hover-from)] hover:to-[var(--button-hover-to)]",
 };
 
 const TicketCard: React.FC<TicketProps> = ({ id, type, title, price, date, location, thumbnail, description }) => {
   return (
     <div 
-    className={`${ticketStyles[type].border || ticketStyles[type].bg} ${ticketStyles[type].hover || ''} rounded-2xl overflow-hidden shadow-sm border border-neutral-100 transition-all duration-300 hover:shadow-lg`}
+    className={`${ticketStyles[type].border} ${ticketStyles[type].hover} rounded-2xl overflow-hidden shadow-sm border border-neutral-100 transition-all duration-300 hover:shadow-lg`}
     // className={`${ticketStyles[type].bg} rounded-2xl  overflow-hidden shadow-sm border border-neutral-100`}
     >
       <div className="relative h-48 w-full">
@@ -129,7 +142,7 @@ export const TicketSection = () => {
 
   return (
     <section className="py-12 md:py-16">
-      <div className="max-w-[1208px] mx-auto px-4 md:px-6">
+      <div className="max-w-[1208px] mx-auto ">
         <h2 className="mb-[24px] text-black text-xl md:text-2xl font-semibold relative pb-2 after:absolute after:bottom-0 after:left-0 after:h-1 after:w-16 after:rounded-full after:bg-primary-base">
             Tickets
           </h2>
