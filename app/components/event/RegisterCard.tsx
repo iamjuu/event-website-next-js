@@ -9,7 +9,7 @@ export const RegisterCard = () => {
     <aside className="bg-white rounded-2xl shadow-sm border border-gray-100 flex flex-col   items-stretch text-black w-full px-6 py-8">
       <div className="flex justify-center mb-6">
         <div className="relative w-[180px] h-[180px]">
-          <div className="absolute inset-0 bg-[#f8f5ff] rounded-full"></div>
+          <div className="absolute inset-0 bg-[#F5F3FF] rounded-full"></div>
           <svg className="relative z-10 w-full h-full p-8" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M25 30H75C77.7614 30 80 32.2386 80 35V45C77.2386 45 75 47.2386 75 50C75 52.7614 77.2386 55 80 55V65C80 67.7614 77.7614 70 75 70H25C22.2386 70 20 67.7614 20 65V55C22.7614 55 25 52.7614 25 50C25 47.2386 22.7614 45 20 45V35C20 32.2386 22.2386 30 25 30Z" stroke="black" strokeWidth="1.5" fill="white"/>
             <path d="M35 45H65" stroke="black" strokeWidth="1.5"/>
@@ -27,19 +27,19 @@ export const RegisterCard = () => {
       
       <div className="space-y-4">
         <div className="flex items-center gap-3">
-          <div className="bg-[#e8e7ff] p-2.5 rounded-full">
-            <Calendar size={20} className="text-[#6563ff]" />
+          <div className="bg-primary-lighter p-2.5 rounded-full">
+            <Calendar size={20} className="text-primary-base" />
           </div>
-          <span className="text-[15px] text-[#444] font-medium">
+          <span className="text-[15px] text-neutral-700 font-medium">
             24-25 August 2024
           </span>
         </div>
         
         <div className="flex items-center gap-3">
-          <div className="bg-[#fff5e9] p-2.5 rounded-full">
-            <MapPin size={20} className="text-[#ff9933]" />
+          <div className="bg-primary-lighter p-2.5 rounded-full">
+            <MapPin size={20} className="text-primary-dark" />
           </div>
-          <span className="text-[15px] text-[#444] font-medium">
+          <span className="text-[15px] text-neutral-700 font-medium">
             Trade Center, Calicut
           </span>
         </div>
@@ -47,7 +47,7 @@ export const RegisterCard = () => {
       
       <div className="mt-8">
         <Button 
-          className="w-full rounded-full py-6 bg-gradient-to-r from-[#7b79ff] to-[#9181ff] text-white hover:from-[#6563ff] hover:to-[#7b6eff] flex items-center justify-center gap-2 shadow-sm"
+          className="w-full rounded-full py-6 bg-gradient-to-r from-primary-base to-primary-dark text-white hover:from-primary-dark hover:to-primary-darker flex items-center justify-center gap-2 shadow-sm"
           size="lg"
         >
           <span className="font-medium">Register Now</span>
@@ -56,7 +56,7 @@ export const RegisterCard = () => {
       </div>
       
       <div className="mt-4 text-center">
-        <span className="text-sm text-[#666]">Limited seats available. Register early!</span>
+        <span className="text-sm text-neutral-600">Limited seats available. Register early!</span>
       </div>
       <div className="flex  mt-3 items-center justify-center gap-4 md:gap-6 px-[10px] ">
           <SocialIcon icon={<Facebook size={16} className="md:text-lg" />} />
@@ -70,8 +70,8 @@ export const RegisterCard = () => {
 const SocialIcon = ({ icon }: { icon: React.ReactNode }) => (
   <div className={cn(
     "w-8 h-8 md:w-9 md:h-9 flex items-center justify-center rounded-full",
-    "text-gray-400 hover:text-[#009AC2] transition-colors duration-200",
-    "border border-gray-700 hover:border-[#009AC2] bg-gray-800 hover:bg-gray-700 cursor-pointer"
+    "text-gray-400 hover:text-primary-base transition-colors duration-200",
+    "border border-gray-700 hover:border-primary-base bg-gray-800 hover:bg-gray-700 cursor-pointer"
   )}>
     {icon}
   </div>

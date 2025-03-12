@@ -4,10 +4,12 @@
 
 :root {
   /* Primary Colors */
-  --primary-main: #6563ff;
-  --primary-light: #7b79ff;
-  --primary-dark: #5452e0;
-  --primary-bg: #f8f5ff;
+  --primary-darker: #0e0479;
+  --primary-dark: #0b29b8;
+  --primary-base: #5452ee;
+  --primary-lighter: #eee6ff;
+  --primary-lightest: #d9ceff;
+  --primary-bg: var(--primary-lightest);
 
   /* Secondary Colors */
   --secondary-main: #00ba9d;
@@ -15,9 +17,9 @@
   --secondary-dark: #00a589;
 
   /* Accent Colors */
-  --accent-orange: #ff9933;
-  --accent-orange-light: #fff5e9;
-  --accent-purple-light: #e8e7ff;
+  --accent-orange: var(--primary-dark);
+  --accent-orange-light: var(--primary-lighter);
+  --accent-purple-light: var(--primary-lightest);
 
   /* Neutral Colors */
   --neutral-900: #1c1c25;

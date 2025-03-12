@@ -24,6 +24,12 @@ type SpeakerProps = {
   type: SpeakerType;
 };
 
+const speakerStyles = {
+  standard: "border-t-primary-base bg-primary-lightest",
+  premium: "border-t-primary-dark bg-primary-lighter",
+  vip: "border-t-primary-darker bg-primary-lighter"
+};
+
 const SpeakerCard = ({ speaker }: { speaker: SpeakerProps }) => {
   const colorVariants = {
     standard: "border-t-[#6563ff] bg-[#f8f5ff]",
@@ -48,9 +54,9 @@ const SpeakerCard = ({ speaker }: { speaker: SpeakerProps }) => {
           <h3 className="font-semibold text-lg md:text-xl text-gray-800 mb-1">{speaker.name}</h3>
           <div className={cn(
             "text-xs font-medium px-2 py-1 rounded-full inline-block mb-2",
-            speaker.type === "standard" ? "bg-[#f8f5ff] text-[#6563ff]" :
-            speaker.type === "premium" ? "bg-[#f8f5ff] text-[#9181ff]" :
-            "bg-[#fff5e9] text-[#ff9933]"
+            speaker.type === "standard" ? "bg-primary-lightest text-primary-base" :
+            speaker.type === "premium" ? "bg-primary-lighter text-primary-dark" :
+            "bg-primary-lighter text-primary-darker"
           )}>
             {speaker.title}
           </div>

@@ -27,22 +27,22 @@ type SessionProps = {
 };
 
 const SessionCard = ({ session }: { session: SessionProps }) => {
-  const colorVariants = {
-    standard: "border-l-[#6563ff] bg-[#f8f5ff]",
-    premium: "border-l-[#9181ff] bg-[#f8f5ff]",
-    vip: "border-l-[#ff9933] bg-[#fff5e9]"
+  const sessionStyles = {
+    standard: "border-l-primary-base bg-primary-lightest",
+    premium: "border-l-primary-dark bg-primary-lighter",
+    vip: "border-l-primary-darker bg-primary-lighter"
   };
 
-  const tagColorVariants = {
-    standard: "bg-[#f8f5ff] text-[#6563ff]",
-    premium: "bg-[#f8f5ff] text-[#9181ff]",
-    vip: "bg-[#fff5e9] text-[#ff9933]"
+  const tagStyles = {
+    standard: "bg-primary-lightest text-primary-base",
+    premium: "bg-primary-lighter text-primary-dark",
+    vip: "bg-primary-lighter text-primary-darker"
   };
 
   return (
     <div className={cn(
       "flex flex-col bg-white rounded-xl overflow-hidden shadow-sm transition-all duration-300 hover:shadow-lg border-l-4 p-5 md:p-6 h-full",
-      colorVariants[session.type]
+      sessionStyles[session.type]
     )}>
       <div className="flex justify-between items-start gap-4 mb-4">
         <div>
@@ -50,7 +50,7 @@ const SessionCard = ({ session }: { session: SessionProps }) => {
           <div className="flex items-center gap-2 flex-wrap">
             <div className={cn(
               "text-xs font-medium px-2 py-1 rounded-full flex items-center gap-1",
-              tagColorVariants[session.type]
+              tagStyles[session.type]
             )}>
               <Tag size={12} />
               <span className="capitalize">{session.type}</span>
@@ -124,7 +124,7 @@ const FilterButton = ({
     className={cn(
       "px-4 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap",
       active 
-        ? "bg-[#6563ff] text-white shadow-sm" 
+        ? "bg-primary-base text-white shadow-sm" 
         : "bg-white text-gray-700 hover:bg-gray-50 border border-gray-200"
     )}
   >
@@ -246,7 +246,7 @@ const Sessions = () => {
       </div>
       
       <main className="flex-1 container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
-        <Link href="/" className="flex items-center text-sm text-gray-600 hover:text-[#6563ff] mb-6 transition-colors">
+        <Link href="/" className="flex items-center text-sm text-gray-600 hover:text-primary-base mb-6 transition-colors">
           <ArrowLeft size={16} className="mr-1" />
           Back to Home
         </Link>
@@ -272,7 +272,7 @@ const Sessions = () => {
               </div>
               <input
                 type="text"
-                className="block w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg focus:ring-[#6563ff] focus:border-[#6563ff] transition-colors"
+                className="block w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg focus:ring-primary-base focus:border-primary-base transition-colors"
                 placeholder="Search sessions, speakers..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}

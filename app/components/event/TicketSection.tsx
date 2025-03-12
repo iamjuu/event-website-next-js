@@ -17,21 +17,23 @@ interface TicketProps {
   description: string;
 }
 
-const colorVariants: Record<TicketType, { bg: string; accent: string }> = {
-  standard: { bg: "bg-[#f8f5ff]", accent: "text-[#6563ff]" },
-  premium: { bg: "bg-[#f8f5ff]", accent: "text-[#9181ff]" },
-  vip: { bg: "bg-[#fff5e9]", accent: "text-[#ff9933]" },
+const ticketStyles = {
+  standard: { border: "border-[#d9ceff]", accent: "text-primary-base", hover: 'hover:border-primary-base' },
+  premium: { border: "border-[#d9ceff]", accent: "text-primary-base", hover: 'hover:border-primary-base' },
+  vip: { border: "border-[#d9ceff]", accent: "text-primary-base", hover: 'hover:border-primary-base' },
 };
-
-const buttonVariants: Record<TicketType, string> = {
-  standard: "bg-[#6563ff] hover:bg-[#5452ee]",
-  premium: "bg-[#9181ff] hover:bg-[#8070ee]",
-  vip: "bg-[#ff9933] hover:bg-[#ee8822]",
+const buttonStyles = {
+  standard: "bg-primary-base hover:bg-primary-dark",
+  premium: "bg-primary-base hover:bg-primary-dark",
+  vip: "bg-primary-base hover:bg-primary-dark",
 };
 
 const TicketCard: React.FC<TicketProps> = ({ id, type, title, price, date, location, thumbnail, description }) => {
   return (
-    <div className={`${colorVariants[type].bg} rounded-2xl  overflow-hidden shadow-sm border border-neutral-100`}>
+    <div 
+    className={`${ticketStyles[type].border || ticketStyles[type].bg} ${ticketStyles[type].hover || ''} rounded-2xl overflow-hidden shadow-sm border border-neutral-100 transition-all duration-300 hover:shadow-lg`}
+    // className={`${ticketStyles[type].bg} rounded-2xl  overflow-hidden shadow-sm border border-neutral-100`}
+    >
       <div className="relative h-48 w-full">
         <Image
           src={BlackImage}
@@ -45,7 +47,7 @@ const TicketCard: React.FC<TicketProps> = ({ id, type, title, price, date, locat
         <div className="flex flex-col gap-4">
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-3">
-              <div className={`${colorVariants[type].accent} p-2 rounded-lg bg-white/80`}>
+              <div className={`${ticketStyles[type].accent} p-2 rounded-lg bg-white/80`}>
                 <TicketIcon className="w-5 h-5" />
               </div>
               <h3 className="text-lg font-semibold text-neutral-900">{title}</h3>
@@ -79,7 +81,7 @@ const TicketCard: React.FC<TicketProps> = ({ id, type, title, price, date, locat
               </Button>
             </Link>
             <Button 
-              className={`flex-1 text-white ${buttonVariants[type]}`}
+              className={`flex-1 text-white ${buttonStyles[type]}`}
             >
               Register
               <ExternalLinkIcon className="w-4 h-4 ml-2" />
@@ -128,7 +130,7 @@ export const TicketSection = () => {
   return (
     <section className="py-12 md:py-16">
       <div className="max-w-[1208px] mx-auto px-4 md:px-6">
-        <h2 className="mb-[24px] text-black text-xl md:text-2xl font-semibold relative pb-2 after:absolute after:bottom-0 after:left-0 after:h-1 after:w-16 after:rounded-full after:bg-[#4F46E5]">
+        <h2 className="mb-[24px] text-black text-xl md:text-2xl font-semibold relative pb-2 after:absolute after:bottom-0 after:left-0 after:h-1 after:w-16 after:rounded-full after:bg-primary-base">
             Tickets
           </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
