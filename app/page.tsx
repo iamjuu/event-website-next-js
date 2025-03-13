@@ -20,8 +20,9 @@ import { BlackImage } from "@/public";
 
 const Index = () => {
   // const { eventId, error, loading } = useEvent();/
-  const [eventData, setEventData] = useState(null);
-  const [tickets, setTickets] = useState(null)
+  const [eventData, setEventData] = useState([]);
+  const [tickets, setTickets] = useState([]);
+  const [speakers, setSpeakers] = useState([]);
 
   const ticketSectionRef = useRef<HTMLDivElement>(null);
   const registerCardRef = useRef<HTMLDivElement>(null);
@@ -80,6 +81,35 @@ const Index = () => {
         } else {
           console.warn("Invalid ticket data format:", data);
         }
+      } catch (error) {
+        console.error("Error fetching tickets:", error);
+      }
+    };
+  
+    if (!eventData?._id) return;
+    fetchDetails();
+  }, [eventData?._id]);
+
+  useEffect(() => {
+    const fetchDetails = async () => {
+      try {
+        const response = await fetch(
+          `${BACKEND_URL}/api/v1/speakers?event=${eventData?._id}`
+        );
+        const data = await response.json();
+        if (data?.response && Array.isArray(data.response)) {
+          const extractedSpeakers = data.response.map((speaker) => ({
+            name: speaker.name,
+            title: speaker.designation,
+            image: speaker.photo,
+            type: speaker.type || "standard",
+          }));
+          setSpeakers(extractedSpeakers);
+          console.log("Extracted Speakers:", extractedSpeakers);
+        } else {
+          console.warn("Invalid speakers data format:", data);
+        }
+  
       } catch (error) {
         console.error("Error fetching tickets:", error);
       }
@@ -152,7 +182,7 @@ const Index = () => {
         
         <SessionsSection />
         
-        <SpeakersSection />
+        <SpeakersSection speakers ={speakers}/>
         
         <SponsorsSection />
         
