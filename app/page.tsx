@@ -20,8 +20,8 @@ import { BlackImage } from "@/public";
 
 const Index = () => {
   // const { eventId, error, loading } = useEvent();/
-  const [eventData, setEventData] = useState();
-
+  const [eventData, setEventData] = useState(null);
+  const [tickets, setTickets] = useState(null)
 
   const ticketSectionRef = useRef<HTMLDivElement>(null);
   const registerCardRef = useRef<HTMLDivElement>(null);
@@ -57,19 +57,38 @@ const Index = () => {
   //   fetchDetails();
   // },[eventData?._id])
 
-  useEffect(()=>{
-    const fetchDetails = async ()=>{
-      const response = await fetch(
-        // `https://backend-endpoint.eventhex.ai/api/v1/auth/domain-event?domain=${window.location.hostname}`
-        `${BACKEND_URL}/api/v1/ticket?event=${eventData?._id}`
-      );
-      const data = await response.json();
-      console.log("data", data);
-    }
-    if ( !eventData?._id) return;
+  useEffect(() => {
+    const fetchDetails = async () => {
+      try {
+        const response = await fetch(
+          `${BACKEND_URL}/api/v1/ticket?event=${eventData?._id}`
+        );
+        const data = await response.json();
+  
+        if (data?.response && Array.isArray(data.response)) {
+          const extractedTickets = data.response.map((ticket) => ({
+            title: ticket.title,
+            id: ticket._id,
+            thumbnail: ticket.thumbnail,
+            shortDescription: ticket.shortDescription,
+            location: eventData?.venue,
+            date: ticket.startDate,
+            price : ticket?.price || "Free" // Assuming `date` is the `startDate`
+          }));
+          setTickets(extractedTickets);
+          console.log("Extracted Tickets:", extractedTickets);
+        } else {
+          console.warn("Invalid ticket data format:", data);
+        }
+      } catch (error) {
+        console.error("Error fetching tickets:", error);
+      }
+    };
+  
+    if (!eventData?._id) return;
     fetchDetails();
-  },[eventData?._id])
-
+  }, [eventData?._id]);
+  
 
 
   
@@ -133,7 +152,7 @@ const Index = () => {
           </h2> */}
         </div>
         <div ref={ticketSectionRef}>
-          <TicketSection />
+          <TicketSection tickets = {tickets}/>
         </div>
         
         <SessionsSection />
