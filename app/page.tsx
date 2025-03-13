@@ -89,9 +89,6 @@ const Index = () => {
     fetchDetails();
   }, [eventData?._id]);
   
-
-
-  
   // if (loading) {
   //   return <div>Loading...</div>;
   // }
@@ -108,8 +105,6 @@ const Index = () => {
         <Hero 
           title={eventData?.title}
           banner={eventData?.banner}
-          startDate={eventData?.startDate}
-          venue={eventData?.venue}
         />
         
         <div className="mt-6 md:mt-[25px] max-md:max-w-full">
