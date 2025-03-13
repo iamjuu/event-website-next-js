@@ -1,6 +1,8 @@
 import { API_ENDPOINTS } from "./apiConfig";
-import React,{useEffect, useState} from "react";
-const handleResponse = async (response) => {
+import React, { useEffect, useState } from "react";
+
+// Add Response type annotation
+const handleResponse = async (response: Response) => {
   const data = await response.json();
   if (!response.ok) {
     throw new Error(data.message || "Something went wrong");
@@ -9,7 +11,7 @@ const handleResponse = async (response) => {
 };
 
 export const eventService = {
-  getEventDetails: async (eventId) => {
+  getEventDetails: async (eventId: string) => {
     const response = await fetch(
       `${API_ENDPOINTS.EVENT_DETAILS}?eventId=${eventId}`
     );
@@ -28,7 +30,7 @@ export const eventService = {
     return handleResponse(response);
   },  
 
-  getRecapSettings: async (eventId) => {
+  getRecapSettings: async (eventId: string) => {
     const response = await fetch(
       `${API_ENDPOINTS.RECAP_SETTINGS}?eventId=${eventId}`
     );
@@ -37,14 +39,14 @@ export const eventService = {
 };
 
 export const sessionService = {
-  getSession: async (sessionId) => {
+  getSession: async (sessionId: string) => {
     const response = await fetch(
       `${API_ENDPOINTS.SESSION}?sessionId=${sessionId}`
     );
     return handleResponse(response);
   },
 
-  getEventSessions: async (eventId) => {
+  getEventSessions: async (eventId: string) => {
     const response = await fetch(
       `${API_ENDPOINTS.SESSIONS}?eventId=${eventId}`
     );
