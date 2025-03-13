@@ -23,6 +23,7 @@ const Index = () => {
   const [eventData, setEventData] = useState([]);
   const [tickets, setTickets] = useState([]);
   const [speakers, setSpeakers] = useState([]);
+  const [sessions, setSessions] = useState([]);
 
   const ticketSectionRef = useRef<HTMLDivElement>(null);
   const registerCardRef = useRef<HTMLDivElement>(null);
@@ -220,7 +221,7 @@ const Index = () => {
           <TicketSection tickets = {tickets}/>
         </div>
         
-        <SessionsSection />
+        <SessionsSection sessions = {sessions} />
         
         <SpeakersSection speakers ={speakers}/>
         

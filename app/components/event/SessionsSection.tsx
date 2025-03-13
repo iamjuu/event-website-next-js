@@ -43,6 +43,8 @@ const SessionCard: React.FC<SessionProps> = ({
   stage,
   type,
 }) => {
+
+  const IMG_CDN = "https://event-manager.syd1.cdn.digitaloceanspaces.com/";
   return (
     <div
       className={`bg-white rounded-lg shadow-sm border-l-4 ${colorVariants[type]} p-4 h-full`}
@@ -53,7 +55,7 @@ const SessionCard: React.FC<SessionProps> = ({
         {speakers.map((speaker, index) => (
           <div key={index} className="flex items-center">
             <Image
-              src={speaker.image}
+              src={IMG_CDN + speaker.image}
               alt={speaker.name}
               width={24}
               height={24}
@@ -85,95 +87,95 @@ const SessionCard: React.FC<SessionProps> = ({
   );
 };
 
-export const SessionsSection = () => {
+export const SessionsSection = ({sessions}) => {
   const carouselRef = useRef<HTMLDivElement>(null);
   const apiRef = useRef<any>(null);
   const [isHovering, setIsHovering] = useState(false);
 
-  const sessions: SessionProps[] = [
-    {
-      title: "Future of Dental Technology",
-      speakers: [
-        {
-          name: "Dr. Priya Sharma",
-          image: BlackImage,
-        },
-        {
-          name: "Dr. Amit Patel",
-          image: BlackImage,
-        },
-      ],
-      date: "August 24, 2024",
-      time: "10:00 AM - 11:30 AM",
-      stage: "Main Stage",
-      type: "standard",
-    },
-    {
-      title: "Advanced Implantology Workshop",
-      speakers: [
-        {
-          name: "Dr. Rajiv Mehta",
-          image: BlackImage,
-        },
-      ],
-      date: "August 24, 2024",
-      time: "1:00 PM - 3:30 PM",
-      stage: "Workshop Room B",
-      type: "premium",
-    },
-    {
-      title: "Digital Smile Design Masterclass",
-      speakers: [
-        {
-          name: "Dr. Ananya Desai",
-          image: BlackImage,
-        },
-      ],
-      date: "August 25, 2024",
-      time: "11:00 AM - 1:00 PM",
-      stage: "Workshop Room A",
-      type: "vip",
-    },
-    {
-      title: "Pediatric Dentistry Update",
-      speakers: [
-        {
-          name: "Dr. Sunil Kumar",
-          image: BlackImage,
-        },
-      ],
-      date: "August 24, 2024",
-      time: "3:00 PM - 4:30 PM",
-      stage: "Panel Room",
-      type: "standard",
-    },
-    {
-      title: "Business of Dentistry",
-      speakers: [
-        {
-          name: "Dr. Ritu Verma",
-          image: BlackImage,
-        },
-      ],
-      date: "August 25, 2024",
-      time: "9:30 AM - 11:00 AM",
-      stage: "Main Stage",
-      type: "premium",
-    },
-    {
-      title: "Endodontic Microsurgery",
-      speakers: [
-        {
-          name: "Dr. Vikram Singh",
-          image: BlackImage,
-        },
-      ],
-      date: "August 25, 2024",
-      time: "2:00 PM - 4:00 PM",
-      stage: "Workshop Room B",
-      type: "vip",
-    },
-  ];
+  // const sessions: SessionProps[] = [
+  //   {
+  //     title: "Future of Dental Technology",
+  //     speakers: [
+  //       {
+  //         name: "Dr. Priya Sharma",
+  //         image: BlackImage,
+  //       },
+  //       {
+  //         name: "Dr. Amit Patel",
+  //         image: BlackImage,
+  //       },
+  //     ],
+  //     date: "August 24, 2024",
+  //     time: "10:00 AM - 11:30 AM",
+  //     stage: "Main Stage",
+  //     type: "standard",
+  //   },
+  //   {
+  //     title: "Advanced Implantology Workshop",
+  //     speakers: [
+  //       {
+  //         name: "Dr. Rajiv Mehta",
+  //         image: BlackImage,
+  //       },
+  //     ],
+  //     date: "August 24, 2024",
+  //     time: "1:00 PM - 3:30 PM",
+  //     stage: "Workshop Room B",
+  //     type: "premium",
+  //   },
+  //   {
+  //     title: "Digital Smile Design Masterclass",
+  //     speakers: [
+  //       {
+  //         name: "Dr. Ananya Desai",
+  //         image: BlackImage,
+  //       },
+  //     ],
+  //     date: "August 25, 2024",
+  //     time: "11:00 AM - 1:00 PM",
+  //     stage: "Workshop Room A",
+  //     type: "vip",
+  //   },
+  //   {
+  //     title: "Pediatric Dentistry Update",
+  //     speakers: [
+  //       {
+  //         name: "Dr. Sunil Kumar",
+  //         image: BlackImage,
+  //       },
+  //     ],
+  //     date: "August 24, 2024",
+  //     time: "3:00 PM - 4:30 PM",
+  //     stage: "Panel Room",
+  //     type: "standard",
+  //   },
+  //   {
+  //     title: "Business of Dentistry",
+  //     speakers: [
+  //       {
+  //         name: "Dr. Ritu Verma",
+  //         image: BlackImage,
+  //       },
+  //     ],
+  //     date: "August 25, 2024",
+  //     time: "9:30 AM - 11:00 AM",
+  //     stage: "Main Stage",
+  //     type: "premium",
+  //   },
+  //   {
+  //     title: "Endodontic Microsurgery",
+  //     speakers: [
+  //       {
+  //         name: "Dr. Vikram Singh",
+  //         image: BlackImage,
+  //       },
+  //     ],
+  //     date: "August 25, 2024",
+  //     time: "2:00 PM - 4:00 PM",
+  //     stage: "Workshop Room B",
+  //     type: "vip",
+  //   },
+  // ];
 
   // Auto-scroll functionality
   useEffect(() => {
@@ -235,7 +237,7 @@ export const SessionsSection = () => {
             }}
           >
             <CarouselContent className="-ml-4">
-              {sessions.slice(0, 4).map((session, index) => (
+              {sessions?.slice(0, 4).map((session, index) => (
                 <CarouselItem
                   key={index}
                   className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3"
