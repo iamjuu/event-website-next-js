@@ -119,6 +119,46 @@ const Index = () => {
     fetchDetails();
   }, [eventData?._id]);
   
+  useEffect(() => {
+    const fetchDetails = async () => {
+      try {
+        const response = await fetch(
+          `${BACKEND_URL}/api/v1/sessions?event=${eventData?._id}`
+        );
+        const data = await response.json();  
+        // Transform the data to match the expected structure
+        const formattedSessions = data.response.map((session: any) => ({
+          title: session.title,
+          speakers: session.speakers.map((speaker: any) => ({
+            name: speaker.name,
+            image: speaker.image || BlackImage, // Fallback to BlackImage if no image
+          })),
+          date: new Date(session.startTime).toLocaleDateString("en-US", {
+            month: "long",
+            day: "numeric",
+            year: "numeric",
+          }),
+          time: `${new Date(session.startTime).toLocaleTimeString("en-US", {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true,
+          })} - ${new Date(session.endTime).toLocaleTimeString("en-US", {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true,
+          })}`,
+          stage: session.stage?.value || "Unknown Stage",
+          type: session.sessiontype?.value?.toLowerCase() || "standard",
+        }));
+        setSessions(formattedSessions);
+      } catch (error) {
+        console.error("Error fetching sessions:", error);
+      }
+    };
+  
+    if (!eventData?._id) return;
+    fetchDetails();
+  }, [eventData?._id]);
   // if (loading) {
   //   return <div>Loading...</div>;
   // }
