@@ -8,8 +8,6 @@ import { Footer } from "../../components/event/Footer";
 import { Button } from "../../components/ui/button";
 import { cn } from "../../lib/utils";
 import { useToast } from "../../hooks/use-toast";
-// Define ticket types
-type TicketType = "standard" | "premium" | "vip";
 
 interface TicketData {
   id: string;
@@ -34,115 +32,51 @@ export default function TicketDetail() {
   const router = useRouter();
   const { toast } = useToast();
 
-  const [tickets, setTickets] = useState([]);
-const BACKEND_URL = 'https://backend-endpoint.eventhex.ai';
+  const [ticket, setTicket] = useState<TicketData | null>(null);
+  const BACKEND_URL = 'https://backend-endpoint.eventhex.ai';
+  const IMG_CDN = "https://event-manager.syd1.cdn.digitaloceanspaces.com/";
 
-useEffect(()=>{
+  useEffect(() => {
+    const fetchDetails = async() => {
+      try {
+        const response = await fetch(`${BACKEND_URL}/api/v1/ticket?id=${id}`);
+        const data = await response.json();
+        console.log("Data", data);
 
-  const fetchDetails = async()=>{
+        const ticketData = data.response;
+        console.log("ticket", ticketData);
+        
+        setTicket({
+          id,
+          name: ticketData.title,
+          type: ticketData.type || "standard",
+          price: ticketData.paymentAmount || "",
+          thumbnail: ticketData.thumbnail,
+          salesEnd: ticketData.registrationEndDate,
+          description: ticketData.shortDescription,
+          longDescription: ticketData.description,
+          features: [
+            { name: "ID Card", included: ticketData.idCard || false },
+            { name: "Certificate", included: ticketData.certificate || false },
+            { name: "Conference Materials", included: true },
+            { name: "Lunch Included", included: false },
+            { name: "Networking Events", included: false },
+            { name: "VIP Lounge Access", included: false },
+            { name: "Dinner Gala", included: false },
+          ],
+          capacity: ticketData.maximumRegistrations || "",
+          available: ticketData.maximumRegistrations - ticketData.bookingCount || ""
+        });
+      } catch (error) {
+        console.error("Error fetching ticket details:", error);
+      }
+    };
+    
+    if(id) {
+      fetchDetails();
+    }
+  }, [id]);
 
-    const response = await fetch(`${BACKEND_URL}/api/v1/ticket?id=${id}`);
-    const data = await response.json();
-    console.log("Data", data);
-
-   const ticket = data.response;
-   console.log("ticket", ticket);
-   setTickets({
-      id,
-      name: ticket.title,
-      type: ticket.type || "",
-      price: ticket.paymentAmount || "",
-      thumbnail: ticket.thumbnail,
-      salesEnd: ticket.registrationEndDate,
-      description: ticket.shortDescription,
-      longDescription: ticket.description,
-      features: [
-        { name: "ID Card", included: ticket.idCard || false },
-        { name: "Certificate", included: ticket.certificate || false },
-        { name: "Conference Materials", included: true },
-        { name: "Lunch Included", included: false },
-        { name: "Networking Events", included: false },
-        { name: "VIP Lounge Access", included: false },
-        { name: "Dinner Gala", included: false },
-      ],
-      capacity: ticket.maximumRegistrations || "",
-      available: ticket.maximumRegistratinos - ticket.bookingCount
-   })
-  }
-  if(id)
-    fetchDetails();
-},[id])
-
-
-  // Sample ticket data - in a real app, this would come from an API
-  // const tickets: Record<string, TicketData> = {
-  //   "standard": {
-  //     id: "standard",
-  //     name: "Standard Access",
-  //     type: "standard",
-  //     price: "₹1,499",
-  //     thumbnail: "https://cdn.builder.io/api/v1/image/assets/TEMP/3ab5ccd61b17b7c6d55f4a46e6c9d45a91d8dac35242b87aed33f09c1a07a1ab?placeholderIfAbsent=true",
-  //     salesEnd: "Aug 20, 2024",
-  //     description: "Basic access to all exhibit areas and general sessions. Perfect for first-time attendees.",
-  //     longDescription: "The Standard Access pass gives you entry to all exhibit areas and general sessions at the KEDDA Dental Expo 2023. This is the perfect option for first-time attendees who want to explore the expo and get a taste of what it has to offer. With this pass, you'll have access to over 100 national and international exhibitors showcasing their latest dental equipment, consumables, and accessories.",
-  //     features: [
-  //       { name: "Exhibit Hall Access", included: true },
-  //       { name: "General Sessions", included: true },
-  //       { name: "Conference Materials", included: true },
-  //       { name: "Lunch Included", included: false },
-  //       { name: "Networking Events", included: false },
-  //       { name: "VIP Lounge Access", included: false },
-  //       { name: "Dinner Gala", included: false },
-  //     ],
-  //     capacity: "1000",
-  //     available: "364"
-  //   },
-  //   "premium": {
-  //     id: "premium",
-  //     name: "Premium Pass",
-  //     type: "premium",
-  //     price: "₹2,999",
-  //     thumbnail: "https://cdn.builder.io/api/v1/image/assets/TEMP/8b43d09e3eca3d3bf64292012ab469a7492ab9f5a59394bc9c7a8e3a21f0b3f7?placeholderIfAbsent=true",
-  //     salesEnd: "Aug 15, 2024",
-  //     description: "Enhanced access including premium sessions, lunch, and networking opportunities.",
-  //     longDescription: "The Premium Pass gives you enhanced access to the KEDDA Dental Expo 2023. In addition to the standard features, you'll also get access to premium sessions, lunch on both days, and exclusive networking opportunities. This pass is ideal for dental professionals who want to make the most of their expo experience and connect with other industry leaders.",
-  //     features: [
-  //       { name: "Exhibit Hall Access", included: true },
-  //       { name: "General Sessions", included: true },
-  //       { name: "Conference Materials", included: true },
-  //       { name: "Lunch Included", included: true },
-  //       { name: "Networking Events", included: true },
-  //       { name: "VIP Lounge Access", included: false },
-  //       { name: "Dinner Gala", included: false },
-  //     ],
-  //     capacity: "500",
-  //     available: "197"
-  //   },
-  //   "vip": {
-  //     id: "vip",
-  //     name: "VIP Experience",
-  //     type: "vip",
-  //     price: "₹4,999",
-  //     thumbnail: "https://cdn.builder.io/api/v1/image/assets/TEMP/db06e3b6d1fd7fa32e05ce5fb1b362f48c9d6bdd3eae8d19e0a0cfd7ca41f80a?placeholderIfAbsent=true",
-  //     salesEnd: "Aug 10, 2024",
-  //     description: "Full access to all sessions, exclusive VIP lounge, dinner gala, and speaker meetups.",
-  //     longDescription: "The VIP Experience is the ultimate way to enjoy the KEDDA Dental Expo 2023. This all-inclusive pass gives you full access to all sessions, exclusive access to the VIP lounge, invitation to the dinner gala, and special meetups with keynote speakers. This premium experience is designed for industry leaders and serious professionals who want the very best the expo has to offer.",
-  //     features: [
-  //       { name: "Exhibit Hall Access", included: true },
-  //       { name: "General Sessions", included: true },
-  //       { name: "Conference Materials", included: true },
-  //       { name: "Lunch Included", included: true },
-  //       { name: "Networking Events", included: true },
-  //       { name: "VIP Lounge Access", included: true },
-  //       { name: "Dinner Gala", included: true },
-  //     ],
-  //     capacity: "200",
-  //     available: "56"
-  //   }
-  // };
-
-  const ticket = tickets[id];
-  
   // Color variants based on ticket type
   const colorVariants = {
     standard: "border-event-standard text-event-standard",
@@ -215,7 +149,7 @@ useEffect(()=>{
             )}>
               <div className="relative">
                 <img 
-                  src={ticket.thumbnail} 
+                  src={IMG_CDN + ticket.thumbnail} 
                   alt={`${ticket.name} thumbnail`} 
                   className="w-full h-72 object-cover"
                 />
@@ -238,7 +172,9 @@ useEffect(()=>{
                 <div className="flex flex-wrap gap-4 mb-6 text-sm border-b border-gray-100 pb-6">
                   <div className="flex items-center gap-2 text-gray-700">
                     <Calendar size={16} className="text-gray-500" />
-                    <span>Sales end: <span className="font-medium">{ticket.salesEnd}</span></span>
+                    <span>Sales end: <span className="font-medium">
+                    {new Date(ticket.salesEnd).toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' })}
+                    </span></span>
                   </div>
                   
                   <div className="flex items-center gap-2 text-gray-700">
