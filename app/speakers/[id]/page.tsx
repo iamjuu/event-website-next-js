@@ -157,77 +157,77 @@ const Speakers = ({ params }: { params: { id: string } }) => {
     }
   }, [eventId]);
 
-  // Sample data as fallback
-  const sampleSpeakers: SpeakerProps[] = [
-    {
-      id: "speaker1",
-      name: "Dr. Priya Sharma",
-      title: "Dental Surgeon",
-      organization: "Indian Dental Association",
-      location: "Mumbai, India",
-      specialization: "General Dentistry",
-      description: "Leading expert in modern dental practices with over 15 years of experience in cosmetic dentistry and dental surgery.",
-      image: BlackImage,
-      type: "standard"
-    },
-    {
-      id: "speaker2",
-      name: "Dr. Rajiv Mehta",
-      title: "Senior Implantologist",
-      organization: "Mumbai Dental College",
-      location: "Mumbai, India",
-      specialization: "Implantology",
-      description: "Renowned implantologist specializing in complex cases and digital planning with international certification.",
-      image: BlackImage,
-      type: "premium"
-    },
-    {
-      id: "speaker3",
-      name: "Dr. Ananya Desai",
-      title: "Cosmetic Dentistry Expert",
-      organization: "Smile Design Institute",
-      location: "Bangalore, India",
-      specialization: "Cosmetic Dentistry",
-      description: "Pioneer in digital smile design and aesthetic dentistry with expertise in veneers and full mouth rehabilitation.",
-      image: BlackImage,
-      type: "vip"
-    },
-    {
-      id: "speaker4",
-      name: "Dr. Sunil Kumar",
-      title: "Orthodontics Specialist",
-      organization: "Delhi Dental Institute",
-      location: "Delhi, India",
-      specialization: "Orthodontics",
-      description: "Expert in modern orthodontic techniques including invisible aligners and lingual braces.",
-      image: BlackImage,
-      type: "standard"
-    },
-    {
-      id: "speaker5",
-      name: "Dr. Maya Reddy",
-      title: "Pediatric Dentist",
-      organization: "Children's Dental Care",
-      location: "Chennai, India",
-      specialization: "Pediatric Dentistry",
-      description: "Specialized in child psychology and pediatric dental procedures with a focus on preventive care.",
-      image: BlackImage,
-      type: "premium"
-    },
-    {
-      id: "speaker6",
-      name: "Dr. Vikram Singh",
-      title: "Endodontic Specialist",
-      organization: "Advanced Dental Care",
-      location: "Hyderabad, India",
-      specialization: "Endodontics",
-      description: "Expert in microsurgical endodontics and complex root canal treatments using advanced technology.",
-      image: BlackImage,
-      type: "vip"
-    }
-  ];
+  // // Sample data as fallback
+  // const sampleSpeakers: SpeakerProps[] = [
+  //   {
+  //     id: "speaker1",
+  //     name: "Dr. Priya Sharma",
+  //     title: "Dental Surgeon",
+  //     organization: "Indian Dental Association",
+  //     location: "Mumbai, India",
+  //     specialization: "General Dentistry",
+  //     description: "Leading expert in modern dental practices with over 15 years of experience in cosmetic dentistry and dental surgery.",
+  //     image: BlackImage,
+  //     type: "standard"
+  //   },
+  //   {
+  //     id: "speaker2",
+  //     name: "Dr. Rajiv Mehta",
+  //     title: "Senior Implantologist",
+  //     organization: "Mumbai Dental College",
+  //     location: "Mumbai, India",
+  //     specialization: "Implantology",
+  //     description: "Renowned implantologist specializing in complex cases and digital planning with international certification.",
+  //     image: BlackImage,
+  //     type: "premium"
+  //   },
+  //   {
+  //     id: "speaker3",
+  //     name: "Dr. Ananya Desai",
+  //     title: "Cosmetic Dentistry Expert",
+  //     organization: "Smile Design Institute",
+  //     location: "Bangalore, India",
+  //     specialization: "Cosmetic Dentistry",
+  //     description: "Pioneer in digital smile design and aesthetic dentistry with expertise in veneers and full mouth rehabilitation.",
+  //     image: BlackImage,
+  //     type: "vip"
+  //   },
+  //   {
+  //     id: "speaker4",
+  //     name: "Dr. Sunil Kumar",
+  //     title: "Orthodontics Specialist",
+  //     organization: "Delhi Dental Institute",
+  //     location: "Delhi, India",
+  //     specialization: "Orthodontics",
+  //     description: "Expert in modern orthodontic techniques including invisible aligners and lingual braces.",
+  //     image: BlackImage,
+  //     type: "standard"
+  //   },
+  //   {
+  //     id: "speaker5",
+  //     name: "Dr. Maya Reddy",
+  //     title: "Pediatric Dentist",
+  //     organization: "Children's Dental Care",
+  //     location: "Chennai, India",
+  //     specialization: "Pediatric Dentistry",
+  //     description: "Specialized in child psychology and pediatric dental procedures with a focus on preventive care.",
+  //     image: BlackImage,
+  //     type: "premium"
+  //   },
+  //   {
+  //     id: "speaker6",
+  //     name: "Dr. Vikram Singh",
+  //     title: "Endodontic Specialist",
+  //     organization: "Advanced Dental Care",
+  //     location: "Hyderabad, India",
+  //     specialization: "Endodontics",
+  //     description: "Expert in microsurgical endodontics and complex root canal treatments using advanced technology.",
+  //     image: BlackImage,
+  //     type: "vip"
+  //   }
+  // ];
 
-  const filteredSpeakers = speakers.filter(speaker => {
+  const filteredSpeakers = speakers?.filter(speaker => {
     const matchesType = activeType === 'all' || speaker.type === activeType;
     const matchesSearch = searchQuery === '' || 
       speaker.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -288,7 +288,7 @@ const Speakers = ({ params }: { params: { id: string } }) => {
           </div>
         )}
         
-        <div className="mb-6">
+        {/* <div className="mb-6">
           <div className="bg-gray-50 p-3 rounded-lg shadow-sm overflow-x-auto scrollbar-hide">
             <div className="flex items-center gap-2">
               <FilterButton 
@@ -317,7 +317,7 @@ const Speakers = ({ params }: { params: { id: string } }) => {
               </FilterButton>
             </div>
           </div>
-        </div>
+        </div> */}
         
         {isLoading ? (
           <div className="text-center py-12 bg-white rounded-xl shadow-sm">
