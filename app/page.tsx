@@ -24,6 +24,7 @@ const Index = () => {
   const [tickets, setTickets] = useState([]);
   const [speakers, setSpeakers] = useState([]);
   const [sessions, setSessions] = useState([]);
+  const [sponsors, setSponsors] = useState([]);
 
   const ticketSectionRef = useRef<HTMLDivElement>(null);
   const registerCardRef = useRef<HTMLDivElement>(null);
@@ -42,7 +43,6 @@ const Index = () => {
       );
       const data = await response.json();
       setEventData(data.domainData.event);
-      console.log("data", data);
     }
     fetchDetails();
   },[])
@@ -66,7 +66,6 @@ const Index = () => {
             price : ticket?.paymentAmount || "Free" // Assuming `date` is the `startDate`
           }));
           setTickets(extractedTickets);
-          console.log("Extracted Tickets:", extractedTickets);
         } else {
           console.warn("Invalid ticket data format:", data);
         }
@@ -100,7 +99,7 @@ const Index = () => {
         }
   
       } catch (error) {
-        console.error("Error fetching tickets:", error);
+        console.error("Error fetching speakers:", error);
       }
     };
   
@@ -148,6 +147,38 @@ const Index = () => {
     if (!eventData?._id) return;
     fetchDetails();
   }, [eventData?._id]);
+
+  useEffect(()=>{
+
+    const fetchSponors = async ()=>{
+      try {
+        const response = await fetch(
+          `${BACKEND_URL}/api/v1/sponsors?event=${eventData?._id}`
+        );
+        const data = await response.json();
+        console.log(data, "sponsors");
+        if (data?.response && Array.isArray(data.response)) {
+          const extractedSponsors = data.response.map((sponsor) => ({
+            id: sponsor._id,
+            name: sponsor.name,
+            logoUrl : sponsor.logo,
+            tier: sponsor.segment || "standard",
+          }));
+          setSponsors(extractedSponsors);
+          console.log("Extracted Spondors:", extractedSponsors);
+        } else {
+          console.warn("Invalid sponsros data format:", data);
+        }
+  
+      } catch (error) {
+        console.error("Error fetching sponsors:", error);
+      }
+    }
+
+    if (!eventData?._id) return ;
+    fetchSponors();
+
+  },[eventData?._id])
   // if (loading) {
   //   return <div>Loading...</div>;
   // }
@@ -159,7 +190,7 @@ const Index = () => {
   
   return (
     <div className="bg-white flex flex-col items-stretch pt-4 md:pt-[26px] pb-28 md:pb-[70px]">
-      <Header logo={eventData?.logo} title={eventData?.title} />
+     {eventData && <Header logo={eventData?.logo} title={eventData?.title} />}
       <main className="self-center flex w-full max-w-[1208px] flex-col items-stretch px-4">
         <Hero 
           title={eventData?.title}
@@ -206,14 +237,14 @@ const Index = () => {
           </h2> */}
         </div>
         <div ref={ticketSectionRef}>
-          <TicketSection tickets = {tickets}/>
+          {tickets.length && <TicketSection tickets = {tickets}/>}
         </div>
         
-        <SessionsSection sessions = {sessions} />
+        {sessions.length && <SessionsSection sessions = {sessions} />}
         
-        <SpeakersSection speakers ={speakers}/>
+        {speakers.length && <SpeakersSection speakers ={speakers}/>}
         
-        <SponsorsSection />
+        {sponsors.length && <SponsorsSection sponsors={sponsors} />}
         
         <LocationMap />
         
