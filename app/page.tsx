@@ -15,7 +15,6 @@ import { SpeakersSection } from "./components/event/SpeakersSection";
 import { SponsorsSection } from "./components/event/SponsorsSection";
 import { Button } from "./components/ui/button";
 import { StickyFooter } from "./components/event/StickyFooter";
-import { eventService, sessionService, useEvent } from "./api/api";
 import { BlackImage } from "@/public";
 
 const Index = () => {
