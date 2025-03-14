@@ -87,8 +87,9 @@ const SessionCard: React.FC<SessionProps> = ({
   );
 };
 
-export const SessionsSection = ({sessions, evendId}) => {
-  console.log("event IDDDD", evendId);
+export const SessionsSection = ({sessions, eventId}) => {
+  // const eventId = sessions[0].event;
+  // console.log("event IDDDD", eventId);
   const carouselRef = useRef<HTMLDivElement>(null);
   const apiRef = useRef<any>(null);
   const [isHovering, setIsHovering] = useState(false);
@@ -128,7 +129,7 @@ export const SessionsSection = ({sessions, evendId}) => {
             Sessions
           </h2>{" "}
           <Link
-            href={`/sessions/${evendId}`}
+            href={`/sessions/${eventId}`}
             className="text-[#6563ff] hover:text-[#5452ee] text-sm font-medium flex items-center gap-1"
           >
             View All

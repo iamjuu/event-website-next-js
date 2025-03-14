@@ -10,6 +10,8 @@ import { Button } from "../../components/ui/button";
 import Image from "next/image";
 import { BlackImage } from "@/public";
 import { useSearchParams } from 'next/navigation';
+import { useRouter } from "next/navigation";
+
 
 type SessionType = "standard" | "premium" | "vip" | string;
 type SessionDay = "day1" | "day2" | string;
@@ -35,7 +37,7 @@ type SessionProps = {
   stage: string;
 };
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "";
+const BACKEND_URL = 'https://backend-endpoint.eventhex.ai';
 
 const SessionCard = ({ session }: { session: SessionProps }) => {
   const sessionStyles = {
@@ -160,10 +162,15 @@ const FilterButton = ({
   </button>
 );
 
-const Sessions = () => {
+const Sessions = ({ params }: { params: { id: string } }) => {
   const searchParams = useSearchParams();
-  const id = searchParams.get('event') || '';
-  
+  // const id = searchParams.get('id') || '';
+  // console.log("id", id);
+  const id = params?.id;
+  // const router = useRouter();
+  // const pathSegments = router.pathname.split("/");
+  // const id = pathSegments[2];
+  console.log(id);
   const [activeDay, setActiveDay] = useState<string>('all');
   const [activeStage, setActiveStage] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');

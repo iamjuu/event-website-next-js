@@ -241,7 +241,7 @@ const Index = () => {
           {tickets.length && <TicketSection tickets = {tickets}/>}
         </div>
         
-        {sessions.length && eventData._id != [] && <SessionsSection sessions={sessions} eventId={eventData?._id} />}
+        {sessions.length ===3 && <SessionsSection sessions={sessions} eventId={eventData?._id} />}
         
         {speakers.length && <SpeakersSection speakers ={speakers} eventId = {eventData?._id} />}
         
