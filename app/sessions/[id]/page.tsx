@@ -176,25 +176,22 @@ const Sessions = ({ params }: { params: { id: string } }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchOpen, setSearchOpen] = useState(false);
   const [sessions, setSessions] = useState<SessionProps[]>([]);
-  const [eventData, setEventData] = useState<any>(null);
   const [days, setDays] = useState<string[]>([]);
   const [stages, setStages] = useState<string[]>([]);
 
-  useEffect(() => {
-    const fetchEventData = async () => {
-      if (!id) return;
-      
-      try {
-        const response = await fetch(`${BACKEND_URL}/api/v1/events/${id}`);
-        const data = await response.json();
-        setEventData(data.response);
-      } catch (error) {
-        console.error("Error fetching event data:", error);
-      }
-    };
-    
-    fetchEventData();
-  }, [id]);
+  const [eventLogo, setEventLogo] = useState(null);
+      useEffect(()=>{
+        const fetchDetails = async ()=>{
+          const response = await fetch(
+            // `https://backend-endpoint.eventhex.ai/api/v1/auth/domain-event?domain=${window.location.hostname}`
+            `${BACKEND_URL}/api/v1/auth/domain-event?domain=my-event.eventhex.ai`
+            
+          );
+          const data = await response.json();
+          setEventLogo(data.domainData.event.logo);
+        }
+        fetchDetails();
+      },[])
 
   useEffect(() => {
     const fetchSessions = async () => {
@@ -282,7 +279,7 @@ const Sessions = ({ params }: { params: { id: string } }) => {
   return (
     <div className="bg-white flex flex-col min-h-screen">
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <Header />
+        <Header logo={eventLogo}/>
       </div>
       
       <main className="flex-1 container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
