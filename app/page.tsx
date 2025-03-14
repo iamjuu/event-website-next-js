@@ -47,18 +47,6 @@ const Index = () => {
     fetchDetails();
   },[])
 
-  // useEffect(()=>{
-
-  //   const fetchDetails = async ()=>{
-  //     const response = await fetch (`${BASE_URL}/sessions/event?eventId=${eventData._id}`);
-  //     const data = await response.json();
-  //     console.log("Domain", data);
-  //   }
-
-  //   if ( ! eventData?._id ) return ;
-  //   fetchDetails();
-  // },[eventData?._id])
-
   useEffect(() => {
     const fetchDetails = async () => {
       try {
