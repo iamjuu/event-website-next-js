@@ -68,15 +68,15 @@ export default function TicketDetail() {
           salesEnd: ticketData.registrationEndDate,
           description: ticketData.shortDescription,
           longDescription: ticketData.description,
-          features: [
-            { name: "ID Card", included: ticketData.idCard || false },
-            { name: "Certificate", included: ticketData.certificate || false },
-            { name: "Conference Materials", included: true },
-            { name: "Lunch Included", included: false },
-            { name: "Networking Events", included: false },
-            { name: "VIP Lounge Access", included: false },
-            { name: "Dinner Gala", included: false },
-          ],
+          // features: [
+          //   { name: "ID Card", included: ticketData.idCard || false },
+          //   { name: "Certificate", included: ticketData.certificate || false },
+          //   { name: "Conference Materials", included: true },
+          //   { name: "Lunch Included", included: false },
+          //   { name: "Networking Events", included: false },
+          //   { name: "VIP Lounge Access", included: false },
+          //   { name: "Dinner Gala", included: false },
+          // ],
           capacity: ticketData.maximumRegistrations || "",
           available: ticketData.maximumRegistrations - ticketData.bookingCount || ""
         });
@@ -207,31 +207,31 @@ export default function TicketDetail() {
                     <p className="text-gray-700 leading-relaxed">{ticket.longDescription}</p>
                   </div>
                   
-                  <div>
-                    <h2 className="text-xl font-semibold mb-4">What's Included</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-y-3 gap-x-8">
-                      {ticket.features.map((feature, index) => (
-                        <div key={index} className={cn(
-                          "flex items-center gap-3 p-3 rounded-lg transition-colors",
-                          feature.included 
-                            ? "bg-green-50" 
-                            : "bg-gray-50 opacity-70"
-                        )}>
-                          {feature.included ? (
-                            <CheckCircle size={18} className="text-green-500 flex-shrink-0" />
-                          ) : (
-                            <XCircle size={18} className="text-red-400 flex-shrink-0" />
-                          )}
-                          <span className={cn(
-                            "text-gray-700",
-                            !feature.included && "text-gray-500"
+                    {/* <div>
+                      <h2 className="text-xl font-semibold mb-4">What's Included</h2>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-y-3 gap-x-8">
+                        {ticket.features.map((feature, index) => (
+                          <div key={index} className={cn(
+                            "flex items-center gap-3 p-3 rounded-lg transition-colors",
+                            feature.included 
+                              ? "bg-green-50" 
+                              : "bg-gray-50 opacity-70"
                           )}>
-                            {feature.name}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+                            {feature.included ? (
+                              <CheckCircle size={18} className="text-green-500 flex-shrink-0" />
+                            ) : (
+                              <XCircle size={18} className="text-red-400 flex-shrink-0" />
+                            )}
+                            <span className={cn(
+                              "text-gray-700",
+                              !feature.included && "text-gray-500"
+                            )}>
+                              {feature.name}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div> */}
                 </div>
               </div>
             </div>
@@ -300,7 +300,7 @@ export default function TicketDetail() {
                 </div>
               </div>
               
-              <div className="mt-4 p-5 bg-yellow-50 rounded-lg border border-yellow-100">
+              {/* <div className="mt-4 p-5 bg-yellow-50 rounded-lg border border-yellow-100">
                 <div className="flex gap-3 items-start">
                   <AlertCircle size={18} className="text-yellow-500 flex-shrink-0 mt-0.5" />
                   <div>
@@ -310,7 +310,7 @@ export default function TicketDetail() {
                     </p>
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

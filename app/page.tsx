@@ -111,7 +111,7 @@ const Index = () => {
     const fetchDetails = async () => {
       try {
         const response = await fetch(
-          `${BACKEND_URL}/api/v1/sessions?event=${eventData?._id}`
+          `${BACKEND_URL}/api/v1/sessions?event=${eventData?._id}&limit=3`
         );
         const data = await response.json();  
         // Transform the data to match the expected structure
