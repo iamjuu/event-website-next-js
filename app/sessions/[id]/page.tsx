@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Header } from "../../components/event/Header";
 import { Footer } from "../../components/event/Footer";
 import { CalendarDays, Clock, Users, Search, Theater, ArrowLeft, X, Tag } from "lucide-react";
@@ -9,8 +9,17 @@ import { cn } from "../../lib/utils";
 import { Button } from "../../components/ui/button";
 import Image from "next/image";
 import { BlackImage } from "@/public";
-type SessionType = "standard" | "premium" | "vip";
-type SessionDay = "day1" | "day2";
+import { useSearchParams } from 'next/navigation';
+
+type SessionType = "standard" | "premium" | "vip" | string;
+type SessionDay = "day1" | "day2" | string;
+
+type Speaker = {
+  _id: string;
+  value: string;
+  name?: string;
+  image?: string;
+};
 
 type SessionProps = {
   id: string;
@@ -26,23 +35,43 @@ type SessionProps = {
   stage: string;
 };
 
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "";
+
 const SessionCard = ({ session }: { session: SessionProps }) => {
   const sessionStyles = {
     standard: "border-l-primary-base bg-primary-lightest",
     premium: "border-l-primary-dark bg-primary-lighter",
-    vip: "border-l-primary-darker bg-primary-lighter"
+    vip: "border-l-primary-darker bg-primary-lighter",
+    seminar: "border-l-primary-base bg-primary-lightest", // Added mapping for "Seminar"
+    workshop: "border-l-primary-dark bg-primary-lighter",
+    panel: "border-l-primary-darker bg-primary-lighter"
   };
 
   const tagStyles = {
     standard: "bg-primary-lightest text-primary-base",
     premium: "bg-primary-lighter text-primary-dark",
-    vip: "bg-primary-lighter text-primary-darker"
+    vip: "bg-primary-lighter text-primary-darker",
+    seminar: "bg-primary-lightest text-primary-base", // Added mapping for "Seminar"
+    workshop: "bg-primary-lighter text-primary-dark",
+    panel: "bg-primary-lighter text-primary-darker"
+  };
+
+  // Get the session type style safely
+  const getSessionStyle = (type: string) => {
+    const normalizedType = type.toLowerCase();
+    return sessionStyles[normalizedType] || sessionStyles.standard;
+  };
+
+  // Get the tag style safely
+  const getTagStyle = (type: string) => {
+    const normalizedType = type.toLowerCase();
+    return tagStyles[normalizedType] || tagStyles.standard;
   };
 
   return (
     <div className={cn(
       "flex flex-col bg-white rounded-xl overflow-hidden shadow-sm transition-all duration-300 hover:shadow-lg border-l-4 p-5 md:p-6 h-full",
-      sessionStyles[session.type]
+      getSessionStyle(session.type)
     )}>
       <div className="flex justify-between items-start gap-4 mb-4">
         <div>
@@ -50,13 +79,13 @@ const SessionCard = ({ session }: { session: SessionProps }) => {
           <div className="flex items-center gap-2 flex-wrap">
             <div className={cn(
               "text-xs font-medium px-2 py-1 rounded-full flex items-center gap-1",
-              tagStyles[session.type]
+              getTagStyle(session.type)
             )}>
               <Tag size={12} />
               <span className="capitalize">{session.type}</span>
             </div>
             <div className="text-xs font-medium px-2 py-1 rounded-full bg-neutral-100 text-neutral-600">
-              {session.day === 'day1' ? 'Day 1' : 'Day 2'}
+              {session.day}
             </div>
           </div>
         </div>
@@ -65,8 +94,7 @@ const SessionCard = ({ session }: { session: SessionProps }) => {
       <div className="mb-6">
         <div className="flex items-center gap-3 p-3 bg-neutral-50 rounded-lg">
           {/* <Image
-          src={BlackImage}
-            // src={`${BlackImage} ${session.speaker.toLowerCase().replace(/\s+/g, '-')}.jpg`}
+            src={BlackImage}
             alt={session.speaker}
             width={48}
             height={48}
@@ -79,7 +107,7 @@ const SessionCard = ({ session }: { session: SessionProps }) => {
         </div>
       </div>
       
-      <p className="text-sm text-neutral-600 mb-6 line-clamp-3">{session.description}</p>
+      <p className="text-sm text-neutral-600 mb-6 line-clamp-3">{session.description || "No description available."}</p>
       
       <div className="mt-auto grid grid-cols-2 gap-4">
         <div className="space-y-2">
@@ -102,7 +130,7 @@ const SessionCard = ({ session }: { session: SessionProps }) => {
           
           <div className="flex items-center text-sm text-neutral-500">
             <Users size={16} className="mr-2 shrink-0" />
-            <span className="truncate">{session.audience}</span>
+            <span className="truncate">{session.audience || "All Attendees"}</span>
           </div>
         </div>
       </div>
@@ -133,136 +161,98 @@ const FilterButton = ({
 );
 
 const Sessions = () => {
-  const [activeDay, setActiveDay] = useState<SessionDay | 'all'>('all');
+  const searchParams = useSearchParams();
+  const id = searchParams.get('event') || '';
+  
+  const [activeDay, setActiveDay] = useState<string>('all');
   const [activeStage, setActiveStage] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [searchOpen, setSearchOpen] = useState(false);
-  // const [sessions, setSessions] = useState([]);
+  const [sessions, setSessions] = useState<SessionProps[]>([]);
+  const [eventData, setEventData] = useState<any>(null);
+  const [days, setDays] = useState<string[]>([]);
+  const [stages, setStages] = useState<string[]>([]);
 
-  //   useEffect(() => {
-  //     const fetchDetails = async () => {
-  //       try {
-  //         const response = await fetch(
-  //           `${BACKEND_URL}/api/v1/sessions?event=${eventData?._id}&limit=3`
-  //         );
-  //         const data = await response.json();  
-  //         // Transform the data to match the expected structure
-  //         const formattedSessions = data.response.map((session: any) => ({
-  //           id : session._id,
-  //           title: session.title,
-  //           speakers: session.speakers.map((speaker: any) => ({
-  //             name: speaker.name,
-  //             image: speaker.image || BlackImage, // Fallback to BlackImage if no image
-  //           })),
-  //           date: new Date(session.startTime).toLocaleDateString("en-US", {
-  //             month: "long",
-  //             day: "numeric",
-  //             year: "numeric",
-  //           }),
-  //           time: `${new Date(session.startTime).toLocaleTimeString("en-US", {
-  //             hour: "2-digit",
-  //             minute: "2-digit",
-  //             hour12: true,
-  //           })} - ${new Date(session.endTime).toLocaleTimeString("en-US", {
-  //             hour: "2-digit",
-  //             minute: "2-digit",
-  //             hour12: true,
-  //           })}`,
-  //           stage: session.stage?.value || "Unknown Stage",
-  //           type: session.sessiontype?.value?.toLowerCase() || "standard",
-  //         }));
-  //         setSessions(formattedSessions);
-  //       } catch (error) {
-  //         console.error("Error fetching sessions:", error);
-  //       }
-  //     };
+  useEffect(() => {
+    const fetchEventData = async () => {
+      if (!id) return;
+      
+      try {
+        const response = await fetch(`${BACKEND_URL}/api/v1/events/${id}`);
+        const data = await response.json();
+        setEventData(data.response);
+      } catch (error) {
+        console.error("Error fetching event data:", error);
+      }
+    };
     
-  //     if (!eventData?._id) return;
-  //     fetchDetails();
-  //   }, [id]);
+    fetchEventData();
+  }, [id]);
 
-  const sessions: SessionProps[] = [
-    {
-      id: "session1",
-      title: "Future of Dental Technology",
-      speaker: "Dr. Priya Sharma",
-      speakerTitle: "Director, Indian Dental Association",
-      time: "10:00 AM - 11:30 AM",
-      date: "August 24, 2024",
-      audience: "General Dentists, Specialists",
-      description: "Discover the latest advancements in dental technology and how they can be implemented in your practice for better patient outcomes.",
-      type: "standard",
-      day: "day1",
-      stage: "Main Stage"
-    },
-    {
-      id: "session2",
-      title: "Advanced Implantology Workshop",
-      speaker: "Dr. Rajiv Mehta",
-      speakerTitle: "Senior Implantologist, Mumbai Dental College",
-      time: "1:00 PM - 3:30 PM",
-      date: "August 24, 2024",
-      audience: "Implantologists, Oral Surgeons",
-      description: "This hands-on workshop covers advanced techniques in dental implantology with focus on complex cases and digital planning.",
-      type: "premium",
-      day: "day1",
-      stage: "Workshop Room B"
-    },
-    {
-      id: "session3",
-      title: "Digital Smile Design Masterclass",
-      speaker: "Dr. Ananya Desai",
-      speakerTitle: "Cosmetic Dentistry Expert",
-      time: "11:00 AM - 1:00 PM",
-      date: "August 25, 2024",
-      audience: "Cosmetic Dentists, Prosthodontists",
-      description: "Learn how to implement Digital Smile Design in your practice to enhance treatment planning and patient communication.",
-      type: "vip",
-      day: "day2",
-      stage: "Workshop Room A"
-    },
-    {
-      id: "session4",
-      title: "Pediatric Dentistry Update",
-      speaker: "Dr. Sunil Kumar",
-      speakerTitle: "Pediatric Dentistry Specialist",
-      time: "3:00 PM - 4:30 PM",
-      date: "August 24, 2024",
-      audience: "Pediatric Dentists, General Practitioners",
-      description: "Stay current with the latest research and techniques in treating pediatric dental patients with emphasis on behavior management.",
-      type: "standard",
-      day: "day1",
-      stage: "Panel Room"
-    },
-    {
-      id: "session5",
-      title: "Business of Dentistry",
-      speaker: "Dr. Ritu Verma",
-      speakerTitle: "Dental Practice Management Consultant",
-      time: "9:30 AM - 11:00 AM",
-      date: "August 25, 2024",
-      audience: "Practice Owners, Office Managers",
-      description: "Essential strategies for dental practice growth, staff management, and increasing profitability in competitive markets.",
-      type: "premium",
-      day: "day2",
-      stage: "Main Stage"
-    },
-    {
-      id: "session6",
-      title: "Endodontic Microsurgery",
-      speaker: "Dr. Vikram Singh",
-      speakerTitle: "Endodontic Specialist, Delhi Dental Institute",
-      time: "2:00 PM - 4:00 PM",
-      date: "August 25, 2024",
-      audience: "Endodontists, Oral Surgeons",
-      description: "Advanced surgical techniques in endodontics using microscopes and modern instruments for improved outcomes in complex cases.",
-      type: "vip",
-      day: "day2",
-      stage: "Workshop Room B"
+  useEffect(() => {
+    const fetchSessions = async () => {
+      if (!id) return;
+      
+      try {
+        const response = await fetch(`${BACKEND_URL}/api/v1/sessions?event=${id}`);
+        const data = await response.json();
+        
+        // Transform the data to match the expected structure
+        const formattedSessions = data.response.map((session: any) => {
+          // Extract first speaker info or use default values
+          const speakerName = session.speakers && session.speakers.length > 0 
+            ? session.speakers[0].value || "Unknown Speaker" 
+            : "Unknown Speaker";
+            
+          // Convert day value to day1 or day2 format
+          const dayValue = session.day?.value || "";
+          const simplifiedDay = dayValue.toLowerCase().replace(/\s+/g, '');
+          
+          return {
+            id: session._id,
+            title: session.title || "Untitled Session",
+            speaker: speakerName,
+            speakerTitle: "Speaker", // Default value as it's not in the API response
+            time: `${new Date(session.startTime).toLocaleTimeString("en-US", {
+              hour: "2-digit",
+              minute: "2-digit",
+              hour12: true,
+            })} - ${new Date(session.endTime).toLocaleTimeString("en-US", {
+              hour: "2-digit",
+              minute: "2-digit",
+              hour12: true,
+            })}`,
+            date: new Date(session.startTime).toLocaleDateString("en-US", {
+              month: "long",
+              day: "numeric",
+              year: "numeric",
+            }),
+            audience: session.ticketType || "All Attendees",
+            description: session.description || "",
+            type: session.sessiontype?.value?.toLowerCase() || "standard",
+            day: session.day?.value || "Unknown Day",
+            stage: session.stage?.value || "Main Stage",
+          };
+        });
+        
+        setSessions(formattedSessions);
+        
+        // Extract unique days and stages for filters
+        const uniqueDays = Array.from(new Set(formattedSessions.map(session => session.day)));
+        const uniqueStages = Array.from(new Set(formattedSessions.map(session => session.stage)));
+        
+        setDays(uniqueDays);
+        setStages(uniqueStages);
+        
+      } catch (error) {
+        console.error("Error fetching sessions:", error);
+      }
+    };
+    
+    if (id) {
+      fetchSessions();
     }
-  ];
-
-  const stages = Array.from(new Set(sessions.map(session => session.stage)));
+  }, [id]);
 
   const filteredSessions = sessions.filter(session => {
     const matchesDay = activeDay === 'all' || session.day === activeDay;
@@ -270,7 +260,7 @@ const Sessions = () => {
     const matchesSearch = searchQuery === '' || 
       session.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       session.speaker.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      session.description.toLowerCase().includes(searchQuery.toLowerCase());
+      (session.description && session.description.toLowerCase().includes(searchQuery.toLowerCase()));
     
     return matchesDay && matchesStage && matchesSearch;
   });
@@ -335,18 +325,15 @@ const Sessions = () => {
                 >
                   All Days
                 </FilterButton>
-                <FilterButton 
-                  active={activeDay === 'day1'} 
-                  onClick={() => setActiveDay('day1')}
-                >
-                  Day 1 (Aug 24)
-                </FilterButton>
-                <FilterButton 
-                  active={activeDay === 'day2'} 
-                  onClick={() => setActiveDay('day2')}
-                >
-                  Day 2 (Aug 25)
-                </FilterButton>
+                {days.map((day) => (
+                  <FilterButton 
+                    key={day}
+                    active={activeDay === day} 
+                    onClick={() => setActiveDay(day)}
+                  >
+                    {day}
+                  </FilterButton>
+                ))}
               </div>
             </div>
 

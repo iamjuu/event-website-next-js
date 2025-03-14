@@ -88,6 +88,7 @@ const SessionCard: React.FC<SessionProps> = ({
 };
 
 export const SessionsSection = ({sessions, evendId}) => {
+  console.log("event IDDDD", evendId);
   const carouselRef = useRef<HTMLDivElement>(null);
   const apiRef = useRef<any>(null);
   const [isHovering, setIsHovering] = useState(false);
