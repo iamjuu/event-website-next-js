@@ -31,11 +31,24 @@ export default function TicketDetail() {
   const id = params.id as string;
   const router = useRouter();
   const { toast } = useToast();
-
+  const [eventLogo, setEventLogo] = useState(null);
   const [ticket, setTicket] = useState<TicketData | null>(null);
   const BACKEND_URL = 'https://backend-endpoint.eventhex.ai';
   const IMG_CDN = "https://event-manager.syd1.cdn.digitaloceanspaces.com/";
-
+    
+    useEffect(()=>{
+      const fetchDetails = async ()=>{
+        const response = await fetch(
+          // `https://backend-endpoint.eventhex.ai/api/v1/auth/domain-event?domain=${window.location.hostname}`
+          `${BACKEND_URL}/api/v1/auth/domain-event?domain=my-event.eventhex.ai`
+          
+        );
+        const data = await response.json();
+        setEventLogo(data.domainData.event.logo);
+        console.log("data", data);
+      }
+      fetchDetails();
+    },[])
   useEffect(() => {
     const fetchDetails = async() => {
       try {
@@ -108,7 +121,7 @@ export default function TicketDetail() {
       <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-gray-50">
         <div className="text-center p-8 bg-white rounded-lg shadow-md max-w-md">
           <AlertCircle size={48} className="mx-auto mb-4 text-red-500" />
-          <h1 className="text-2xl font-bold mb-4">Ticket Not Found</h1>
+          <h1 className="text-2xl font-bold mb-4">Loading Ticket Details</h1>
           <p className="text-gray-600 mb-6">We couldn't find the ticket you're looking for. It may have been removed or the URL might be incorrect.</p>
           <Button 
             onClick={() => router.push('/')}
@@ -126,7 +139,7 @@ export default function TicketDetail() {
   return (
     <div className="bg-gray-50 flex flex-col overflow-hidden items-stretch min-h-screen pt-4 md:pt-[26px] ">
       <main className="self-center flex w-full max-w-[1208px] flex-col items-stretch px-4 md:px-6">
-        <Header />
+        <Header logo={eventLogo} />
         
         <div className="mt-6 flex items-center">
           <Button 
