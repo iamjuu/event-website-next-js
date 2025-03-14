@@ -2,7 +2,9 @@ import React from "react";
 import Image from "next/image";
 import { Button } from "../ui/button";
 import { BlackImage } from "@/public";
-export const Header = () => {
+export const Header = ({logo}) => {
+
+  const IMG_CDN = "https://event-manager.syd1.cdn.digitaloceanspaces.com/";
   return (
     
 <header className="px-5 py-3 md:py-0 sm:px-5 bg-white/80 backdrop-blur-sm border border-t-0 border-neutral-200 shadow-sm">
@@ -10,9 +12,10 @@ export const Header = () => {
         <div className="flex items-center justify-between h-16 md:h-20">
           <div className="flex  items-center">
             <Image
-              src={BlackImage}
+              src={IMG_CDN + logo}
               alt="Kerala Dental Dealers Association"
-              
+              width={1920}  // Adjust as needed
+              height={600}
               // height={260}
               className="  w-[100px] object-contain"
               priority
