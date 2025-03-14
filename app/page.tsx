@@ -30,7 +30,6 @@ const Index = () => {
   const contentSectionRef = useRef<HTMLDivElement>(null);
   const ticketHeadingRef = useRef<HTMLDivElement>(null);
 
-  const BASE_URL = 'https://instarecap-app.ambitiousforest-1ab41110.centralindia.azurecontainerapps.io/api';
   const BACKEND_URL = 'https://backend-endpoint.eventhex.ai';
   
   useEffect(()=>{
