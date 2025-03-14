@@ -1,12 +1,12 @@
 "use client"
 
 import React, { useState } from "react";
-import { Header } from "../components/event/Header";
-import { Footer } from "../components/event/Footer";
+import { Header } from "../../components/event/Header";
+import { Footer } from "../../components/event/Footer";
 import { CalendarDays, Clock, Users, Search, Theater, ArrowLeft, X, Tag } from "lucide-react";
 import Link from "next/link";
-import { cn } from "../lib/utils";
-import { Button } from "../components/ui/button";
+import { cn } from "../../lib/utils";
+import { Button } from "../../components/ui/button";
 import Image from "next/image";
 import { BlackImage } from "@/public";
 type SessionType = "standard" | "premium" | "vip";
@@ -137,6 +137,49 @@ const Sessions = () => {
   const [activeStage, setActiveStage] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [searchOpen, setSearchOpen] = useState(false);
+  // const [sessions, setSessions] = useState([]);
+
+  //   useEffect(() => {
+  //     const fetchDetails = async () => {
+  //       try {
+  //         const response = await fetch(
+  //           `${BACKEND_URL}/api/v1/sessions?event=${eventData?._id}&limit=3`
+  //         );
+  //         const data = await response.json();  
+  //         // Transform the data to match the expected structure
+  //         const formattedSessions = data.response.map((session: any) => ({
+  //           id : session._id,
+  //           title: session.title,
+  //           speakers: session.speakers.map((speaker: any) => ({
+  //             name: speaker.name,
+  //             image: speaker.image || BlackImage, // Fallback to BlackImage if no image
+  //           })),
+  //           date: new Date(session.startTime).toLocaleDateString("en-US", {
+  //             month: "long",
+  //             day: "numeric",
+  //             year: "numeric",
+  //           }),
+  //           time: `${new Date(session.startTime).toLocaleTimeString("en-US", {
+  //             hour: "2-digit",
+  //             minute: "2-digit",
+  //             hour12: true,
+  //           })} - ${new Date(session.endTime).toLocaleTimeString("en-US", {
+  //             hour: "2-digit",
+  //             minute: "2-digit",
+  //             hour12: true,
+  //           })}`,
+  //           stage: session.stage?.value || "Unknown Stage",
+  //           type: session.sessiontype?.value?.toLowerCase() || "standard",
+  //         }));
+  //         setSessions(formattedSessions);
+  //       } catch (error) {
+  //         console.error("Error fetching sessions:", error);
+  //       }
+  //     };
+    
+  //     if (!eventData?._id) return;
+  //     fetchDetails();
+  //   }, [id]);
 
   const sessions: SessionProps[] = [
     {

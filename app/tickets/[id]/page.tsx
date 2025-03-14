@@ -30,12 +30,12 @@ export default function TicketDetail() {
   const params = useParams();
   const id = params.id as string;
   const router = useRouter();
-  const { toast } = useToast();
   const [eventLogo, setEventLogo] = useState(null);
-  const [ticket, setTicket] = useState<TicketData | null>(null);
   const BACKEND_URL = 'https://backend-endpoint.eventhex.ai';
   const IMG_CDN = "https://event-manager.syd1.cdn.digitaloceanspaces.com/";
-    
+  const { toast } = useToast();
+  
+  const [ticket, setTicket] = useState<TicketData | null>(null);
     useEffect(()=>{
       const fetchDetails = async ()=>{
         const response = await fetch(
@@ -45,7 +45,6 @@ export default function TicketDetail() {
         );
         const data = await response.json();
         setEventLogo(data.domainData.event.logo);
-        console.log("data", data);
       }
       fetchDetails();
     },[])

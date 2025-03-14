@@ -113,6 +113,19 @@ const Speakers = ({ params }: { params: { id: string } }) => {
   const pathname = usePathname();
   const eventId = params?.id;
   const BACKEND_URL = 'https://backend-endpoint.eventhex.ai';
+  const [eventLogo, setEventLogo] = useState(null);
+      useEffect(()=>{
+        const fetchDetails = async ()=>{
+          const response = await fetch(
+            // `https://backend-endpoint.eventhex.ai/api/v1/auth/domain-event?domain=${window.location.hostname}`
+            `${BACKEND_URL}/api/v1/auth/domain-event?domain=my-event.eventhex.ai`
+            
+          );
+          const data = await response.json();
+          setEventLogo(data.domainData.event.logo);
+        }
+        fetchDetails();
+      },[])
 
   useEffect(() => {
     const fetchSpeakers = async () => {
@@ -157,75 +170,6 @@ const Speakers = ({ params }: { params: { id: string } }) => {
     }
   }, [eventId]);
 
-  // // Sample data as fallback
-  // const sampleSpeakers: SpeakerProps[] = [
-  //   {
-  //     id: "speaker1",
-  //     name: "Dr. Priya Sharma",
-  //     title: "Dental Surgeon",
-  //     organization: "Indian Dental Association",
-  //     location: "Mumbai, India",
-  //     specialization: "General Dentistry",
-  //     description: "Leading expert in modern dental practices with over 15 years of experience in cosmetic dentistry and dental surgery.",
-  //     image: BlackImage,
-  //     type: "standard"
-  //   },
-  //   {
-  //     id: "speaker2",
-  //     name: "Dr. Rajiv Mehta",
-  //     title: "Senior Implantologist",
-  //     organization: "Mumbai Dental College",
-  //     location: "Mumbai, India",
-  //     specialization: "Implantology",
-  //     description: "Renowned implantologist specializing in complex cases and digital planning with international certification.",
-  //     image: BlackImage,
-  //     type: "premium"
-  //   },
-  //   {
-  //     id: "speaker3",
-  //     name: "Dr. Ananya Desai",
-  //     title: "Cosmetic Dentistry Expert",
-  //     organization: "Smile Design Institute",
-  //     location: "Bangalore, India",
-  //     specialization: "Cosmetic Dentistry",
-  //     description: "Pioneer in digital smile design and aesthetic dentistry with expertise in veneers and full mouth rehabilitation.",
-  //     image: BlackImage,
-  //     type: "vip"
-  //   },
-  //   {
-  //     id: "speaker4",
-  //     name: "Dr. Sunil Kumar",
-  //     title: "Orthodontics Specialist",
-  //     organization: "Delhi Dental Institute",
-  //     location: "Delhi, India",
-  //     specialization: "Orthodontics",
-  //     description: "Expert in modern orthodontic techniques including invisible aligners and lingual braces.",
-  //     image: BlackImage,
-  //     type: "standard"
-  //   },
-  //   {
-  //     id: "speaker5",
-  //     name: "Dr. Maya Reddy",
-  //     title: "Pediatric Dentist",
-  //     organization: "Children's Dental Care",
-  //     location: "Chennai, India",
-  //     specialization: "Pediatric Dentistry",
-  //     description: "Specialized in child psychology and pediatric dental procedures with a focus on preventive care.",
-  //     image: BlackImage,
-  //     type: "premium"
-  //   },
-  //   {
-  //     id: "speaker6",
-  //     name: "Dr. Vikram Singh",
-  //     title: "Endodontic Specialist",
-  //     organization: "Advanced Dental Care",
-  //     location: "Hyderabad, India",
-  //     specialization: "Endodontics",
-  //     description: "Expert in microsurgical endodontics and complex root canal treatments using advanced technology.",
-  //     image: BlackImage,
-  //     type: "vip"
-  //   }
-  // ];
 
   const filteredSpeakers = speakers?.filter(speaker => {
     const matchesType = activeType === 'all' || speaker.type === activeType;
@@ -248,7 +192,7 @@ const Speakers = ({ params }: { params: { id: string } }) => {
   return (
     <div className="bg-white flex flex-col min-h-screen">
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <Header />
+        <Header logo={eventLogo}/>
       </div>
       
       <main className="flex-1 container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
