@@ -4,7 +4,7 @@ import { Button } from "../ui/button";
 import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
 import { cn } from "../../lib/utils";
 
-export const RegisterCard = () => {
+export const RegisterCard = ({venue, title, date}) => {
   return (
     <aside className="bg-white rounded-2xl shadow-sm border border-gray-100 flex flex-col items-stretch text-black w-full px-6 py-8">
       <div className="flex justify-center mb-6">
@@ -22,7 +22,7 @@ export const RegisterCard = () => {
       </div>
 
       <h2 className="text-2xl font-bold text-center mb-8">
-        KEDDA Dental Expo 2024
+        {title}
       </h2>
       
       <div className="space-y-4">
@@ -31,7 +31,7 @@ export const RegisterCard = () => {
             <Calendar size={20} className="text-primary-base" />
           </div>
           <span className="text-[15px] text-neutral-700 font-medium">
-            24-25 August 2024
+            {date ? new Date(date).toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' }) : 'Invalid Date'}
           </span>
         </div>
         
@@ -40,7 +40,7 @@ export const RegisterCard = () => {
             <MapPin size={20} className="text-primary-dark" />
           </div>
           <span className="text-[15px] text-neutral-700 font-medium">
-            Trade Center, Calicut
+            {venue}
           </span>
         </div>
       </div>

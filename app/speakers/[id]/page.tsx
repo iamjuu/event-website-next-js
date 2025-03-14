@@ -1,13 +1,14 @@
 "use client"
 
-import React, { useState } from "react";
-import { Header } from "../components/event/Header";
-import { Footer } from "../components/event/Footer";
+import React, { useState, useEffect } from "react";
+import { Header } from "../../components/event/Header";
+import { Footer } from "../../components/event/Footer";
 import { Search, ArrowLeft, X, Building2, MapPin, Users } from "lucide-react";
 import Link from "next/link";
-import { cn } from "../lib/utils";
-import { Button } from "../components/ui/button";
+import { cn } from "../../lib/utils";
+import { Button } from "../../components/ui/button";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { BlackImage } from "@/public";
 
 type SpeakerType = "standard" | "premium" | "vip";
@@ -31,6 +32,8 @@ const speakerStyles = {
 };
 
 const SpeakerCard = ({ speaker }: { speaker: SpeakerProps }) => {
+
+  const IMG_CDN = "https://event-manager.syd1.cdn.digitaloceanspaces.com/";
   return (
     <div className={cn(
       "flex flex-col bg-white rounded-xl overflow-hidden shadow-sm transition-all duration-300 hover:shadow-lg border-t-4 p-5 md:p-6 h-full",
@@ -38,7 +41,7 @@ const SpeakerCard = ({ speaker }: { speaker: SpeakerProps }) => {
     )}>
       <div className="flex flex-col items-center mb-4">
         <Image
-          src={speaker.image}
+          src={IMG_CDN + speaker.image || BlackImage}
           alt={speaker.name}
           width={120}
           height={120}
@@ -101,81 +104,74 @@ const FilterButton = ({
   </button>
 );
 
-const Speakers = () => {
+const Speakers = ({ params }: { params: { id: string } }) => {
   const [activeType, setActiveType] = useState<SpeakerType | 'all'>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [searchOpen, setSearchOpen] = useState(false);
+  const [speakers, setSpeakers] = useState<SpeakerProps[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const pathname = usePathname();
+  const eventId = params?.id;
+  const BACKEND_URL = 'https://backend-endpoint.eventhex.ai';
+  const [eventLogo, setEventLogo] = useState(null);
+      useEffect(()=>{
+        const fetchDetails = async ()=>{
+          const response = await fetch(
+            // `https://backend-endpoint.eventhex.ai/api/v1/auth/domain-event?domain=${window.location.hostname}`
+            `${BACKEND_URL}/api/v1/auth/domain-event?domain=my-event.eventhex.ai`
+            
+          );
+          const data = await response.json();
+          setEventLogo(data.domainData.event.logo);
+        }
+        fetchDetails();
+      },[])
 
-  // const speakers: SpeakerProps[] = [
-  //   {
-  //     id: "speaker1",
-  //     name: "Dr. Priya Sharma",
-  //     title: "Dental Surgeon",
-  //     organization: "Indian Dental Association",
-  //     location: "Mumbai, India",
-  //     specialization: "General Dentistry",
-  //     description: "Leading expert in modern dental practices with over 15 years of experience in cosmetic dentistry and dental surgery.",
-  //     image: BlackImage,
-  //     type: "standard"
-  //   },
-  //   {
-  //     id: "speaker2",
-  //     name: "Dr. Rajiv Mehta",
-  //     title: "Senior Implantologist",
-  //     organization: "Mumbai Dental College",
-  //     location: "Mumbai, India",
-  //     specialization: "Implantology",
-  //     description: "Renowned implantologist specializing in complex cases and digital planning with international certification.",
-  //     image: BlackImage,
-  //     type: "premium"
-  //   },
-  //   {
-  //     id: "speaker3",
-  //     name: "Dr. Ananya Desai",
-  //     title: "Cosmetic Dentistry Expert",
-  //     organization: "Smile Design Institute",
-  //     location: "Bangalore, India",
-  //     specialization: "Cosmetic Dentistry",
-  //     description: "Pioneer in digital smile design and aesthetic dentistry with expertise in veneers and full mouth rehabilitation.",
-  //     image: BlackImage,
-  //     type: "vip"
-  //   },
-  //   {
-  //     id: "speaker4",
-  //     name: "Dr. Sunil Kumar",
-  //     title: "Orthodontics Specialist",
-  //     organization: "Delhi Dental Institute",
-  //     location: "Delhi, India",
-  //     specialization: "Orthodontics",
-  //     description: "Expert in modern orthodontic techniques including invisible aligners and lingual braces.",
-  //     image: BlackImage,
-  //     type: "standard"
-  //   },
-  //   {
-  //     id: "speaker5",
-  //     name: "Dr. Maya Reddy",
-  //     title: "Pediatric Dentist",
-  //     organization: "Children's Dental Care",
-  //     location: "Chennai, India",
-  //     specialization: "Pediatric Dentistry",
-  //     description: "Specialized in child psychology and pediatric dental procedures with a focus on preventive care.",
-  //     image: BlackImage,
-  //     type: "premium"
-  //   },
-  //   {
-  //     id: "speaker6",
-  //     name: "Dr. Vikram Singh",
-  //     title: "Endodontic Specialist",
-  //     organization: "Advanced Dental Care",
-  //     location: "Hyderabad, India",
-  //     specialization: "Endodontics",
-  //     description: "Expert in microsurgical endodontics and complex root canal treatments using advanced technology.",
-  //     image: BlackImage,
-  //     type: "vip"
-  //   }
-  // ];
+  useEffect(() => {
+    const fetchSpeakers = async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetch(
+          `${BACKEND_URL}/api/v1/speakers?event=${eventId}`
+        );
+        const data = await response.json();
+        if (data?.response && Array.isArray(data.response)) {
+          const extractedSpeakers = data.response.map((speaker, index) => ({
+            id: speaker.id || `speaker-${index}`,
+            name: speaker.name || "Unknown Speaker",
+            title: speaker.designation || "Speaker",
+            organization: speaker.company || "Organization",
+            description: speaker.description || "No description available",
+            location: speaker.location || "Location not specified",
+            specialization: speaker.specialization || "General",
+            image: speaker.photo || BlackImage,
+            type: (speaker.type as SpeakerType) || "standard",
+          }));
+          setSpeakers(extractedSpeakers);
+        } else {
+          console.warn("Invalid speakers data format:", data);
+          // Fallback to sample data in case of error
+          setSpeakers(sampleSpeakers);
+        }
+      } catch (error) {
+        console.error("Error fetching speakers:", error);
+        // Fallback to sample data in case of error
+        setSpeakers(sampleSpeakers);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  const filteredSpeakers = speakers.filter(speaker => {
+    if (eventId) {
+      fetchSpeakers();
+    } else {
+      setSpeakers(sampleSpeakers);
+      setIsLoading(false);
+    }
+  }, [eventId]);
+
+
+  const filteredSpeakers = speakers?.filter(speaker => {
     const matchesType = activeType === 'all' || speaker.type === activeType;
     const matchesSearch = searchQuery === '' || 
       speaker.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -196,7 +192,7 @@ const Speakers = () => {
   return (
     <div className="bg-white flex flex-col min-h-screen">
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <Header />
+        <Header logo={eventLogo}/>
       </div>
       
       <main className="flex-1 container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
@@ -236,7 +232,7 @@ const Speakers = () => {
           </div>
         )}
         
-        <div className="mb-6">
+        {/* <div className="mb-6">
           <div className="bg-gray-50 p-3 rounded-lg shadow-sm overflow-x-auto scrollbar-hide">
             <div className="flex items-center gap-2">
               <FilterButton 
@@ -265,9 +261,13 @@ const Speakers = () => {
               </FilterButton>
             </div>
           </div>
-        </div>
+        </div> */}
         
-        {filteredSpeakers.length > 0 ? (
+        {isLoading ? (
+          <div className="text-center py-12 bg-white rounded-xl shadow-sm">
+            <div className="text-gray-500 mb-4">Loading speakers...</div>
+          </div>
+        ) : filteredSpeakers.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredSpeakers.map((speaker) => (
               <SpeakerCard key={speaker.id} speaker={speaker} />
@@ -295,4 +295,4 @@ const Speakers = () => {
   );
 };
 
-export default Speakers; 
+export default Speakers;

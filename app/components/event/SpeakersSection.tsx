@@ -9,6 +9,7 @@ import {
   CarouselDots
 } from "../ui/carousel";
 import { BlackImage } from "@/public"; // Default fallback image
+import Speakers from "@/app/speakers/page";
 
 interface SpeakerProps {
   name: string;
@@ -24,6 +25,7 @@ const colorVariants = {
 };
 
 const SpeakerCard: React.FC<SpeakerProps> = ({ name, title, image, type }) => {
+
   const IMG_CDN = "https://event-manager.syd1.cdn.digitaloceanspaces.com/";
   return (
     <div className={`bg-white rounded-lg shadow-sm border-t-4 ${colorVariants[type]} p-4 flex flex-col items-center h-full`}>
@@ -40,8 +42,7 @@ const SpeakerCard: React.FC<SpeakerProps> = ({ name, title, image, type }) => {
   );
 };
 
-export const SpeakersSection = ({ speakers = [] }) => {
-
+export const SpeakersSection = ({ speakers = [], eventId }) => {
   return (
     <section className="py-12 md:py-16">
       <div className="max-w-[1208px] mx-auto">
@@ -50,12 +51,13 @@ export const SpeakersSection = ({ speakers = [] }) => {
             Speakers
           </h2>
           <Link 
-            href="/speakers" 
+            href={`/speakers/${eventId}`}
             className="text-[#6563ff] hover:text-[#5452ee] text-sm font-medium flex items-center gap-1"
           >
             View All
             <ArrowRight className="w-4 h-4" />
           </Link>
+
         </div>
 
         {speakers?.length > 0 ? (

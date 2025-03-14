@@ -24,6 +24,7 @@ const Index = () => {
   const [tickets, setTickets] = useState([]);
   const [speakers, setSpeakers] = useState([]);
   const [sessions, setSessions] = useState([]);
+  const [sponsors, setSponsors] = useState([]);
 
   const ticketSectionRef = useRef<HTMLDivElement>(null);
   const registerCardRef = useRef<HTMLDivElement>(null);
@@ -31,7 +32,7 @@ const Index = () => {
   const ticketHeadingRef = useRef<HTMLDivElement>(null);
 
   const BASE_URL = 'https://instarecap-app.ambitiousforest-1ab41110.centralindia.azurecontainerapps.io/api';
-  const BACKEND_URL = 'https://backend-endpoint.eventhex.ai'
+  const BACKEND_URL = 'https://backend-endpoint.eventhex.ai';
   
   useEffect(()=>{
     const fetchDetails = async ()=>{
@@ -42,22 +43,9 @@ const Index = () => {
       );
       const data = await response.json();
       setEventData(data.domainData.event);
-      console.log("data", data);
     }
     fetchDetails();
   },[])
-
-  // useEffect(()=>{
-
-  //   const fetchDetails = async ()=>{
-  //     const response = await fetch (`${BASE_URL}/sessions/event?eventId=${eventData._id}`);
-  //     const data = await response.json();
-  //     console.log("Domain", data);
-  //   }
-
-  //   if ( ! eventData?._id ) return ;
-  //   fetchDetails();
-  // },[eventData?._id])
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -75,10 +63,9 @@ const Index = () => {
             shortDescription: ticket.shortDescription,
             location: eventData?.venue,
             date: ticket.startDate,
-            price : ticket?.price || "Free" // Assuming `date` is the `startDate`
+            price : ticket?.paymentAmount || "Free" // Assuming `date` is the `startDate`
           }));
           setTickets(extractedTickets);
-          console.log("Extracted Tickets:", extractedTickets);
         } else {
           console.warn("Invalid ticket data format:", data);
         }
@@ -95,7 +82,7 @@ const Index = () => {
     const fetchDetails = async () => {
       try {
         const response = await fetch(
-          `${BACKEND_URL}/api/v1/speakers?event=${eventData?._id}`
+          `${BACKEND_URL}/api/v1/speakers?event=${eventData?._id}&limit=4`
         );
         const data = await response.json();
         if (data?.response && Array.isArray(data.response)) {
@@ -112,7 +99,7 @@ const Index = () => {
         }
   
       } catch (error) {
-        console.error("Error fetching tickets:", error);
+        console.error("Error fetching speakers:", error);
       }
     };
   
@@ -124,7 +111,7 @@ const Index = () => {
     const fetchDetails = async () => {
       try {
         const response = await fetch(
-          `${BACKEND_URL}/api/v1/sessions?event=${eventData?._id}`
+          `${BACKEND_URL}/api/v1/sessions?event=${eventData?._id}&limit=3`
         );
         const data = await response.json();  
         // Transform the data to match the expected structure
@@ -158,8 +145,41 @@ const Index = () => {
     };
   
     if (!eventData?._id) return;
+    else
     fetchDetails();
   }, [eventData?._id]);
+
+  useEffect(()=>{
+
+    const fetchSponors = async ()=>{
+      try {
+        const response = await fetch(
+          `${BACKEND_URL}/api/v1/sponsors?event=${eventData?._id}`
+        );
+        const data = await response.json();
+        console.log(data, "sponsors");
+        if (data?.response && Array.isArray(data.response)) {
+          const extractedSponsors = data.response.map((sponsor) => ({
+            id: sponsor._id,
+            name: sponsor.name,
+            logoUrl : sponsor.logo,
+            tier: sponsor.segment || "standard",
+          }));
+          setSponsors(extractedSponsors);
+          console.log("Extracted Spondors:", extractedSponsors);
+        } else {
+          console.warn("Invalid sponsros data format:", data);
+        }
+  
+      } catch (error) {
+        console.error("Error fetching sponsors:", error);
+      }
+    }
+
+    if (!eventData?._id) return ;
+    fetchSponors();
+
+  },[eventData?._id])
   // if (loading) {
   //   return <div>Loading...</div>;
   // }
@@ -171,7 +191,7 @@ const Index = () => {
   
   return (
     <div className="bg-white flex flex-col items-stretch pt-4 md:pt-[26px] pb-28 md:pb-[70px]">
-      <Header logo={eventData?.logo} title={eventData?.title} />
+     {eventData && <Header logo={eventData?.logo} title={eventData?.title} />}
       <main className="self-center flex w-full max-w-[1208px] flex-col items-stretch px-4">
         <Hero 
           title={eventData?.title}
@@ -188,7 +208,7 @@ const Index = () => {
                   venue={eventData?.venue}
                 />
                 <AboutEvent description={eventData?.description} />
-                <KeyFeatures />
+                {/* <KeyFeatures /> */}
               </div>
             </div>
             
@@ -206,7 +226,7 @@ const Index = () => {
                   zIndex: 40
                 }}
               >
-                <RegisterCard />
+                <RegisterCard venue={eventData?.venue} title={eventData?.title} date={eventData?.startDate}/>
               </div>
             </div>
           </div>
@@ -218,20 +238,20 @@ const Index = () => {
           </h2> */}
         </div>
         <div ref={ticketSectionRef}>
-          <TicketSection tickets = {tickets}/>
+          {tickets.length && <TicketSection tickets = {tickets}/>}
         </div>
         
-        <SessionsSection sessions = {sessions} />
+        {sessions.length && eventData._id != [] && <SessionsSection sessions={sessions} eventId={eventData?._id} />}
         
-        <SpeakersSection speakers ={speakers}/>
+        {speakers.length && <SpeakersSection speakers ={speakers} eventId = {eventData?._id} />}
         
-        <SponsorsSection />
+        {sponsors.length && <SponsorsSection sponsors={sponsors} />}
         
         <LocationMap />
         
       </main>
       <Footer />
-      <StickyFooter />
+      <StickyFooter title = {eventData?.title} venue={eventData?.venue} date={eventData?.startDate} price={eventData?.price || "Free"}/>
     </div>
   );
 };
