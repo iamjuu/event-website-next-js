@@ -231,7 +231,7 @@ const Index = () => {
         
       </main>
       <Footer />
-      <StickyFooter />
+      <StickyFooter title = {eventData?.title} venue={eventData?.venue} date={eventData?.startDate} price={eventData?.price || "Free"}/>
     </div>
   );
 };
