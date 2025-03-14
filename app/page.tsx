@@ -188,7 +188,7 @@ const Index = () => {
                   venue={eventData?.venue}
                 />
                 <AboutEvent description={eventData?.description} />
-                <KeyFeatures />
+                {/* <KeyFeatures /> */}
               </div>
             </div>
             
@@ -206,7 +206,7 @@ const Index = () => {
                   zIndex: 40
                 }}
               >
-                <RegisterCard />
+                <RegisterCard venue={eventData?.venue} title={eventData?.title} date={eventData?.startDate}/>
               </div>
             </div>
           </div>
