@@ -63,7 +63,7 @@ const Index = () => {
             shortDescription: ticket.shortDescription,
             location: eventData?.venue,
             date: ticket.startDate,
-            price : ticket?.price || "Free" // Assuming `date` is the `startDate`
+            price : ticket?.paymentAmount || "Free" // Assuming `date` is the `startDate`
           }));
           setTickets(extractedTickets);
           console.log("Extracted Tickets:", extractedTickets);
