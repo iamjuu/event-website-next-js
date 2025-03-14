@@ -32,7 +32,7 @@ const Index = () => {
   const ticketHeadingRef = useRef<HTMLDivElement>(null);
 
   const BASE_URL = 'https://instarecap-app.ambitiousforest-1ab41110.centralindia.azurecontainerapps.io/api';
-  const BACKEND_URL = 'https://backend-endpoint.eventhex.ai'
+  const BACKEND_URL = 'https://backend-endpoint.eventhex.ai';
   
   useEffect(()=>{
     const fetchDetails = async ()=>{
@@ -82,7 +82,7 @@ const Index = () => {
     const fetchDetails = async () => {
       try {
         const response = await fetch(
-          `${BACKEND_URL}/api/v1/speakers?event=${eventData?._id}`
+          `${BACKEND_URL}/api/v1/speakers?event=${eventData?._id}&limit=4`
         );
         const data = await response.json();
         if (data?.response && Array.isArray(data.response)) {
@@ -242,7 +242,7 @@ const Index = () => {
         
         {sessions.length && <SessionsSection sessions = {sessions} />}
         
-        {speakers.length && <SpeakersSection speakers ={speakers}/>}
+        {speakers.length && <SpeakersSection speakers ={speakers} eventId = {eventData?._id} />}
         
         {sponsors.length && <SponsorsSection sponsors={sponsors} />}
         
