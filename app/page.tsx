@@ -80,7 +80,7 @@ const Index = () => {
     const fetchDetails = async () => {
       try {
         const response = await fetch(
-          `${BACKEND_URL}/api/v1/speakers?event=${eventData?._id}&limit=4`
+          `${BACKEND_URL}/api/v1/speakers?event=${eventData?._id}`
         );
         const data = await response.json();
         if (data?.response && Array.isArray(data.response)) {
@@ -109,7 +109,7 @@ const Index = () => {
     const fetchDetails = async () => {
       try {
         const response = await fetch(
-          `${BACKEND_URL}/api/v1/sessions?event=${eventData?._id}&limit=3`
+          `${BACKEND_URL}/api/v1/sessions?event=${eventData?._id}`
         );
         const data = await response.json();  
         // Transform the data to match the expected structure
