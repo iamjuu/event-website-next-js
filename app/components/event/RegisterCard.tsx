@@ -52,7 +52,7 @@ export const RegisterCard = ({venue, title, date}) => {
         >
           <span className="font-medium">Register Now</span>
           <ExternalLink size={16} />
-        </Button>
+        </Button> 
       </div>
       
       <div className="mt-4 text-center">

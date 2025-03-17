@@ -236,10 +236,10 @@ const Index = () => {
           </h2> */}
         </div>
         <div ref={ticketSectionRef}>
-          {tickets.length && <TicketSection tickets = {tickets}/>}
+          {tickets.length > 1 && <TicketSection tickets = {tickets}/>}
         </div>
         
-        {sessions.length ===3 && <SessionsSection sessions={sessions} eventId={eventData?._id} />}
+        {sessions.length  && <SessionsSection sessions={sessions} eventId={eventData?._id} />}
         
         {speakers.length && <SpeakersSection speakers ={speakers} eventId = {eventData?._id} />}
         
