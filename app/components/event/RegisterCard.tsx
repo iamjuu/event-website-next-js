@@ -1,10 +1,11 @@
 import React from "react";
 import { Calendar, MapPin, ExternalLink } from "lucide-react";
+import Link from "next/link";
 import { Button } from "../ui/button";
 import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
 import { cn } from "../../lib/utils";
 
-export const RegisterCard = ({venue, title, date}) => {
+export const RegisterCard = ({venue, title, date, facebook}) => {
   return (
     <aside className="bg-white rounded-2xl shadow-sm border border-gray-100 flex flex-col items-stretch text-black w-full px-6 py-8">
       <div className="flex justify-center mb-6">
@@ -59,7 +60,7 @@ export const RegisterCard = ({venue, title, date}) => {
         <span className="text-sm text-neutral-600">Limited seats available. Register early!</span>
       </div>
       <div className="flex mt-3 items-center justify-center gap-4 md:gap-6 px-[10px]">
-        <SocialIcon icon={<Facebook size={16} className="md:text-lg" />} />
+        <Link href= {`/${facebook}`}> <SocialIcon icon={<Facebook size={16} className="md:text-lg" />} /> </Link>
         <SocialIcon icon={<Instagram size={16} className="md:text-lg" />} />
         <SocialIcon icon={<Twitter size={16} className="md:text-lg" />} />
         <SocialIcon icon={<Linkedin size={16} className="md:text-lg" />} />
