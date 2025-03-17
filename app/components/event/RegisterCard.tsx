@@ -60,10 +60,10 @@ export const RegisterCard = ({venue, title, date, facebook}) => {
         <span className="text-sm text-neutral-600">Limited seats available. Register early!</span>
       </div>
       <div className="flex mt-3 items-center justify-center gap-4 md:gap-6 px-[10px]">
-        <Link href= {`/${facebook}`}> <SocialIcon icon={<Facebook size={16} className="md:text-lg" />} /> </Link>
-        <SocialIcon icon={<Instagram size={16} className="md:text-lg" />} />
-        <SocialIcon icon={<Twitter size={16} className="md:text-lg" />} />
-        <SocialIcon icon={<Linkedin size={16} className="md:text-lg" />} />
+        <Link href= {`www.facebook.com/${facebook}`}> <SocialIcon icon={<Facebook size={16} className="md:text-lg" />} /> </Link>
+        <Link href= {`www.instagram.com/${facebook}`}><SocialIcon icon={<Instagram size={16} className="md:text-lg" />} /> </Link>
+        <Link href= {`www.x.com/${facebook}`}><SocialIcon icon={<Twitter size={16} className="md:text-lg" />} /> </Link>
+        <Link href= {`www.linkedin.com/${facebook}`}><SocialIcon icon={<Linkedin size={16} className="md:text-lg" />} /> </Link>
       </div>
     </aside>
   );
