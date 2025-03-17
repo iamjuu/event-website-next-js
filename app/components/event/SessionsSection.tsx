@@ -89,7 +89,7 @@ const SessionCard: React.FC<SessionProps> = ({
 
 export const SessionsSection = ({sessions, eventId}) => {
   // const eventId = sessions[0].event;
-  // console.log("event IDDDD", eventId);
+  console.log("sessons", sessions);
   const carouselRef = useRef<HTMLDivElement>(null);
   const apiRef = useRef<any>(null);
   const [isHovering, setIsHovering] = useState(false);
@@ -153,7 +153,7 @@ export const SessionsSection = ({sessions, eventId}) => {
             }}
           >
             <CarouselContent className="-ml-4">
-              {sessions?.slice(0, 4).map((session, index) => (
+              {sessions?.map((session, index) => (
                 <CarouselItem
                   key={index}
                   className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3"
