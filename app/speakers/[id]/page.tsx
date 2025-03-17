@@ -32,8 +32,8 @@ const speakerStyles = {
 };
 
 const SpeakerCard = ({ speaker }: { speaker: SpeakerProps }) => {
-
-  const IMG_CDN = "https://event-manager.syd1.cdn.digitaloceanspaces.com/";
+ 
+  const IMG_CDN = process.env.IMG_CDN;
   return (
     <div className={cn(
       "flex flex-col bg-white rounded-xl overflow-hidden shadow-sm transition-all duration-300 hover:shadow-lg border-t-4 p-5 md:p-6 h-full",
