@@ -5,7 +5,7 @@ import DOMPurify from "dompurify"; // Install with: npm install dompurify
 export const AboutEvent = ({ description }) => {
   return (
     <section className="mt-8 md:mt-[47px]">
-      <h2 className="text-black text-xl md:text-[22px]  font-medium leading-normal md:leading-[3]">
+      <h2 className="text-black text-xl md:text-[22px] font-medium leading-normal md:leading-[3]">
         About Event
       </h2>
     
