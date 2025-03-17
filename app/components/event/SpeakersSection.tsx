@@ -25,8 +25,8 @@ const colorVariants = {
 };
 
 const SpeakerCard: React.FC<SpeakerProps> = ({ name, title, image, type }) => {
- 
-  const IMG_CDN = process.env.IMG_CDN;
+
+  const IMG_CDN = "https://event-manager.syd1.cdn.digitaloceanspaces.com/";
   return (
     <div className={`bg-white rounded-lg shadow-sm border-t-4 ${colorVariants[type]} p-4 flex flex-col items-center h-full`}>
       <Image

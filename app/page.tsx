@@ -27,10 +27,10 @@ const Index = () => {
 
   const ticketSectionRef = useRef<HTMLDivElement>(null);
   const registerCardRef = useRef<HTMLDivElement>(null);
-  // const contentSectionRef = useRef<HTMLDivElement>(null);
-  // const ticketHeadingRef = useRef<HTMLDivElement>(null);
+  const contentSectionRef = useRef<HTMLDivElement>(null);
+  const ticketHeadingRef = useRef<HTMLDivElement>(null);
 
-  const BACKEND_URL = process.env.BACKEND_URL ; 
+  const BACKEND_URL = 'https://backend-endpoint.eventhex.ai';
   
   useEffect(()=>{
     const fetchDetails = async ()=>{
@@ -80,7 +80,7 @@ const Index = () => {
     const fetchDetails = async () => {
       try {
         const response = await fetch(
-          `${BACKEND_URL}/api/v1/speakers?event=${eventData?._id}`
+          `${BACKEND_URL}/api/v1/speakers?event=${eventData?._id}&limit=4`
         );
         const data = await response.json();
         if (data?.response && Array.isArray(data.response)) {
@@ -109,7 +109,7 @@ const Index = () => {
     const fetchDetails = async () => {
       try {
         const response = await fetch(
-          `${BACKEND_URL}/api/v1/sessions?event=${eventData?._id}`
+          `${BACKEND_URL}/api/v1/sessions?event=${eventData?._id}&limit=3`
         );
         const data = await response.json();  
         // Transform the data to match the expected structure

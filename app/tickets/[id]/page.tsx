@@ -31,8 +31,8 @@ export default function TicketDetail() {
   const id = params.id as string;
   const router = useRouter();
   const [eventLogo, setEventLogo] = useState(null);
-  const BACKEND_URL = process.env.BACKEND_URL ; 
-  const IMG_CDN = process.env.IMG_CDN;
+  const BACKEND_URL = 'https://backend-endpoint.eventhex.ai';
+  const IMG_CDN = "https://event-manager.syd1.cdn.digitaloceanspaces.com/";
   const { toast } = useToast();
   
   const [ticket, setTicket] = useState<TicketData | null>(null);

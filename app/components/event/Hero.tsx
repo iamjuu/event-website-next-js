@@ -4,7 +4,7 @@ import { Banner } from "@/public";
 
 export const Hero = ({banner}) => {
 
-  const IMG_CDN = process.env.IMG_CDN;
+  const IMG_CDN = "https://event-manager.syd1.cdn.digitaloceanspaces.com/";
 
   return (
     <div className="w-full mt-[19px] rounded-[0px_0px_0px_0px] max-md:max-w-full py-0">

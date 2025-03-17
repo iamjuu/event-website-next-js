@@ -44,7 +44,7 @@ const SessionCard: React.FC<SessionProps> = ({
   type,
 }) => {
 
-  const IMG_CDN = process.env.IMG_CDN;
+  const IMG_CDN = "https://event-manager.syd1.cdn.digitaloceanspaces.com/";
   return (
     <div
       className={`bg-white rounded-lg shadow-sm border-l-4 ${colorVariants[type]} p-4 h-full`}

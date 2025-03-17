@@ -3,8 +3,8 @@ import Image from "next/image";
 import { Button } from "../ui/button";
 import { BlackImage } from "@/public";
 export const Header = ({logo}) => {
- 
-  const IMG_CDN = process.env.IMG_CDN;
+
+  const IMG_CDN = "https://event-manager.syd1.cdn.digitaloceanspaces.com/";
   return (
     
 <header className="px-5 py-3 md:py-0 sm:px-5 bg-white/80 backdrop-blur-sm border border-t-0 border-neutral-200 shadow-sm">

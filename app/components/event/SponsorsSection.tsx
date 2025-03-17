@@ -14,8 +14,8 @@ type SponsorProps = {
 };
 
 const SponsorLogo = ({ sponsor }: { sponsor: SponsorProps }) => {
-   
-  const IMG_CDN = process.env.IMG_CDN;
+
+  const IMG_CDN = "https://event-manager.syd1.cdn.digitaloceanspaces.com/";
   return (
     <div className="bg-white rounded-lg p-4 flex items-center justify-center shadow-sm hover:shadow-md transition-all duration-300 aspect-[3/2]">
       <img 

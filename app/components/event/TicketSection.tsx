@@ -81,7 +81,7 @@ const TicketCard: React.FC<TicketProps> = ({
     return price;
   };
 
-  const IMG_CDN = process.env.IMG_CDN;
+  const IMG_CDN = "https://event-manager.syd1.cdn.digitaloceanspaces.com/";
   return (
     <div 
       className={`${ticketStyles[type].border} ${ticketStyles[type].hover} rounded-2xl overflow-hidden shadow-sm border border-neutral-100 transition-all duration-300 hover:shadow-lg`}

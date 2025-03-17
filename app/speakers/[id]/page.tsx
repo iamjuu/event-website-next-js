@@ -32,8 +32,8 @@ const speakerStyles = {
 };
 
 const SpeakerCard = ({ speaker }: { speaker: SpeakerProps }) => {
- 
-  const IMG_CDN = process.env.IMG_CDN;
+
+  const IMG_CDN = "https://event-manager.syd1.cdn.digitaloceanspaces.com/";
   return (
     <div className={cn(
       "flex flex-col bg-white rounded-xl overflow-hidden shadow-sm transition-all duration-300 hover:shadow-lg border-t-4 p-5 md:p-6 h-full",
@@ -112,7 +112,7 @@ const Speakers = ({ params }: { params: { id: string } }) => {
   const [isLoading, setIsLoading] = useState(true);
   const pathname = usePathname();
   const eventId = params?.id;
-  const BACKEND_URL = process.env.BACKEND_URL ; 
+  const BACKEND_URL = 'https://backend-endpoint.eventhex.ai';
   const [eventLogo, setEventLogo] = useState(null);
       useEffect(()=>{
         const fetchDetails = async ()=>{
