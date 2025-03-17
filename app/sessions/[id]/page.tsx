@@ -37,7 +37,7 @@ type SessionProps = {
   stage: string;
 };
 
-const BACKEND_URL = 'https://backend-endpoint.eventhex.ai';
+const BACKEND_URL = process.env.BACKEND_URL ; 
 
 const SessionCard = ({ session }: { session: SessionProps }) => {
   const sessionStyles = {

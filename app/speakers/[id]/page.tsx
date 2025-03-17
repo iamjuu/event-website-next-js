@@ -112,7 +112,7 @@ const Speakers = ({ params }: { params: { id: string } }) => {
   const [isLoading, setIsLoading] = useState(true);
   const pathname = usePathname();
   const eventId = params?.id;
-  const BACKEND_URL = 'https://backend-endpoint.eventhex.ai';
+  const BACKEND_URL = process.env.BACKEND_URL ; 
   const [eventLogo, setEventLogo] = useState(null);
       useEffect(()=>{
         const fetchDetails = async ()=>{
