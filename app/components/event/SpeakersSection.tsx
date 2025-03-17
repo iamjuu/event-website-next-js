@@ -70,7 +70,7 @@ export const SpeakersSection = ({ speakers = [], eventId }) => {
               className="w-full"
             >
               <CarouselContent className="-ml-4">
-                {speakers?.slice(0, 4).map((speaker, index) => (
+                {speakers?.slice(0, 10).map((speaker, index) => (
                   <CarouselItem key={index} className="pl-4 basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4">
                     <SpeakerCard {...speaker} />
                   </CarouselItem>

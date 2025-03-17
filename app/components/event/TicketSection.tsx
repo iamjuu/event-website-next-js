@@ -126,14 +126,14 @@ const TicketCard: React.FC<TicketProps> = ({
           </div>
 
           <div className="flex gap-3 mt-2">
-            <Link href={`/tickets/${id}`} className="flex-1">
+            {/* <Link href={`/tickets/${id}`} className="flex-1">
               <Button 
                 variant="outline"
                 className="w-full border-neutral-200 hover:bg-neutral-50"
               >
                 Details
               </Button>
-            </Link>
+            </Link> */}
             <Button 
               className={`flex-1 text-white ${buttonStyles[type]}`}
             >
