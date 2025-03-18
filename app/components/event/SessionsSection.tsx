@@ -44,7 +44,11 @@ const SessionCard: React.FC<SessionProps> = ({
   const borderColor = type && colorVariants[type] ? colorVariants[type] : colorVariants.standard;
   
   return (
-    <div className={` rounded-lg shadow-sm border-l-4 ${borderColor}  justify-between p-4 flex flex-col  h-full`}>
+    <div 
+    className={` rounded-lg shadow-md hover:border hover:border-l-4 ${borderColor}  justify-between  p-4 flex flex-col  h-full`}>
+     <div className="">
+
+     
       <h3 className="text-lg font-medium text-neutral-900 mb-3">{title}</h3>
 
 
@@ -64,6 +68,7 @@ const SessionCard: React.FC<SessionProps> = ({
             )}
           </div>
         ))}
+      </div>
       </div>
 
  <div className="">

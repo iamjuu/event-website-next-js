@@ -181,14 +181,6 @@ const Index = () => {
     fetchSponors();
 
   },[eventData?._id])
-  // if (loading) {
-  //   return <div>Loading...</div>;
-  // }
-
-  // if (error || !eventData) {
-  //   return <div>Error: {error}</div>;
-  // }
-
   
   return (
     <div className="bg-white flex flex-col items-stretch pt-4 md:pt-[26px] pb-28 md:pb-[70px]">
