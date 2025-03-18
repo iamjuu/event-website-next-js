@@ -1,69 +1,104 @@
-import type { Metadata } from "next";
+                                                                                            import type { Metadata } from "next";
 // import { GeistSans, GeistMono } from "@vercel/fonts";
 import "./globals.css";
 import Script from 'next/script';
 
-export const metadata: Metadata = {
-  title: "Tech Conference 2024",
-  description: "Join us for the most innovative tech conference of the year",
-  openGraph: {
-    images: ['/banner/f4167b70-96d7-4ca2-86fc-c12d3aebd304.jpg'],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    images: ['/banner/f4167b70-96d7-4ca2-86fc-c12d3aebd304.jpg'],
-  },
-};
-
-const eventJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Event",
-  "name": "Tech Conference 2024",
-  "description": "Join us for the most innovative tech conference of the year",
-  "image": "https://yourdomain.com/banner/f4167b70-96d7-4ca2-86fc-c12d3aebd304.jpg",
-  "startDate": "2024-06-01T09:00",
-  "endDate": "2024-06-03T17:00",
-  "location": {
-    "@type": "Place",
-    "name": "Tech Conference Center",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "123 Tech Street",
-      "addressLocality": "San Francisco",
-      "addressRegion": "CA",
-      "postalCode": "94105",
-      "addressCountry": "US"
-    }
-  },
-  "offers": {
-    "@type": "Offer",
-    "url": "https://example.com/tickets",
-    "price": "499",
-    "priceCurrency": "USD",
-    "availability": "https://schema.org/InStock"
-  },
-  "organizer": {
-    "@type": "Organization",
-    "name": "Tech Conference Organizers",
-    "url": "https://example.com"
+// Function to fetch event data
+async function getEventData() {
+  try {
+    const response = await fetch(
+      'https://backend-endpoint.eventhex.ai/api/v1/auth/domain-event?domain=my-event.eventhex.ai',
+      { next: { revalidate: 3600 } } // Revalidate every hour
+    );
+    const data = await response.json();
+    return data.domainData.event;
+  } catch (error) {
+    console.error('Error fetching event data:', error);
+    return null;
   }
-};
+}
 
-export default function RootLayout({
+// Generate dynamic metadata
+export async function generateMetadata(): Promise<Metadata> {
+  const eventData = await getEventData();
+  
+  if (!eventData) {
+    return {
+      title: "Event Page",
+      description: "Event details page",
+    };
+  }
+
+  return {
+    title: eventData.title || "Event Page",
+    description: eventData.description || "Event details page",
+    openGraph: {
+      title: eventData.title,
+      description: eventData.description,
+      images: eventData.banner ? [eventData.banner] : [],
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: eventData.title,
+      description: eventData.description,
+      images: eventData.banner ? [eventData.banner] : [],
+    },
+  };
+}
+
+// Generate dynamic JSON-LD
+async function generateJsonLd() {
+  const eventData = await getEventData();
+  
+  if (!eventData) return null;
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "Event",
+    "name": eventData.title,
+    "description": eventData.description,
+    "image": eventData.banner,
+    "startDate": eventData.startDate,
+    "endDate": eventData.endDate,
+    "location": {
+      "@type": "Place",
+      "name": eventData.venue,
+    },
+    "offers": {
+      "@type": "Offer",
+      "url": typeof window !== 'undefined' ? window.location.href : '',
+      "price": eventData.price || "0",
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock"
+    },
+    "organizer": {
+      "@type": "Organization",
+      "name": eventData.title,
+      "url": typeof window !== 'undefined' ? window.location.origin : ''
+    }
+  };
+}
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const jsonLd = await generateJsonLd();
+
   return (
     <html lang="en">
       <head>
-        <Script
-          id="event-schema"
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(eventJsonLd) }}
-        />
+        {jsonLd && (
+          <Script
+            id="event-schema"
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          />
+        )}
       </head>
-      <body >
+      <body>
         {children}
       </body>
     </html>
