@@ -25,7 +25,9 @@ const colorVariants = {
 const SpeakerCard: React.FC<SpeakerProps> = ({ name, title, image, type }) => {
   const IMG_CDN = "https://event-manager.syd1.cdn.digitaloceanspaces.com/";
   return (
-    <div className={`bg-white rounded-lg   shadow-sm border-t-4 ${colorVariants[type]} p-4 flex flex-col items-center h-full`}>
+    <div
+    className={`border rounded-lg border-neutral-200 hover:border-neutral-100 hover:shadow-lg transition-all duration-300 ease-in-out p-4 flex flex-col items-center h-full`}
+    >
       <Image
         src={IMG_CDN + image || BlackImage} // Use fallback if image is missing
         alt={name}

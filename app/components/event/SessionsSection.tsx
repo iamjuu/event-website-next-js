@@ -39,7 +39,7 @@ const SessionCard: React.FC<SessionProps> = ({
   return (
     <>
   <div
-  className={`rounded-lg shadow-sm border  flex-1 border-neutral-100 transition-all duration-300 hover:shadow-lg ${borderColor} p-4 flex flex-col justify-between min-h-[200px]`}
+  className={`rounded-lg shadow-sm border   flex-1 border-neutral-100   transition-all duration-300 hover:shadow-lg ${borderColor} p-4 flex flex-col justify-between min-h-[200px]`}
 >
   {/* Title Section */}
   <div>
