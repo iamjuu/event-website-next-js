@@ -112,12 +112,13 @@ const Index = () => {
           `${BACKEND_URL}/api/v1/sessions?event=${eventData?._id}`
         );
         const data = await response.json();  
+        console.log(data,'dafdsgs')
         // Transform the data to match the expected structure
         const formattedSessions = data.response.map((session: any) => ({
           title: session.title,
           speakers: session.speakers.map((speaker: any) => ({
-            name: speaker.name,
-            image: speaker.image, // Fallback to BlackImage if no image
+            name: speaker.value,
+            image: speaker.photo, // Fallback to BlackImage if no image
           })),
           date: new Date(session.startTime).toLocaleDateString("en-US", {
             month: "long",
@@ -136,6 +137,8 @@ const Index = () => {
           stage: session.stage?.value || "Unknown Stage",
           type: session.sessiontype?.value?.toLowerCase() || "standard",
         }));
+        console.log(formattedSessions,'formtted');
+        
         setSessions(formattedSessions);
       } catch (error) {
         console.error("Error fetching sessions:", error);
