@@ -44,9 +44,9 @@ const SessionCard: React.FC<SessionProps> = ({
   const borderColor = type && colorVariants[type] ? colorVariants[type] : colorVariants.standard;
   
   return (
-    <div className={`bg-white rounded-lg shadow-sm border-l-4 ${borderColor} p-4 flex flex-col items-center h-full`}>
-    
+    <div className={` rounded-lg shadow-sm border-l-4 ${borderColor}  justify-between p-4 flex flex-col  h-full`}>
       <h3 className="text-lg font-medium text-neutral-900 mb-3">{title}</h3>
+
 
       <div className="flex flex-wrap gap-2 mb-4">
         {speakers.map((speaker, index) => (
@@ -66,7 +66,7 @@ const SessionCard: React.FC<SessionProps> = ({
         ))}
       </div>
 
-      <div className="space-y-2">
+ <div className="">
         <div className="flex items-center text-sm text-neutral-500">
           <Calendar className="w-4 h-4 mr-2" />
           <span>{date}</span>
@@ -80,7 +80,7 @@ const SessionCard: React.FC<SessionProps> = ({
           <span>{stage}</span>
         </div>
       </div>
-    </div>
+      </div>
   );
 };
 

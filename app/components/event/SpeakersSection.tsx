@@ -33,8 +33,8 @@ const SpeakerCard: React.FC<SpeakerProps> = ({ name, title, image, type }) => {
         height={92}
         className="rounded-full mb-3 border-2 border-white shadow-sm"
       />
-      <h3 className="text-lg font-medium text-neutral-900 mb-1">{name}</h3>
-      <p className="text-sm text-neutral-600">{title}</p>
+      <h3 className="text-lg   font-medium text-neutral-900 mb-1">{name}</h3>
+      <p className="text-sm text-center text-neutral-600">{title}</p>
     </div>
   );
 };
