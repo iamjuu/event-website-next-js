@@ -48,9 +48,9 @@ const SessionCard: React.FC<SessionProps> = ({
       <h3 className="text-lg font-medium text-neutral-900 mb-3">{title}</h3>
 
 
-      <div className="flex flex-wrap gap-2 mb-4">
+      <div className="flex flex-wrap  flex-col gap-2 mb-4">
         {speakers.map((speaker, index) => (
-          <div key={index} className="flex items-center">
+          <div key={index} className="flex   items-center">
             <Image
               src={IMG_CDN + speaker.image}
               alt={speaker.name}
