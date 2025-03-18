@@ -117,7 +117,7 @@ const Index = () => {
           title: session.title,
           speakers: session.speakers.map((speaker: any) => ({
             name: speaker.name,
-            image: speaker.image || BlackImage, // Fallback to BlackImage if no image
+            image: speaker.image, // Fallback to BlackImage if no image
           })),
           date: new Date(session.startTime).toLocaleDateString("en-US", {
             month: "long",
@@ -224,7 +224,15 @@ const Index = () => {
                   zIndex: 40
                 }}
               >
-                <RegisterCard venue={eventData?.venue} title={eventData?.title} date={eventData?.startDate}/>
+                <RegisterCard 
+                venue={eventData?.venue} 
+                title={eventData?.title} 
+                date={eventData?.startDate}
+                facebook={eventData?.facebook}
+                whatsapp={eventData?.whatsapp}
+                linkedin={eventData?.linkedin}
+                instagram={eventData?.instagram}
+                />
               </div>
             </div>
           </div>

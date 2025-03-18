@@ -25,9 +25,9 @@ interface SessionProps {
 }
 
 const colorVariants: Record<SessionProps['type'], string> = {
-  standard: "border-t-blue-500",
-  premium: "border-t-purple-500",
-  vip: "border-t-amber-500",
+  standard: "border-blue-500",
+  premium: "border-purple-500",
+  vip: "border-amber-500",
 } as const;
 
 const SessionCard: React.FC<SessionProps> = ({
@@ -36,7 +36,7 @@ const SessionCard: React.FC<SessionProps> = ({
   date,
   time,
   stage,
-  type = 'standard', // Add default value
+  type = 'standard', 
 }) => {
   const IMG_CDN = "https://event-manager.syd1.cdn.digitaloceanspaces.com/";
   
@@ -44,7 +44,7 @@ const SessionCard: React.FC<SessionProps> = ({
   const borderColor = type && colorVariants[type] ? colorVariants[type] : colorVariants.standard;
   
   return (
-    <div className={`bg-white rounded-lg shadow-sm border-t-4 ${borderColor} p-4 flex flex-col items-center h-full`}>
+    <div className={`bg-white rounded-lg shadow-sm border-l-4 ${borderColor} p-4 flex flex-col items-center h-full`}>
     
       <h3 className="text-lg font-medium text-neutral-900 mb-3">{title}</h3>
 
