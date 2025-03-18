@@ -25,7 +25,9 @@ const colorVariants = {
 const SpeakerCard: React.FC<SpeakerProps> = ({ name, title, image, type }) => {
   const IMG_CDN = "https://event-manager.syd1.cdn.digitaloceanspaces.com/";
   return (
-    <div className={`bg-white rounded-lg   shadow-sm border-t-4 ${colorVariants[type]} p-4 flex flex-col items-center h-full`}>
+    <div
+    className={`border rounded-lg border-neutral-200 hover:border-neutral-100 hover:shadow-lg transition-all duration-300 ease-in-out p-4 flex flex-col items-center h-full`}
+    >
       <Image
         src={IMG_CDN + image || BlackImage} // Use fallback if image is missing
         alt={name}
@@ -104,11 +106,7 @@ const LimitedCarouselDots = ({ totalSlides, currentIndex, setCurrentIndex, maxDo
           />
         );
       }
-      
-      // Show ellipsis if needed at the end
-    
-      
-      // Always show last dot
+
       dots.push(
         <button
           key={totalSlides - 1}
@@ -144,8 +142,8 @@ export const SpeakersSection = ({ speakers = [], eventId }) => {
 
   return (
     <section className="py-12 md:py-16">
-      <div className="max-w-[1208px] mx-auto">
-        <div className="flex justify-between items-center mb-6">
+      <div className="max-w-[1208px]  mx-auto">
+        <div className="flex justify-between   items-center mb-6">
           <h2 className="text-black text-xl md:text-2xl font-semibold relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-1 after:w-16 after:rounded-full after:bg-primary-base">
             Speakers
           </h2>

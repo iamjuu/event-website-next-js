@@ -60,7 +60,7 @@ export const RegisterCard = ({venue, title, date, facebook, instagram, twitter, 
         <span className="text-sm text-neutral-600">Limited seats available. Register early!</span>
       </div>
       <div className="flex mt-3 items-center justify-center gap-4 md:gap-6 px-[10px]">
-      <Link href={`${facebook}`} target="_blank" rel="noopener noreferrer">
+      <Link   href={`${facebook}`} target="_blank" rel="noopener noreferrer">
        <SocialIcon icon={<Facebook size={16} className="md:text-lg" />} /> 
        </Link>
        <Link href={`${instagram}`} target="_blank" rel="noopener noreferrer">
@@ -78,11 +78,15 @@ export const RegisterCard = ({venue, title, date, facebook, instagram, twitter, 
 };
 
 const SocialIcon = ({ icon }: { icon: React.ReactNode }) => (
-  <div className={cn(
+<div
+  className={cn(
     "w-8 h-8 md:w-9 md:h-9 flex items-center justify-center rounded-full",
     "text-gray-400 hover:text-primary-base transition-colors duration-200",
-    "border border-gray-700 hover:border-primary-base bg-[var(--primary-light)] border-1 hover:bg-gray-700 cursor-pointer"
-  )}>
-    {icon}
-  </div>
+    "border border-gray-700 hover:border-primary-base bg-[var(--primary-light)] border-1",
+    "cursor-pointer hover:bg-gradient-to-r hover:from-primary-base hover:to-primary-dark"
+  )}
+>
+  {icon}
+</div>
+
 );
