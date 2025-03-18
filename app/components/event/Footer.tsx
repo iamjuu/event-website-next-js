@@ -3,10 +3,12 @@ import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
 import { cn } from "../../lib/utils";
 import { Logo } from "@/public";
 import Image from "next/image";
+import Link from "next/link";
 export const Footer = () => {
   return (
     <footer className="bg-gray-900 text-gray-300 w-full mt-16 py-6 px-4">
     <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-center items-center gap-3">
+    <Link href="https://eventhex.ai" target="_blank" rel="noopener noreferrer">
       <div className="text-gray-400 text-xs sm:text-sm text-center sm:text-left font-normal flex flex-wrap justify-center items-center">
         All Rights Reserved
         <span className="mx-1">|</span> 
@@ -17,6 +19,7 @@ export const Footer = () => {
           className="inline-block ml-1 h-4 sm:h-5 w-auto" 
         />
       </div>
+      </Link>
     </div>
   </footer>
   );
