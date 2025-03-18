@@ -3,12 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Calendar, Clock, Users, ArrowRight } from "lucide-react";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-} from "../ui/carousel";
-import { BlackImage } from "@/public";
+import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel";
 
 interface SpeakerInfo {
   name: string;
@@ -24,7 +19,7 @@ interface SessionProps {
   type: "standard" | "premium" | "vip";
 }
 
-const colorVariants: Record<SessionProps['type'], string> = {
+const colorVariants: Record<SessionProps["type"], string> = {
   standard: "border-blue-500",
   premium: "border-purple-500",
   vip: "border-amber-500",
@@ -36,42 +31,55 @@ const SessionCard: React.FC<SessionProps> = ({
   date,
   time,
   stage,
-  type = 'standard', 
+  type = "standard",
 }) => {
   const IMG_CDN = "https://event-manager.syd1.cdn.digitaloceanspaces.com/";
-  
-  // Ensure type is valid and provide fallback
-  const borderColor = type && colorVariants[type] ? colorVariants[type] : colorVariants.standard;
-  
+  const borderColor = colorVariants[type] || colorVariants.standard;
+  const [showNames, setShowNames] = useState(false);
   return (
-    <div 
-    className={` rounded-lg shadow-md hover:border hover:border-l-4 ${borderColor}  justify-between  p-4 flex flex-col  h-full`}>
-     <div className="">
-
-     
-      <h3 className="text-lg font-medium text-neutral-900 mb-3">{title}</h3>
-
-
-      <div className="flex flex-wrap  flex-col gap-2 mb-4">
+    <div className=" p-3">
+    <div
+      className={`rounded-lg shadow-sm border border-neutral-100 transition-all duration-300 hover:shadow-lg  ${borderColor}  justify-between p-4 flex flex-col`}
+    >
+  <div>
+  <h3 className="text-lg font-medium text-neutral-900 mb-3">{title}</h3>
+  
+  <div className="cursor-pointer" onClick={() => setShowNames(!showNames)}>
+    {!showNames ? (
+     <div className="flex -space-x-2 mb-4">
+     {speakers.map((speaker, index) => (
+       <Image
+         key={index}
+         src={IMG_CDN + speaker.image}
+         alt={speaker.name}
+         width={40}
+         height={40}
+         className="rounded-full border-2 border-white transition-transform duration-300 hover:-translate-y-2"
+       />
+     ))}
+   </div>
+   
+    ) : (
+      <div className="mt-2">
         {speakers.map((speaker, index) => (
-          <div key={index} className="flex   items-center">
+          <div key={index} className="flex gap-2 mb-2">
             <Image
               src={IMG_CDN + speaker.image}
               alt={speaker.name}
-              width={24}
-              height={24}
-              className="rounded-full mr-2"
+              width={40}
+              height={40}
+              className="rounded-full border-2 border-white"
             />
-            <span className="text-sm text-neutral-600">{speaker.name}</span>
-            {index < speakers.length - 1 && (
-              <span className="mx-2 text-neutral-400">•</span>
-            )}
+            <p className="text-sm text-neutral-600">{speaker.name}</p>
           </div>
         ))}
       </div>
-      </div>
+    )}
+  </div>
+</div>
 
- <div className="">
+
+      <div>
         <div className="flex items-center text-sm text-neutral-500">
           <Calendar className="w-4 h-4 mr-2" />
           <span>{date}</span>
@@ -85,164 +93,134 @@ const SessionCard: React.FC<SessionProps> = ({
           <span>{stage}</span>
         </div>
       </div>
-      </div>
+    </div>
+    </div>
   );
 };
 
-// Custom carousel dots component with limited dots
-const LimitedCarouselDots = ({ totalSlides, currentIndex, setCurrentIndex, maxDots = 7 }) => {
-  // Logic to show limited dots with ellipsis
+interface LimitedCarouselDotsProps {
+  totalSlides: number;
+  currentIndex: number;
+  setCurrentIndex: (index: number) => void;
+  maxDots?: number;
+}
+
+const LimitedCarouselDots: React.FC<LimitedCarouselDotsProps> = ({
+  totalSlides,
+  currentIndex,
+  setCurrentIndex,
+  maxDots = 7,
+}) => {
   const renderDots = () => {
     if (totalSlides <= maxDots) {
-      // If we have fewer slides than max dots, show all dots
       return Array.from({ length: totalSlides }).map((_, index) => (
         <button
           key={index}
           className={`w-2 h-2 rounded-full mx-1 transition-all ${
             index === currentIndex ? "bg-primary-base w-4" : "bg-gray-300"
           }`}
-          onClick={() => handleDotClick(index)}
+          onClick={() => setCurrentIndex(index)}
           aria-label={`Go to slide ${index + 1}`}
         />
       ));
-    } else {
-      // Calculate which dots to show
-      const dots = [];
-      
-      // Always show first dot
-      dots.push(
-        <button
-          key={0}
-          className={`w-2 h-2 rounded-full mx-1 transition-all ${
-            currentIndex === 0 ? "bg-primary-base w-4" : "bg-gray-300"
-          }`}
-          onClick={() => handleDotClick(0)}
-          aria-label="Go to slide 1"
-        />
-      );
-      
-      // Calculate middle dots
-      const middleDots = maxDots - 2; // Subtract first and last dots
-      const halfMiddleDots = Math.floor(middleDots / 2);
-      
-      // Calculate range of dots to show
-      let startDot = Math.max(1, currentIndex - halfMiddleDots);
-      let endDot = Math.min(totalSlides - 2, startDot + middleDots - 1);
-      
-      // Adjust if we're near the end
-      if (endDot === totalSlides - 2) {
-        startDot = Math.max(1, totalSlides - 1 - middleDots);
-      }
-      
-      // Show ellipsis if needed at the beginning
-      if (startDot > 1) {
-        dots.push(
-          <span key="ellipsis-start" className="mx-1">
-            …
-          </span>
-        );
-      }
-      
-      // Add middle dots
-      for (let i = startDot; i <= endDot; i++) {
-        dots.push(
-          <button
-            key={i}
-            className={`w-2 h-2 rounded-full mx-1 transition-all ${
-              i === currentIndex ? "bg-primary-base w-4" : "bg-gray-300"
-            }`}
-            onClick={() => handleDotClick(i)}
-            aria-label={`Go to slide ${i + 1}`}
-          />
-        );
-      }
-      
-      // Show ellipsis if needed at the end
-      if (endDot < totalSlides - 2) {
-        dots.push(
-          <span key="ellipsis-end" className="mx-1">
-            …
-          </span>
-        );
-      }
-      
-      // Always show last dot
-      dots.push(
-        <button
-          key={totalSlides - 1}
-          className={`w-2 h-2 rounded-full mx-1 transition-all ${
-            currentIndex === totalSlides - 1 ? "bg-primary-base w-4" : "bg-gray-300"
-          }`}
-          onClick={() => handleDotClick(totalSlides - 1)}
-          aria-label={`Go to slide ${totalSlides}`}
-        />
-      );
-      
-      return dots;
     }
+
+    const dots = [];
+    dots.push(
+      <button
+        key={0}
+        className={`w-2 h-2 rounded-full mx-1 transition-all ${
+          currentIndex === 0 ? "bg-primary-base w-4" : "bg-gray-300"
+        }`}
+        onClick={() => setCurrentIndex(0)}
+        aria-label="Go to slide 1"
+      />
+    );
+
+    const middleDots = maxDots - 2;
+    const halfMiddleDots = Math.floor(middleDots / 2);
+    let startDot = Math.max(1, currentIndex - halfMiddleDots);
+    let endDot = Math.min(totalSlides - 2, startDot + middleDots - 1);
+
+    if (endDot === totalSlides - 2) {
+      startDot = Math.max(1, totalSlides - 1 - middleDots);
+    }
+
+    if (startDot > 1) {
+      dots.push(<span key="ellipsis-start">…</span>);
+    }
+
+    for (let i = startDot; i <= endDot; i++) {
+      dots.push(
+        <button
+          key={i}
+          className={`w-2 h-2 rounded-full mx-1 transition-all ${
+            i === currentIndex ? "bg-primary-base w-4" : "bg-gray-300"
+          }`}
+          onClick={() => setCurrentIndex(i)}
+          aria-label={`Go to slide ${i + 1}`}
+        />
+      );
+    }
+
+    if (endDot < totalSlides - 2) {
+      dots.push(<span key="ellipsis-end">…</span>);
+    }
+
+    dots.push(
+      <button
+        key={totalSlides - 1}
+        className={`w-2 h-2 rounded-full mx-1 transition-all ${
+          currentIndex === totalSlides - 1 ? "bg-primary-base w-4" : "bg-gray-300"
+        }`}
+        onClick={() => setCurrentIndex(totalSlides - 1)}
+        aria-label={`Go to slide ${totalSlides}`}
+      />
+    );
+
+    return dots;
   };
 
-  return (
-    <div className="flex justify-center items-center mt-4">
-      {renderDots()}
-    </div>
-  );
+  return <div className="flex justify-center items-center mt-4">{renderDots()}</div>;
 };
 
-export const SessionsSection = ({ sessions = [], eventId }) => {
+interface SessionsSectionProps {
+  sessions: SessionProps[];
+  eventId: string;
+}
+
+export const SessionsSection: React.FC<SessionsSectionProps> = ({ sessions = [], eventId }) => {
   const carouselRef = useRef(null);
   const apiRef = useRef(null);
   const [isHovering, setIsHovering] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const itemsPerSlide = 3; // For large screens (lg:basis-1/3)
-  const totalSlides = Math.ceil((sessions?.length || 0) / itemsPerSlide);
+  const itemsPerSlide = 3;
+  const totalSlides = Math.ceil(sessions.length / itemsPerSlide);
 
   useEffect(() => {
-    let interval;
+    let interval: NodeJS.Timeout;
 
-    // Wait for the carousel to be fully initialized
     const initAutoScroll = () => {
-      if (carouselRef.current && apiRef.current) {
-        if (!isHovering) {
-          interval = setInterval(() => {
-            apiRef.current.scrollNext();
-            // Update current index when auto-scrolling
-            const newIndex = (currentIndex + 1) % totalSlides;
-            setCurrentIndex(newIndex);
-          }, 3000); // Move carousel every 3 seconds (changed from 1 second for better UX)
-        }
-      } else {
-        // If not ready yet, try again in a short while
-        setTimeout(initAutoScroll, 100);
+      if (carouselRef.current && apiRef.current && !isHovering) {
+        interval = setInterval(() => {
+          apiRef.current.scrollNext();
+          setCurrentIndex((prev) => (prev + 1) % totalSlides);
+        }, 3000);
       }
     };
 
     initAutoScroll();
-
-    // Cleanup interval on component unmount or when hovering changes
-    return () => {
-      if (interval) {
-        clearInterval(interval);
-      }
-    };
+    return () => clearInterval(interval);
   }, [isHovering, currentIndex, totalSlides]);
 
-  const handleDotClick = (index) => {
+  const handleDotClick = (index: number) => {
     setCurrentIndex(index);
-    if (apiRef.current) {
-      apiRef.current.scrollTo(index);
-    }
-  };
-
-  // Handle when carousel scrolls
-  const handleCarouselChange = (api) => {
-    const index = api.selectedScrollSnap();
-    setCurrentIndex(index);
+    apiRef.current?.scrollTo(index);
   };
 
   return (
     <section className="py-12 md:py-16">
-      <div className="max-w-[1208px] mx-auto">
+      <div className="max-w-[1208px] p-2">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-black text-xl md:text-2xl font-semibold relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-1 after:w-16 after:rounded-full after:bg-primary-base">
             Sessions
@@ -255,39 +233,29 @@ export const SessionsSection = ({ sessions = [], eventId }) => {
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
-        <div 
+        <div
           className="relative"
           onMouseEnter={() => setIsHovering(true)}
           onMouseLeave={() => setIsHovering(false)}
         >
-          {sessions?.length > 0 ? (
+          {sessions.length > 0 ? (
             <>
               <Carousel
                 ref={carouselRef}
-                opts={{
-                  align: "start",
-                  loop: true,
-                }}
+                opts={{ align: "start", loop: true }}
                 className="w-full"
-                onApiChange={(api) => {
-                  apiRef.current = api;
-                }}
-                onSelect={handleCarouselChange}
+                onApiChange={(api) => (apiRef.current = api)}
+                onSelect={(api) => setCurrentIndex(api.selectedScrollSnap())}
               >
                 <CarouselContent className="-ml-4">
                   {sessions.map((session, index) => (
-                    <CarouselItem
-                      key={index}
-                      className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3"
-                    >
+                    <CarouselItem key={index} className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3">
                       <SessionCard {...session} />
                     </CarouselItem>
                   ))}
                 </CarouselContent>
               </Carousel>
-              
-              {/* Custom limited dots navigation */}
-              <LimitedCarouselDots 
+              <LimitedCarouselDots
                 totalSlides={totalSlides}
                 currentIndex={currentIndex}
                 setCurrentIndex={handleDotClick}

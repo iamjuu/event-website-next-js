@@ -233,7 +233,7 @@ const Index = () => {
           </div>
         </div>
         
-        <div className="relative">
+        <div className="relative ">
         
         </div>
         <div ref={ticketSectionRef}>
