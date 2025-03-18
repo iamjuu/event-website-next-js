@@ -24,11 +24,11 @@ interface SessionProps {
   type: "standard" | "premium" | "vip";
 }
 
-const colorVariants = {
-  standard: "border-l-primary-base",
-  premium: "border-l-primary-base", 
-  vip: "border-l-primary-base"
-};
+const colorVariants: Record<SessionProps['type'], string> = {
+  standard: "border-t-blue-500",
+  premium: "border-t-purple-500",
+  vip: "border-t-amber-500",
+} as const;
 
 const SessionCard: React.FC<SessionProps> = ({
   title,
@@ -36,13 +36,16 @@ const SessionCard: React.FC<SessionProps> = ({
   date,
   time,
   stage,
-  type,
+  type = 'standard', // Add default value
 }) => {
   const IMG_CDN = "https://event-manager.syd1.cdn.digitaloceanspaces.com/";
+  
+  // Ensure type is valid and provide fallback
+  const borderColor = type && colorVariants[type] ? colorVariants[type] : colorVariants.standard;
+  
   return (
-    <div
-      className={`bg-white rounded-lg shadow-sm border-l-4 ${colorVariants[type]} p-4 h-full`}
-    >
+    <div className={`bg-white rounded-lg shadow-sm border-t-4 ${borderColor} p-4 flex flex-col items-center h-full`}>
+    
       <h3 className="text-lg font-medium text-neutral-900 mb-3">{title}</h3>
 
       <div className="flex flex-wrap gap-2 mb-4">
@@ -83,10 +86,6 @@ const SessionCard: React.FC<SessionProps> = ({
 
 // Custom carousel dots component with limited dots
 const LimitedCarouselDots = ({ totalSlides, currentIndex, setCurrentIndex, maxDots = 7 }) => {
-  const handleDotClick = (index) => {
-    setCurrentIndex(index);
-  };
-
   // Logic to show limited dots with ellipsis
   const renderDots = () => {
     if (totalSlides <= maxDots) {
