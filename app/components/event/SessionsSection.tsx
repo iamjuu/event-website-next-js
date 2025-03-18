@@ -34,7 +34,6 @@ const SessionCard: React.FC<SessionProps> = ({
   type = "standard",
 }) => {
   const IMG_CDN = "https://event-manager.syd1.cdn.digitaloceanspaces.com/";
-  const borderColor = colorVariants[type] || colorVariants.standard;
   const [showNames, setShowNames] = useState(false);
   const getTicketType = (title: string) => {
     const lowerTitle = title.toLowerCase();
@@ -42,102 +41,85 @@ const SessionCard: React.FC<SessionProps> = ({
     if (lowerTitle.includes('premium')) return 'premium';
     return 'standard';
   };
-
-  const ticketStyles = {
-    standard: { 
-      border: "border-[var(--ticket-border)]", 
-      accent: "text-[var(--primary-base)]", 
-      hover: 'hover:border-[var(--primary-base)]' 
-    },
-    premium: { 
-      border: "border-[var(--ticket-border)]", 
-      accent: "text-[var(--primary-dark)]", 
-      hover: 'hover:border-[var(--primary-dark)]' 
-    },
-    vip: { 
-      border: "border-[var(--ticket-border)]", 
-      accent: "text-[var(--primary-darker)]", 
-      hover: 'hover:border-[var(--primary-darker)]' 
-    },
-    const type = getTicketType(title);
-
-  };
-
+  // const type = getTicketType(title);
   return (
     <>
-  <div
-  className={`rounded-lg shadow-sm border ${ticketStyles[type].border} ${ticketStyles[type].hover}  flex-1 border-neutral-100   transition-all duration-300 hover:shadow-lg ${borderColor} p-4 flex flex-col justify-between min-h-[200px]`}
+<div
+  className={`rounded-lg shadow-sm border flex-1 transition-all duration-300 hover:shadow-lg p-4 flex flex-col justify-between min-h-[200px] `}
+
+   
 >
-  {/* Title Section */}
-  <div>
-    <h3 className="text-lg font-medium text-neutral-900 mb-3">{title}</h3>
 
-    {/* Speakers Section */}
-    <div
-      className={`cursor-pointer ${
-        speakers.length > 1 ? "" : "flex items-center gap-2"
-      }`}
-      onClick={() => speakers.length > 1 && setShowNames(!showNames)}
-    >
-      {speakers.length === 1 ? (
-        <div className="flex gap-2 items-center">
-          <Image
-            src={IMG_CDN + speakers[0].image}
-            alt={speakers[0].name}
-            width={40}
-            height={40}
-            className="rounded-full border-2 border-white"
-          />
-          <p className="text-sm text-neutral-600">{speakers[0].name}</p>
-        </div>
-      ) : !showNames ? (
-        <div className="flex -space-x-2 mb-4">
-          {speakers.map((speaker, index) => (
-            <Image
-              key={index}
-              src={IMG_CDN + speaker.image}
-              alt={speaker.name}
-              width={40}
-              height={40}
-              className="rounded-full border-2 border-white transition-transform duration-300 hover:-translate-y-2"
-            />
-          ))}
-        </div>
-      ) : (
-        <div className="mt-2">
-          {speakers.map((speaker, index) => (
-            <div key={index} className="flex gap-2 mb-2">
-              <Image
-                src={IMG_CDN + speaker.image}
-                alt={speaker.name}
-                width={40}
-                height={40}
-                className="rounded-full border-2 border-white"
-              />
-              <p className="text-sm text-neutral-600">{speaker.name}</p>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  </div>
+        {/* Title Section */}
+        <div>
+          <h3 className="text-lg font-medium text-neutral-900 mb-3">{title}</h3>
 
-  {/* Bottom Section (Event Details) */}
-  <div>
-    <div className="flex items-center text-sm text-neutral-500">
-      <Calendar className="w-4 h-4 mr-2" />
-      <span>{date}</span>
+          {/* Speakers Section */}
+          <div
+            className={`cursor-pointer ${
+              speakers.length > 1 ? "" : "flex items-center gap-2"
+            }`}
+            onClick={() => speakers.length > 1 && setShowNames(!showNames)}
+          >
+            {speakers.length === 1 ? (
+              <div className="flex gap-2 items-center">
+                <Image
+                  src={IMG_CDN + speakers[0].image}
+                  alt={speakers[0].name}
+                  width={40}
+                  height={40}
+                  className="rounded-full border-2 border-white"
+                />
+                <p className="text-sm text-neutral-600">{speakers[0].name}</p>
+              </div>
+            ) : !showNames ? (
+              <div className="flex -space-x-2 mb-4">
+                {speakers.map((speaker, index) => (
+                  <Image
+                    key={index}
+                    src={IMG_CDN + speaker.image}
+                    alt={speaker.name}
+                    width={40}
+                    height={40}
+                    className="rounded-full border-2 border-white transition-transform duration-300 hover:-translate-y-2"
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="mt-2">
+                {speakers.map((speaker, index) => (
+                  <div key={index} className="flex gap-2 mb-2">
+                    <Image
+                      src={IMG_CDN + speaker.image}
+                      alt={speaker.name}
+                      width={40}
+                      height={40}
+                      className="rounded-full border-2 border-white"
+                    />
+                    <p className="text-sm text-neutral-600">{speaker.name}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Bottom Section (Event Details) */}
+        <div>
+          <div className="flex items-center text-sm text-neutral-500">
+            <Calendar className="w-4 h-4 mr-2" />
+          <span>{date}</span>
+        </div>
+        <div className="flex items-center text-sm text-neutral-500">
+          <Clock className="w-4 h-4 mr-2" />
+          <span>{time}</span>
+        </div>
+        <div className="flex items-center text-sm text-neutral-500">
+          <Users className="w-4 h-4 mr-2" />
+          <span>{stage}</span>
+        </div>
+      </div>
     </div>
-    <div className="flex items-center text-sm text-neutral-500">
-      <Clock className="w-4 h-4 mr-2" />
-      <span>{time}</span>
-    </div>
-    <div className="flex items-center text-sm text-neutral-500">
-      <Users className="w-4 h-4 mr-2" />
-      <span>{stage}</span>
-    </div>
-  </div>
-</div>
 
       </>
   );
