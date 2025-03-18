@@ -190,7 +190,7 @@ const Index = () => {
   return (
     <div className="bg-white flex flex-col items-stretch pt-4 md:pt-[26px] pb-28 md:pb-[70px]">
      {eventData && <Header logo={eventData?.logo} title={eventData?.title} />}
-      <main className="self-center flex w-full max-w-[1208px] flex-col items-stretch px-4">
+      <main className="self-center flex w-full max-w-[1208px] flex-col  items-stretch px-4">
         <Hero 
           title={eventData?.title}
           banner={eventData?.banner}
@@ -239,9 +239,7 @@ const Index = () => {
         </div>
         
         <div className="relative">
-          {/* <h2 className="text-black text-xl md:text-2xl font-semibold relative pb-2 after:absolute after:bottom-0 after:left-0 after:h-1 after:w-16 after:rounded-full after:bg-[#4F46E5]">
-            Tickets
-          </h2> */}
+        
         </div>
         <div ref={ticketSectionRef}>
           {tickets.length > 1 && <TicketSection tickets = {tickets}/>}
@@ -254,7 +252,6 @@ const Index = () => {
         {sponsors.length && <SponsorsSection sponsors={sponsors} />}
         
         <LocationMap />
-        
       </main>
       <Footer />
       <StickyFooter title = {eventData?.title} venue={eventData?.venue} date={eventData?.startDate} price={eventData?.price || "Free"}/>
