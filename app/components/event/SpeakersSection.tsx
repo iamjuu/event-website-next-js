@@ -104,11 +104,7 @@ const LimitedCarouselDots = ({ totalSlides, currentIndex, setCurrentIndex, maxDo
           />
         );
       }
-      
-      // Show ellipsis if needed at the end
-    
-      
-      // Always show last dot
+
       dots.push(
         <button
           key={totalSlides - 1}
@@ -144,8 +140,8 @@ export const SpeakersSection = ({ speakers = [], eventId }) => {
 
   return (
     <section className="py-12 md:py-16">
-      <div className="max-w-[1208px] mx-auto">
-        <div className="flex justify-between items-center mb-6">
+      <div className="max-w-[1208px]  mx-auto">
+        <div className="flex justify-between   items-center mb-6">
           <h2 className="text-black text-xl md:text-2xl font-semibold relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-1 after:w-16 after:rounded-full after:bg-primary-base">
             Speakers
           </h2>
