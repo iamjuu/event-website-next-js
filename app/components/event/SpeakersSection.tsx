@@ -91,13 +91,7 @@ const LimitedCarouselDots = ({ totalSlides, currentIndex, setCurrentIndex, maxDo
       }
       
       // Show ellipsis if needed at the beginning
-      if (startDot > 1) {
-        dots.push(
-          <span key="ellipsis-start" className="mx-1">
-            …
-          </span>
-        );
-      }
+    
       
       // Add middle dots
       for (let i = startDot; i <= endDot; i++) {
@@ -114,13 +108,7 @@ const LimitedCarouselDots = ({ totalSlides, currentIndex, setCurrentIndex, maxDo
       }
       
       // Show ellipsis if needed at the end
-      if (endDot < totalSlides - 2) {
-        dots.push(
-          <span key="ellipsis-end" className="mx-1">
-            …
-          </span>
-        );
-      }
+    
       
       // Always show last dot
       dots.push(
