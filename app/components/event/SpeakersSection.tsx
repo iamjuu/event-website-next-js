@@ -7,7 +7,6 @@ import {
   CarouselContent,
   CarouselItem,
 } from "../ui/carousel";
-import {N} from '../../../public'
 import { BlackImage } from "@/public"; // Default fallback image
 
 interface SpeakerProps {
@@ -28,15 +27,14 @@ const SpeakerCard: React.FC<SpeakerProps> = ({ name, title, image, type }) => {
   return (
     <div className={`bg-white rounded-lg shadow-sm border-t-4 ${colorVariants[type]} p-4 flex flex-col items-center h-full`}>
       <Image
-
         src={IMG_CDN + image || BlackImage} // Use fallback if image is missing
         alt={name}
         width={92}
         height={92}
         className="rounded-full mb-3 border-2 border-white shadow-sm"
       />
-      <h3 className="text-lg font-medium text-neutral-900 mb-1">{name}</h3>
-      <p className="text-sm text-neutral-600">{title}</p>
+      <h3 className="text-lg   font-medium text-neutral-900 mb-1">{name}</h3>
+      <p className="text-sm text-center text-neutral-600">{title}</p>
     </div>
   );
 };
