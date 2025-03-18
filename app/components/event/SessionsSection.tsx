@@ -36,10 +36,37 @@ const SessionCard: React.FC<SessionProps> = ({
   const IMG_CDN = "https://event-manager.syd1.cdn.digitaloceanspaces.com/";
   const borderColor = colorVariants[type] || colorVariants.standard;
   const [showNames, setShowNames] = useState(false);
+  const getTicketType = (title: string) => {
+    const lowerTitle = title.toLowerCase();
+    if (lowerTitle.includes('vip')) return 'vip';
+    if (lowerTitle.includes('premium')) return 'premium';
+    return 'standard';
+  };
+
+  const ticketStyles = {
+    standard: { 
+      border: "border-[var(--ticket-border)]", 
+      accent: "text-[var(--primary-base)]", 
+      hover: 'hover:border-[var(--primary-base)]' 
+    },
+    premium: { 
+      border: "border-[var(--ticket-border)]", 
+      accent: "text-[var(--primary-dark)]", 
+      hover: 'hover:border-[var(--primary-dark)]' 
+    },
+    vip: { 
+      border: "border-[var(--ticket-border)]", 
+      accent: "text-[var(--primary-darker)]", 
+      hover: 'hover:border-[var(--primary-darker)]' 
+    },
+    const type = getTicketType(title);
+
+  };
+
   return (
     <>
   <div
-  className={`rounded-lg shadow-sm border   flex-1 border-neutral-100   transition-all duration-300 hover:shadow-lg ${borderColor} p-4 flex flex-col justify-between min-h-[200px]`}
+  className={`rounded-lg shadow-sm border ${ticketStyles[type].border} ${ticketStyles[type].hover}  flex-1 border-neutral-100   transition-all duration-300 hover:shadow-lg ${borderColor} p-4 flex flex-col justify-between min-h-[200px]`}
 >
   {/* Title Section */}
   <div>

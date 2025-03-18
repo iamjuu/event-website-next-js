@@ -8,16 +8,20 @@ export const Hero = ({banner}) => {
 
   return (
     <div className="w-full mt-[19px] rounded-[0px_0px_0px_0px] max-md:max-w-full py-0">
-      <div className="relative w-full  max-h-[500px]  overflow-hidden rounded-xl">
-        { banner && <Image
-          src={IMG_CDN+banner || "Img"}
-          width={1920}  // Adjust as needed
-          height={1}  // Adjust as needed
-          alt="KEDDA Dental Expo Banner"
-          className="w-full h-auto object-contain"
-          priority
-        />}
-      </div>
+ <div className="relative w-full  overflow-hidden rounded-xl">
+  {banner && (
+    <Image
+      src={banner ? `${IMG_CDN}${banner}` : "/fallback.jpg"}
+      width={850} // Set as per your aspect ratio
+      height={350} // Set as per your aspect ratio
+      alt="KEDDA Dental Expo Banner"
+      className="w-full h-auto  object-cover aspect-[17/7]" // Maintains 750:350 ratio
+      priority
+    />
+  )}
+</div>
+
+
     </div>
   );
 };
