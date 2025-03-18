@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "../ui/button";
 import { CalendarIcon, ExternalLinkIcon, TicketIcon, MapPinIcon } from "lucide-react";
+import { NoImage,BlackImage } from "@/public";
 
 interface TicketProps {
   id: string;
@@ -84,66 +85,66 @@ const TicketCard: React.FC<TicketProps> = ({
   const IMG_CDN = "https://event-manager.syd1.cdn.digitaloceanspaces.com/";
   return (
     <div 
-      className={`${ticketStyles[type].border} ${ticketStyles[type].hover} rounded-2xl overflow-hidden shadow-sm border border-neutral-100 transition-all duration-300 hover:shadow-lg`}
-    >
-      <div className="relative h-48 w-full">
+    className={`${ticketStyles[type].border} ${ticketStyles[type].hover} rounded-2xl overflow-hidden shadow-sm border border-neutral-100 transition-all duration-300 hover:shadow-lg`}
+  >
+    <div className="relative h-48 w-full">
+      {thumbnail === NoImage ? (
         <Image
-          src={IMG_CDN+thumbnail || "/placeholder.jpg"}
+          src= {NoImage}
+          alt="No image available"
+          fill
+          className="object-cover"
+        />
+      ) : (
+        <Image
+          src={IMG_CDN + thumbnail}
           alt={`${title} ticket`}
           fill
           className="object-cover"
         />
-      </div>
-      
-      <div className="p-6">
-        <div className="flex flex-col gap-4">
-          <div className="flex items-start justify-between">
-            <div className="flex items-center gap-3">
-              <div className={`${ticketStyles[type].accent} p-2 rounded-lg bg-white/80`}>
-                <TicketIcon className="w-5 h-5" />
-              </div>
-              <h3 className="text-lg font-semibold text-neutral-900">{title}</h3>
+      )}
+    </div>
+  
+    <div className="p-6">
+      <div className="flex flex-col gap-4">
+        <div className="flex items-start justify-between">
+          <div className="flex items-center gap-3">
+            <div className={`${ticketStyles[type].accent} p-2 rounded-lg bg-white/80`}>
+              <TicketIcon className="w-5 h-5" />
             </div>
-            <div className="flex items-center gap-1">
-              {price !== "Free" && <span className="text-sm font-medium text-neutral-500">₹</span>}
-              <span className="text-xl font-bold text-neutral-900">{formatPrice(price)}</span>
-            </div>
+            <h3 className="text-lg font-semibold text-neutral-900">{title}</h3>
           </div>
-
-          <p className="text-sm text-neutral-600">{shortDescription}</p>
-
-          <div className="space-y-2">
+          <div className="flex items-center gap-1">
+            {price !== "Free" && <span className="text-sm font-medium text-neutral-500">₹</span>}
+            <span className="text-xl font-bold text-neutral-900">{formatPrice(price)}</span>
+          </div>
+        </div>
+  
+        <p className="text-sm text-neutral-600">{shortDescription}</p>
+  
+        <div className="space-y-2">
+          <div className="flex items-center gap-2 text-sm text-neutral-600">
+            <CalendarIcon className="w-4 h-4" />
+            <span>{formatDate(date)}</span>
+          </div>
+          {location && (
             <div className="flex items-center gap-2 text-sm text-neutral-600">
-              <CalendarIcon className="w-4 h-4" />
-              <span>{formatDate(date)}</span>
+              <MapPinIcon className="w-4 h-4" />
+              <span>{location}</span>
             </div>
-            {location && (
-              <div className="flex items-center gap-2 text-sm text-neutral-600">
-                <MapPinIcon className="w-4 h-4" />
-                <span>{location}</span>
-              </div>
-            )}
-          </div>
-
-          <div className="flex gap-3 mt-2">
-            {/* <Link href={`/tickets/${id}`} className="flex-1">
-              <Button 
-                variant="outline"
-                className="w-full border-neutral-200 hover:bg-neutral-50"
-              >
-                Details
-              </Button>
-            </Link> */}
-            <Button 
-              className={`flex-1 text-white ${buttonStyles[type]}`}
-            >
-              Register
-              <ExternalLinkIcon className="w-4 h-4 ml-2" />
-            </Button>
-          </div>
+          )}
+        </div>
+  
+        <div className="flex gap-3 mt-2">
+          <Button className={`flex-1 text-white ${buttonStyles[type]}`}>
+            Register
+            <ExternalLinkIcon className="w-4 h-4 ml-2" />
+          </Button>
         </div>
       </div>
     </div>
+  </div>
+  
   );
 };
 
@@ -172,6 +173,7 @@ export const TicketSection = ({ tickets }) => {
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {tickets.map((ticket, index) => (
+        
             <TicketCard 
               key={index} 
               id={ticket.id}
@@ -179,7 +181,7 @@ export const TicketSection = ({ tickets }) => {
               price={ticket.price}
               date={ticket.date}
               location={ticket.location}
-              thumbnail={ticket.thumbnail || "/placeholder.jpg"}
+              thumbnail={ticket.thumbnail }
               shortDescription={ticket.shortDescription}
             />
           ))}

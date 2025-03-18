@@ -16,7 +16,7 @@ import { SponsorsSection } from "./components/event/SponsorsSection";
 import { Button } from "./components/ui/button";
 import { StickyFooter } from "./components/event/StickyFooter";
 import { BlackImage } from "@/public";
-
+import {NoImage} from '../public'
 const Index = () => {
   // const { eventId, error, loading } = useEvent();/
   const [eventData, setEventData] = useState([]);
@@ -52,12 +52,14 @@ const Index = () => {
           `${BACKEND_URL}/api/v1/ticket?event=${eventData?._id}`
         );
         const data = await response.json();
+        console.log(data,'ticket');
+        
   
         if (data?.response && Array.isArray(data.response)) {
           const extractedTickets = data.response.map((ticket) => ({
             title: ticket.title,
             id: ticket._id,
-            thumbnail: ticket.thumbnail,
+            thumbnail: ticket.thumbnail||NoImage,
             shortDescription: ticket.shortDescription,
             location: eventData?.venue,
             date: ticket.startDate,
@@ -233,7 +235,7 @@ const Index = () => {
           </div>
         </div>
         
-        <div className="relative">
+        <div className="relative ">
         
         </div>
         <div ref={ticketSectionRef}>
