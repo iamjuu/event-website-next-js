@@ -59,7 +59,7 @@ interface Session {
   date: string;
   time: string;
   stage: string;
-  type: string;
+  type: "standard" | "premium" | "vip";
 }
 
 interface Sponsor {
@@ -181,7 +181,7 @@ const Index = () => {
             hour12: true,
           })}`,
           stage: session.stage?.value || "Unknown Stage",
-          type: session.sessiontype?.value?.toLowerCase() || "standard",
+          type: session.sessiontype?.value?.toLowerCase() === "standard" ? "standard" : session.sessiontype?.value?.toLowerCase() === "premium" ? "premium" : "vip",
         }));
         
         setSessions(formattedSessions);
@@ -226,7 +226,7 @@ const Index = () => {
       {eventData && <Header logo={eventData.logo} />}
       <main className="self-center flex w-full max-w-[1208px] flex-col items-stretch px-4">
         <Hero 
-          banner={eventData?.banner}
+          banner={eventData?.banner || ''}
         />
         
         <div className="mt-6 md:mt-[25px] max-md:max-w-full">
@@ -234,11 +234,11 @@ const Index = () => {
             <div className="w-full lg:w-[64%] max-md:w-full max-md:ml-0">
               <div className="flex grow flex-col items-stretch max-md:max-w-full max-md:mt-6">
                 <EventDetails 
-                  startDate={eventData?.startDate}
-                  endDate={eventData?.endDate}
-                  venue={eventData?.venue}
+                  startDate={eventData?.startDate || ''}
+                  endDate={eventData?.endDate || ''}
+                  venue={eventData?.venue || ''}
                 />
-                <AboutEvent description={eventData?.description} />
+                <AboutEvent description={eventData?.description || ''} />
               </div>
             </div>
             
@@ -257,13 +257,13 @@ const Index = () => {
                 }}
               >
                 <RegisterCard 
-                  venue={eventData?.venue} 
-                  title={eventData?.title} 
-                  date={eventData?.startDate}
-                  facebook={eventData?.facebook}
-                  instagram={eventData?.instagram}
+                  venue={eventData?.venue || ''} 
+                  title={eventData?.title || ''} 
+                  date={eventData?.startDate || ''}
+                  facebook={eventData?.facebook || ''}
+                  instagram={eventData?.instagram || ''}
                   twitter=""
-                  linkedin={eventData?.linkedin}
+                  linkedin={eventData?.linkedin || ''}
                 />
               </div>
             </div>
@@ -276,19 +276,19 @@ const Index = () => {
           {tickets.length > 1 && <TicketSection tickets={tickets}/>}
         </div>
         
-        {sessions.length && <SessionsSection sessions={sessions} eventId={eventData?._id} />}
+        {sessions.length && <SessionsSection sessions={sessions as any} eventId={eventData?._id || ''} />}
         
-        {speakers.length && <SpeakersSection speakers={speakers} eventId={eventData?._id} />}
+        {speakers.length && <SpeakersSection speakers={speakers as any} eventId={eventData?._id || ''} />}
         
-        {sponsors.length && <SponsorsSection sponsors={sponsors} />}
+        {sponsors.length && <SponsorsSection sponsors={sponsors as any} />}
         
         <LocationMap />
       </main>
       <Footer />
       <StickyFooter 
-        title={eventData?.title} 
-        venue={eventData?.venue} 
-        date={eventData?.startDate} 
+        title={eventData?.title || ''} 
+        venue={eventData?.venue || ''} 
+        date={eventData?.startDate || ''} 
         price={eventData?.price || "Free"}
       />
     </div>
