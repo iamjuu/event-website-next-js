@@ -1,0 +1,32 @@
+:root {
+  /* Primary Colors */
+  --color-primary-darker: #0e0479;
+  --color-primary-dark: #0b29b8;
+  --color-primary-base: #5452ee;
+  --color-primary-lighter: #eee6ff;
+  --color-primary-lightest: #d9ceff;
+
+  /* Event Type Colors */
+  --color-event-standard: #5452ee;
+  --color-event-premium: #0b29b8;
+  --color-event-vip: #0e0479;
+
+  /* Theme Colors */
+  --color-theme: #a8278c;
+  --color-theme-text: white;
+  --color-secondary: #a8278c;
+  --color-secondary-text: white;
+
+  /* Neutral Colors */
+  --color-neutral-50: #fafafa;
+  --color-neutral-100: #f5f5f5;
+  --color-neutral-200: #e5e5e5;
+  --color-neutral-300: #d4d4d4;
+  --color-neutral-400: #a3a3a3;
+  --color-neutral-500: #737373;
+  --color-neutral-600: #525252;
+  --color-neutral-700: #404040;
+  --color-neutral-800: #262626;
+  --color-neutral-900: #171717;
+  --color-neutral-950: #0a0a0a;
+} 

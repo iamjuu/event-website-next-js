@@ -1,4 +1,3 @@
-
 import React from "react";
 import { 
   Carousel, 
@@ -54,7 +53,7 @@ export const SponsorsSection = ({sponsors = []}) => {
           {Array.from({ length: Math.ceil(sponsors?.length / 6) }).map((_, index) => (
             <div 
               key={index} 
-              className={`h-2 w-2 rounded-full bg-gray-300 hover:bg-event-standard cursor-pointer transition-colors`}
+              className={`h-2 w-2 rounded-full bg-gray-300 hover:bg-primary-base cursor-pointer transition-colors`}
               onClick={() => {
                 // Dots for visual reference - actual implementation would need 
                 // integration with the carousel state

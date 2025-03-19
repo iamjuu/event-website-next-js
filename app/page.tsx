@@ -16,6 +16,7 @@ import { SponsorsSection } from "./components/event/SponsorsSection";
 import { Button } from "./components/ui/button";
 import { StickyFooter } from "./components/event/StickyFooter";
 import { BlackImage, NoImage } from "@/public";
+import { updateThemeColors } from "./utils/theme";
 
 interface EventData {
   _id: string;
@@ -31,6 +32,22 @@ interface EventData {
   whatsapp?: string;
   linkedin?: string;
   instagram?: string;
+  themeColor?: string;
+  themeTextColor?: string;
+  secondaryColor?: string;
+  secondaryTextColor?: string;
+  theme?: {
+    primary?: {
+      darker?: string;
+      dark?: string;
+      base?: string;
+      lighter?: string;
+      lightest?: string;
+    };
+    eventStandard?: string;
+    eventPremium?: string;
+    eventVip?: string;
+  };
 }
 
 interface Ticket {
@@ -90,6 +107,39 @@ const Index = () => {
       );
       const data = await response.json();
       setEventData(data.domainData.event);
+      
+      // Update theme colors if they exist in the response
+      if (data.domainData.event.theme) {
+        updateThemeColors(data.domainData.event.theme);
+      }
+
+      // Fetch and apply certification theme data
+      const themeResponse = await fetch(`${BACKEND_URL}/api/v1/app-setting?event=${data.domainData?.event?._id}`);
+      const themeData = await themeResponse.json();
+      
+      if (themeData?.response?.[0]) {
+        const themeColors = themeData.response[0];
+        updateThemeColors({
+          primary: {
+            darker: themeColors.primaryDarker,
+            dark: themeColors.primaryDark,
+            base: themeColors.primaryBase,
+            lighter: themeColors.primaryLighter,
+            lightest: themeColors.primaryLightest
+          }
+        });
+      }
+ 
+      // Update direct theme colors if they exist
+      if (data.domainData.event.themeColor || data.domainData.event.themeTextColor || 
+          data.domainData.event.secondaryColor || data.domainData.event.secondaryTextColor) {
+        updateThemeColors({
+          themeColor: data.domainData.event.themeColor,
+          themeTextColor: data.domainData.event.themeTextColor,
+          secondaryColor: data.domainData.event.secondaryColor,
+          secondaryTextColor: data.domainData.event.secondaryTextColor
+        });
+      }
     }
     fetchDetails();
   },[])
@@ -224,6 +274,26 @@ const Index = () => {
   return (
     <div className="bg-white flex flex-col items-stretch pt-4 md:pt-[26px] pb-28 md:pb-[70px]">
       {eventData && <Header logo={eventData.logo} />}
+      
+      {/* Theme Test Buttons */}
+      <div className="flex flex-wrap gap-4 p-4 justify-center">
+        <button className="px-4 py-2 rounded-lg bg-theme text-theme-text hover:bg-theme/90">
+          Theme Button
+        </button>
+        <button className="px-4 py-2 rounded-lg bg-primary-base text-white hover:bg-primary-dark">
+          Primary Base
+        </button>
+        <button className="px-4 py-2 rounded-lg bg-primary-dark text-white hover:bg-primary-darker">
+          Primary Dark
+        </button>
+        <button className="px-4 py-2 rounded-lg bg-primary-lighter text-primary-base hover:bg-primary-lightest">
+          Primary Lighter
+        </button>
+        <button className="px-4 py-2 rounded-lg bg-secondary text-secondary-text hover:bg-secondary/90">
+          Secondary Button
+        </button>
+      </div>
+
       <main className="self-center flex w-full max-w-[1208px] flex-col items-stretch px-4">
         <Hero 
           banner={eventData?.banner || ''}

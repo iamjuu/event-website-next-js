@@ -190,7 +190,7 @@ export const SpeakersSection = ({ speakers = [], eventId }) => {
           </h2>
           <Link 
             href={`/speakers/${eventId}`}
-            className="text-[#6563ff] hover:text-[#5452ee] text-sm font-medium flex items-center gap-1"
+            className="text-primary-base hover:text-primary-dark text-sm font-medium flex items-center gap-1"
           >
             View All
             <ArrowRight className="w-4 h-4" />
