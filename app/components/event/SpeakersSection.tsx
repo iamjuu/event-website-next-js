@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
@@ -8,6 +8,7 @@ import {
   CarouselItem,
 } from "../ui/carousel";
 import { BlackImage } from "@/public"; // Default fallback image
+import { type CarouselApi } from "@/components/ui/carousel";
 
 interface SpeakerProps {
   name: string;
@@ -90,9 +91,6 @@ const LimitedCarouselDots = ({ totalSlides, currentIndex, setCurrentIndex, maxDo
         startDot = Math.max(1, totalSlides - 1 - middleDots);
       }
       
-      // Show ellipsis if needed at the beginning
-    
-      
       // Add middle dots
       for (let i = startDot; i <= endDot; i++) {
         dots.push(
@@ -130,20 +128,57 @@ const LimitedCarouselDots = ({ totalSlides, currentIndex, setCurrentIndex, maxDo
 };
 
 export const SpeakersSection = ({ speakers = [], eventId }) => {
+  const [api, setApi] = useState<CarouselApi>();
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isHovering, setIsHovering] = useState(false);
   const itemsPerSlide = 4; // For large screens (lg)
   const totalSlides = Math.ceil(speakers.length / itemsPerSlide);
+  const autoScrollTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Handle when api.embla.scrollTo is called
-  const handleCarouselChange = (emblaApi) => {
-    const index = emblaApi.selectedScrollSnap();
-    setCurrentIndex(index);
-  };
+  // Set up auto-scrolling
+  useEffect(() => {
+    if (!api || isHovering) {
+      // Clear existing interval when hovering or API isn't ready
+      if (autoScrollTimerRef.current) {
+        clearInterval(autoScrollTimerRef.current);
+        autoScrollTimerRef.current = null;
+      }
+      return;
+    }
+
+    // Set up a new interval for auto-scrolling
+    autoScrollTimerRef.current = setInterval(() => {
+      const nextIndex = (currentIndex + 1) % totalSlides;
+      api.scrollTo(nextIndex);
+    }, 3000);
+
+    // Cleanup function
+    return () => {
+      if (autoScrollTimerRef.current) {
+        clearInterval(autoScrollTimerRef.current);
+        autoScrollTimerRef.current = null;
+      }
+    };
+  }, [api, isHovering, currentIndex, totalSlides]);
+
+  // Update currentIndex when the carousel scrolls
+  useEffect(() => {
+    if (!api) return;
+
+    const onSelect = () => {
+      setCurrentIndex(api.selectedScrollSnap());
+    };
+
+    api.on("select", onSelect);
+    return () => {
+      api.off("select", onSelect);
+    };
+  }, [api]);
 
   return (
     <section className="py-12 md:py-16">
-      <div className="max-w-[1208px]  mx-auto">
-        <div className="flex justify-between   items-center mb-6">
+      <div className="max-w-[1208px] mx-auto">
+        <div className="flex justify-between items-center mb-6">
           <h2 className="text-black text-xl md:text-2xl font-semibold relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-1 after:w-16 after:rounded-full after:bg-primary-base">
             Speakers
           </h2>
@@ -157,14 +192,18 @@ export const SpeakersSection = ({ speakers = [], eventId }) => {
         </div>
 
         {speakers?.length > 0 ? (
-          <div className="relative">
+          <div 
+            className="relative"
+            onMouseEnter={() => setIsHovering(true)}
+            onMouseLeave={() => setIsHovering(false)}
+          >
             <Carousel
               opts={{
                 align: "start",
                 loop: true,
               }}
               className="w-full"
-              onSelect={handleCarouselChange}
+              setApi={setApi}
             >
               <CarouselContent className="-ml-4">
                 {speakers.slice(0, 20).map((speaker, index) => (
@@ -180,9 +219,9 @@ export const SpeakersSection = ({ speakers = [], eventId }) => {
               totalSlides={totalSlides} 
               currentIndex={currentIndex} 
               setCurrentIndex={(index) => {
-                setCurrentIndex(index);
-                // If you have a ref to the carousel, you can call scrollTo here
-                // carouselRef.current.scrollTo(index);
+                if (api) {
+                  api.scrollTo(index);
+                }
               }}
               maxDots={7}
             />
