@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Calendar, Clock, Users, ArrowRight } from "lucide-react";
 import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel";
+import { type CarouselApi } from "@/components/ui/carousel";
 
 interface SpeakerInfo {
   name: string;
@@ -37,19 +38,16 @@ const SessionCard: React.FC<SessionProps> = ({
   const [showNames, setShowNames] = useState(false);
   const getTicketType = (title: string) => {
     const lowerTitle = title.toLowerCase();
-    if (lowerTitle.includes('vip')) return 'vip';
-    if (lowerTitle.includes('premium')) return 'premium';
-    return 'standard';
+    if (lowerTitle.includes("vip")) return "vip";
+    if (lowerTitle.includes("premium")) return "premium";
+    return "standard";
   };
   // const type = getTicketType(title);
   return (
     <>
-<div
-  className={`rounded-lg shadow-sm border flex-1 transition-all duration-300 hover:shadow-lg p-4 flex flex-col justify-between min-h-[200px] `}
-
-   
->
-
+      <div
+        className={`rounded-lg shadow-sm border flex-1 transition-all duration-300 hover:shadow-lg p-4 flex flex-col justify-between min-h-[200px] `}
+      >
         {/* Title Section */}
         <div>
           <h3 className="text-lg font-medium text-neutral-900 mb-3">{title}</h3>
@@ -108,20 +106,19 @@ const SessionCard: React.FC<SessionProps> = ({
         <div>
           <div className="flex items-center text-sm text-neutral-500">
             <Calendar className="w-4 h-4 mr-2" />
-          <span>{date}</span>
-        </div>
-        <div className="flex items-center text-sm text-neutral-500">
-          <Clock className="w-4 h-4 mr-2" />
-          <span>{time}</span>
-        </div>
-        <div className="flex items-center text-sm text-neutral-500">
-          <Users className="w-4 h-4 mr-2" />
-          <span>{stage}</span>
+            <span>{date}</span>
+          </div>
+          <div className="flex items-center text-sm text-neutral-500">
+            <Clock className="w-4 h-4 mr-2" />
+            <span>{time}</span>
+          </div>
+          <div className="flex items-center text-sm text-neutral-500">
+            <Users className="w-4 h-4 mr-2" />
+            <span>{stage}</span>
+          </div>
         </div>
       </div>
-    </div>
-
-      </>
+    </>
   );
 };
 
@@ -198,7 +195,9 @@ const LimitedCarouselDots: React.FC<LimitedCarouselDotsProps> = ({
       <button
         key={totalSlides - 1}
         className={`w-2 h-2 rounded-full mx-1 transition-all ${
-          currentIndex === totalSlides - 1 ? "bg-primary-base w-4" : "bg-gray-300"
+          currentIndex === totalSlides - 1
+            ? "bg-primary-base w-4"
+            : "bg-gray-300"
         }`}
         onClick={() => setCurrentIndex(totalSlides - 1)}
         aria-label={`Go to slide ${totalSlides}`}
@@ -208,7 +207,9 @@ const LimitedCarouselDots: React.FC<LimitedCarouselDotsProps> = ({
     return dots;
   };
 
-  return <div className="flex justify-center items-center mt-4">{renderDots()}</div>;
+  return (
+    <div className="flex justify-center items-center mt-4">{renderDots()}</div>
+  );
 };
 
 interface SessionsSectionProps {
@@ -216,33 +217,61 @@ interface SessionsSectionProps {
   eventId: string;
 }
 
-export const SessionsSection: React.FC<SessionsSectionProps> = ({ sessions = [], eventId }) => {
-  const carouselRef = useRef(null);
-  const apiRef = useRef(null);
+export const SessionsSection: React.FC<SessionsSectionProps> = ({
+  sessions = [],
+  eventId,
+}) => {
+  const [api, setApi] = useState<CarouselApi>();
   const [isHovering, setIsHovering] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const itemsPerSlide = 3;
   const totalSlides = Math.ceil(sessions.length / itemsPerSlide);
+  const autoScrollTimerRef = useRef<NodeJS.Timeout | null>(null);
 
+  // Set up the auto-scroll functionality
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    if (!api || isHovering) {
+      // Clear any existing interval when hovering or when API isn't ready
+      if (autoScrollTimerRef.current) {
+        clearInterval(autoScrollTimerRef.current);
+        autoScrollTimerRef.current = null;
+      }
+      return;
+    }
 
-    const initAutoScroll = () => {
-      if (carouselRef.current && apiRef.current && !isHovering) {
-        interval = setInterval(() => {
-          apiRef.current.scrollNext();
-          setCurrentIndex((prev) => (prev + 1) % totalSlides);
-        }, 3000);
+    // Set up a new interval for auto-scrolling
+    autoScrollTimerRef.current = setInterval(() => {
+      const nextIndex = (currentIndex + 1) % totalSlides;
+      api.scrollTo(nextIndex);
+    }, 3000);
+
+    // Cleanup function
+    return () => {
+      if (autoScrollTimerRef.current) {
+        clearInterval(autoScrollTimerRef.current);
+        autoScrollTimerRef.current = null;
       }
     };
+  }, [api, isHovering, currentIndex, totalSlides]);
 
-    initAutoScroll();
-    return () => clearInterval(interval);
-  }, [isHovering, currentIndex, totalSlides]);
+  // Update currentIndex when the carousel scrolls
+  useEffect(() => {
+    if (!api) return; 
+
+    const onSelect = () => {
+      setCurrentIndex(api.selectedScrollSnap());
+    };
+
+    api.on("select", onSelect);
+    return () => {
+      api.off("select", onSelect);
+    };
+  }, [api]);
 
   const handleDotClick = (index: number) => {
-    setCurrentIndex(index);
-    apiRef.current?.scrollTo(index);
+    if (api) {
+      api.scrollTo(index);
+    }
   };
 
   return (
@@ -268,15 +297,16 @@ export const SessionsSection: React.FC<SessionsSectionProps> = ({ sessions = [],
           {sessions.length > 0 ? (
             <>
               <Carousel
-                ref={carouselRef}
                 opts={{ align: "start", loop: true }}
                 className="w-full"
-                onApiChange={(api) => (apiRef.current = api)}
-                onSelect={(api) => setCurrentIndex(api.selectedScrollSnap())}
+                setApi={setApi}
               >
                 <CarouselContent className="-ml-4">
                   {sessions.map((session, index) => (
-                    <CarouselItem key={index} className="pl-4  flex basis-full sm:basis-1/2 lg:basis-1/3">
+                    <CarouselItem
+                      key={index}
+                      className="pl-4 flex basis-full sm:basis-1/2 lg:basis-1/3"
+                    >
                       <SessionCard {...session} />
                     </CarouselItem>
                   ))}
