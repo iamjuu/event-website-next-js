@@ -48,11 +48,11 @@ export const RegisterCard = ({venue, title, date, facebook, instagram, twitter, 
       
       <div className="mt-8">
         <Button 
-          className="w-full rounded-full py-6 bg-gradient-to-r from-primary-base to-primary-dark text-white hover:from-primary-dark hover:to-primary-darker flex items-center justify-center gap-2 shadow-sm"
-          size="lg"
+          className="w-full bg-primary-base hover:bg-primary-dark text-white py-2.5 rounded-lg
+                     text-sm font-medium transition-colors shadow-sm hover:shadow-md
+                     flex items-center justify-center gap-2"
         >
-          <span className="font-medium">Register Now</span>
-          <ExternalLink size={16} />
+          Register Now
         </Button> 
       </div>
       
