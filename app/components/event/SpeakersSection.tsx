@@ -25,18 +25,24 @@ const colorVariants = {
 
 const SpeakerCard: React.FC<SpeakerProps> = ({ name, title, image, type }) => {
   const IMG_CDN = "https://event-manager.syd1.cdn.digitaloceanspaces.com/";
+  const imageUrl = image ? `${IMG_CDN}${image}` : BlackImage;
+
   return (
     <div
-    className={`border rounded-lg border-neutral-200 hover:border-neutral-100 hover:shadow-lg transition-all duration-300 ease-in-out p-4 flex flex-col items-center h-full`}
+      className={`border rounded-lg border-neutral-200 hover:border-neutral-100 hover:shadow-lg transition-all duration-300 ease-in-out p-4 flex flex-col items-center h-full`}
     >
       <Image
-        src={IMG_CDN + image || BlackImage} // Use fallback if image is missing
+        src={imageUrl}
         alt={name}
         width={92}
         height={92}
         className="rounded-full mb-3 border-2 border-white shadow-sm"
+        onError={(e) => {
+          const target = e.target as HTMLImageElement;
+          target.src = BlackImage;
+        }}
       />
-      <h3 className="text-lg   font-medium text-neutral-900 mb-1">{name}</h3>
+      <h3 className="text-lg font-medium text-neutral-900 mb-1">{name}</h3>
       <p className="text-sm text-center text-neutral-600">{title}</p>
     </div>
   );

@@ -1,7 +1,9 @@
-                                                                                            import type { Metadata } from "next";
-// import { GeistSans, GeistMono } from "@vercel/fonts";
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import Script from 'next/script';
+
+const inter = Inter({ subsets: ["latin"] });
 
 // Function to fetch event data
 async function getEventData() {
@@ -22,14 +24,18 @@ async function getEventData() {
 export async function generateMetadata(): Promise<Metadata> {
   const eventData = await getEventData();
   
+  const baseMetadata = {
+    metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"),
+    title: "Event Website",
+    description: "Your event management platform",
+  };
+  
   if (!eventData) {
-    return {
-      title: "Event Page",
-      description: "Event details page",
-    };
+    return baseMetadata;
   }
 
   return {
+    ...baseMetadata,
     title: eventData.title || "Event Page",
     description: eventData.description || "Event details page",
     openGraph: {
@@ -82,9 +88,9 @@ async function generateJsonLd() {
 
 export default async function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   const jsonLd = await generateJsonLd();
 
   return (
@@ -98,7 +104,7 @@ export default async function RootLayout({
           />
         )}
       </head>
-      <body>
+      <body className={inter.className}>
         {children}
       </body>
     </html>

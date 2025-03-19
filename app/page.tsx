@@ -15,15 +15,66 @@ import { SpeakersSection } from "./components/event/SpeakersSection";
 import { SponsorsSection } from "./components/event/SponsorsSection";
 import { Button } from "./components/ui/button";
 import { StickyFooter } from "./components/event/StickyFooter";
-import { BlackImage } from "@/public";
-import {NoImage} from '../public'
+import { BlackImage, NoImage } from "@/public";
+
+interface EventData {
+  _id: string;
+  title: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+  venue: string;
+  banner: string;
+  logo: string;
+  price?: string;
+  facebook?: string;
+  whatsapp?: string;
+  linkedin?: string;
+  instagram?: string;
+}
+
+interface Ticket {
+  title: string;
+  id: string;
+  thumbnail: string;
+  shortDescription: string;
+  location: string;
+  date: string;
+  price: string;
+}
+
+interface Speaker {
+  name: string;
+  title: string;
+  image: string;
+  type: string;
+}
+
+interface Session {
+  title: string;
+  speakers: {
+    name: string;
+    image: string;
+  }[];
+  date: string;
+  time: string;
+  stage: string;
+  type: string;
+}
+
+interface Sponsor {
+  id: string;
+  name: string;
+  logoUrl: string;
+  tier: string;
+}
+
 const Index = () => {
-  // const { eventId, error, loading } = useEvent();/
-  const [eventData, setEventData] = useState([]);
-  const [tickets, setTickets] = useState([]);
-  const [speakers, setSpeakers] = useState([]);
-  const [sessions, setSessions] = useState([]);
-  const [sponsors, setSponsors] = useState([]);
+  const [eventData, setEventData] = useState<EventData | null>(null);
+  const [tickets, setTickets] = useState<Ticket[]>([]);
+  const [speakers, setSpeakers] = useState<Speaker[]>([]);
+  const [sessions, setSessions] = useState<Session[]>([]);
+  const [sponsors, setSponsors] = useState<Sponsor[]>([]);
 
   const ticketSectionRef = useRef<HTMLDivElement>(null);
   const registerCardRef = useRef<HTMLDivElement>(null);
@@ -35,9 +86,7 @@ const Index = () => {
   useEffect(()=>{
     const fetchDetails = async ()=>{
       const response = await fetch(
-        // `https://backend-endpoint.eventhex.ai/api/v1/auth/domain-event?domain=${window.location.hostname}`
         `${BACKEND_URL}/api/v1/auth/domain-event?domain=my-event.eventhex.ai`
-        
       );
       const data = await response.json();
       setEventData(data.domainData.event);
@@ -52,18 +101,16 @@ const Index = () => {
           `${BACKEND_URL}/api/v1/ticket?event=${eventData?._id}`
         );
         const data = await response.json();
-        console.log(data,'ticket');
         
-  
         if (data?.response && Array.isArray(data.response)) {
-          const extractedTickets = data.response.map((ticket) => ({
+          const extractedTickets = data.response.map((ticket: any) => ({
             title: ticket.title,
             id: ticket._id,
-            thumbnail: ticket.thumbnail||NoImage,
+            thumbnail: ticket.thumbnail || NoImage,
             shortDescription: ticket.shortDescription,
-            location: eventData?.venue,
+            location: eventData?.venue || '',
             date: ticket.startDate,
-            price : ticket?.paymentAmount || "Free" // Assuming `date` is the `startDate`
+            price: ticket?.paymentAmount || "Free"
           }));
           setTickets(extractedTickets);
         } else {
@@ -86,18 +133,16 @@ const Index = () => {
         );
         const data = await response.json();
         if (data?.response && Array.isArray(data.response)) {
-          const extractedSpeakers = data.response.map((speaker) => ({
+          const extractedSpeakers = data.response.map((speaker: any) => ({
             name: speaker.name,
             title: speaker.designation,
             image: speaker.photo,
             type: speaker.type || "standard",
           }));
           setSpeakers(extractedSpeakers);
-          console.log("Extracted Speakers:", extractedSpeakers);
         } else {
           console.warn("Invalid speakers data format:", data);
         }
-  
       } catch (error) {
         console.error("Error fetching speakers:", error);
       }
@@ -113,14 +158,13 @@ const Index = () => {
         const response = await fetch(
           `${BACKEND_URL}/api/v1/sessions?event=${eventData?._id}`
         );
-        const data = await response.json();  
-        console.log(data,'dafdsgs')
-        // Transform the data to match the expected structure
+        const data = await response.json();
+        
         const formattedSessions = data.response.map((session: any) => ({
           title: session.title,
           speakers: session.speakers.map((speaker: any) => ({
             name: speaker.value,
-            image: speaker.photo, // Fallback to BlackImage if no image
+            image: speaker.photo,
           })),
           date: new Date(session.startTime).toLocaleDateString("en-US", {
             month: "long",
@@ -139,7 +183,6 @@ const Index = () => {
           stage: session.stage?.value || "Unknown Stage",
           type: session.sessiontype?.value?.toLowerCase() || "standard",
         }));
-        console.log(formattedSessions,'formtted');
         
         setSessions(formattedSessions);
       } catch (error) {
@@ -148,48 +191,41 @@ const Index = () => {
     };
   
     if (!eventData?._id) return;
-    else
     fetchDetails();
   }, [eventData?._id]);
 
   useEffect(()=>{
-
     const fetchSponors = async ()=>{
       try {
         const response = await fetch(
           `${BACKEND_URL}/api/v1/sponsors?event=${eventData?._id}`
         );
         const data = await response.json();
-        console.log(data, "sponsors");
         if (data?.response && Array.isArray(data.response)) {
-          const extractedSponsors = data.response.map((sponsor) => ({
+          const extractedSponsors = data.response.map((sponsor: any) => ({
             id: sponsor._id,
             name: sponsor.name,
-            logoUrl : sponsor.logo,
+            logoUrl: sponsor.logo,
             tier: sponsor.segment || "standard",
           }));
           setSponsors(extractedSponsors);
-          console.log("Extracted Spondors:", extractedSponsors);
         } else {
-          console.warn("Invalid sponsros data format:", data);
+          console.warn("Invalid sponsors data format:", data);
         }
-  
       } catch (error) {
         console.error("Error fetching sponsors:", error);
       }
     }
 
-    if (!eventData?._id) return ;
+    if (!eventData?._id) return;
     fetchSponors();
-
   },[eventData?._id])
   
   return (
     <div className="bg-white flex flex-col items-stretch pt-4 md:pt-[26px] pb-28 md:pb-[70px]">
-     {eventData && <Header logo={eventData?.logo} title={eventData?.title} />}
-      <main className="self-center flex w-full max-w-[1208px] flex-col  items-stretch px-4">
+      {eventData && <Header logo={eventData.logo} />}
+      <main className="self-center flex w-full max-w-[1208px] flex-col items-stretch px-4">
         <Hero 
-          title={eventData?.title}
           banner={eventData?.banner}
         />
         
@@ -203,14 +239,13 @@ const Index = () => {
                   venue={eventData?.venue}
                 />
                 <AboutEvent description={eventData?.description} />
-                {/* <KeyFeatures /> */}
               </div>
             </div>
             
             <div className="w-full lg:w-[36%] lg:ml-5 max-md:w-full max-md:ml-0">
               <div 
                 ref={registerCardRef}
-                className=" sticky-container"
+                className="sticky-container"
                 style={{
                   position: "sticky",
                   top: "20px",
@@ -222,36 +257,40 @@ const Index = () => {
                 }}
               >
                 <RegisterCard 
-                venue={eventData?.venue} 
-                title={eventData?.title} 
-                date={eventData?.startDate}
-                facebook={eventData?.facebook}
-                whatsapp={eventData?.whatsapp}
-                linkedin={eventData?.linkedin}
-                instagram={eventData?.instagram}
+                  venue={eventData?.venue} 
+                  title={eventData?.title} 
+                  date={eventData?.startDate}
+                  facebook={eventData?.facebook}
+                  instagram={eventData?.instagram}
+                  twitter=""
+                  linkedin={eventData?.linkedin}
                 />
               </div>
             </div>
           </div>
         </div>
         
-        <div className="relative ">
-        
+        <div className="relative">
         </div>
         <div ref={ticketSectionRef}>
-          {tickets.length > 1 && <TicketSection tickets = {tickets}/>}
+          {tickets.length > 1 && <TicketSection tickets={tickets}/>}
         </div>
         
-        {sessions.length  && <SessionsSection sessions={sessions} eventId={eventData?._id} />}
+        {sessions.length && <SessionsSection sessions={sessions} eventId={eventData?._id} />}
         
-        {speakers.length && <SpeakersSection speakers ={speakers} eventId = {eventData?._id} />}
+        {speakers.length && <SpeakersSection speakers={speakers} eventId={eventData?._id} />}
         
         {sponsors.length && <SponsorsSection sponsors={sponsors} />}
         
         <LocationMap />
       </main>
       <Footer />
-      <StickyFooter title = {eventData?.title} venue={eventData?.venue} date={eventData?.startDate} price={eventData?.price || "Free"}/>
+      <StickyFooter 
+        title={eventData?.title} 
+        venue={eventData?.venue} 
+        date={eventData?.startDate} 
+        price={eventData?.price || "Free"}
+      />
     </div>
   );
 };
